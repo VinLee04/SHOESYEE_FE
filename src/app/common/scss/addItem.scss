@@ -1,0 +1,422 @@
+@import '../../../manage-variables';
+
+// Mixins
+@mixin flex-center {
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+}
+
+@mixin form-input {
+    width        : 100%;
+    padding      : 0.75rem;
+    border       : 1px solid $input-border;
+    border-radius: $border-radius-sm;
+    background   : $input-bg;
+    transition   : $transition-fast;
+
+    &:focus {
+        border-color: $input-focus-border;
+        box-shadow  : $shadow-sm;
+        outline     : none;
+    }
+}
+
+// Animations
+
+@keyframes fadeRightTo {
+    from {
+        transform    : translateX(-800px);
+        opacity      : 0;
+        border-radius: 0;
+    }
+
+    to {
+        opacity      : 1;
+        border-radius: $border-radius-lg;
+    }
+}
+
+// Main Section Styles
+.section {
+    background: $background-overlay;
+    position  : fixed;
+    height    : 100vh;
+    width     : 100%;
+    top       : 0;
+    left      : 0;
+    animation : fadeRightTo $transition-normal;
+    @include flex-center;
+    
+    .bg-edit {
+        background: linear-gradient(to right, $background-color, lighten($edit-bg, 5%));
+        color: $edit-text;
+    }
+
+    .bg-add {
+        color: $save-text;
+        background: linear-gradient(to right, $background-color, lighten($save-bg, 5%));
+    }
+
+    // Title Container Styles
+.title__container {
+    z-index        : $z-index-fixed;
+    padding        : $spacing-md $spacing-lg;
+    box-shadow     : $shadow-sm;
+    border-radius  : $border-radius-md;
+    position       : fixed;
+    top            : 5vh; // Changed from 10vh to 5vh to sit higher
+    width          : 80%;
+    left           : 50%;
+    transform      : translateX(-50%);
+    display        : flex;
+    justify-content: space-between;
+    align-items    : center;
+    border-left    : $border-left-add-edit-bg; // Added accent border
+    backdrop-filter: blur(8px);
+
+   
+
+    h1 {
+        font-size     : $font-size-large;
+        font-weight   : 600;
+        letter-spacing: 0.5px;
+        margin        : 0;
+        padding       : 0;
+
+        // Optional: Add a subtle text shadow
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    span {
+        font-size      : 1.5rem; // Reduced from 2rem
+        cursor         : pointer;
+        color          : $text-accent;
+        transition     : $transition-fast;
+        width          : 32px;
+        height         : 32px;
+        display        : flex;
+        align-items    : center;
+        justify-content: center;
+        border-radius  : $border-radius-circle;
+
+        i {
+            display        : flex;
+            align-items    : center;
+            justify-content: center;
+        }
+
+        &:hover {
+            background-color: rgba($text-accent, 0.1);
+            color           : $status-out-of-stock;
+            transform       : rotate(90deg);
+        }
+    }
+
+    // Add responsive styles
+    @media (max-width: $breakpoint-md) {
+        width  : 90%;
+        padding: $spacing-sm $spacing-md;
+
+        h1 {
+            font-size: $font-size-base;
+        }
+    }
+}
+
+// Optional: Add animation for the title container
+@keyframes slideDown {
+    from {
+        transform: translate(-50%, -100%);
+        opacity  : 0;
+    }
+
+    to {
+        transform: translate(-50%, 0);
+        opacity  : 1;
+    }
+}
+
+.title__container {
+    animation: slideDown 0.3s ease-out;
+}
+}
+
+.management-add-section {
+    max-height   : 80vh;
+    overflow-y   : auto;
+    background   : $card-bg;
+    border-radius: $border-radius-lg;
+    box-shadow   : $shadow-md;
+    margin       : auto;
+    width        : 90%;
+    max-width    : 1200px;
+    padding      : 2rem;
+    padding-top  : 4rem;
+
+    // Variables
+$spacing-xl          : 2rem;
+$spacing-md          : 1rem;
+$spacing-sm          : 0.5rem;
+$border-radius-circle: 50%;
+$border-radius-md    : 0.5rem;
+$transition-normal   : all 0.3s ease;
+$primary-color       : #3b82f6;
+$background-color    : #ffffff;
+$input-border        : #e5e7eb;
+$status-out-of-stock : #ef4444;
+$shadow-sm           : 0 1px 3px 0 rgb(0 0 0 / 0.1),
+0 1px 2px -1px rgb(0 0 0 / 0.1);
+
+// Mixins
+@mixin flex-center {
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+}
+
+// Profile Upload Section
+.profile-upload {
+    display        : flex;
+    justify-content: center;
+    margin-bottom  : $spacing-xl;
+    position: relative;
+    width: 150px;
+    margin: auto;
+
+    .image-preview {
+        width        : 150px;
+        height       : 150px;
+        border-radius: $border-radius-circle;
+        border       : 2px dashed $input-border;
+        @include flex-center;
+        background-size    : cover;
+        background-position: center;
+        position           : relative;
+        cursor             : pointer;
+        transition         : $transition-normal;
+        overflow           : hidden;
+
+        &.has-image {
+            border    : none;
+            box-shadow: $shadow-sm;
+
+            &:hover {
+                .preview-overlay {
+                    opacity: 1;
+                }
+            }
+
+            // Remove button always visible
+            .remove-image {
+                opacity: 1;
+            }
+        }
+
+        .preview-img {
+            width     : 100%;
+            height    : 100%;
+            object-fit: cover;
+            cursor    : pointer; // Indicates clickable for change
+        }
+
+        // Overlay for change image indication
+        .preview-overlay {
+            position  : absolute;
+            inset     : 0;
+            background: rgba(0, 0, 0, 0.5);
+            @include flex-center;
+            opacity   : 0;
+            transition: $transition-normal;
+
+            .camera-icon {
+                color    : $background-color;
+                font-size: 2rem;
+            }
+        }
+
+        .upload-button {
+            background    : rgba($background-color, 0.95);
+            border        : none;
+            border-radius : $border-radius-md;
+            cursor        : pointer;
+            display       : flex;
+            flex-direction: column;
+            align-items   : center;
+            gap           : $spacing-sm;
+            transition    : $transition-normal;
+            padding       : $spacing-md;
+            color         : rgba(0, 0, 0, 0.7);
+
+            &:hover {
+                background: $background-color;
+                transform : scale(1.05);
+                color     : $primary-color;
+            }
+
+            .upload-icon {
+                font-size    : 1.5rem;
+                color        : $primary-color;
+                margin-bottom: $spacing-sm;
+            }
+
+            span {
+                font-size  : 0.875rem;
+                font-weight: 500;
+            }
+        }
+
+        
+    }
+    // Remove button positioned at top-right
+    .remove-image {
+        position     : absolute;
+        top          : $spacing-sm;
+        right        : $spacing-sm;
+        width        : 24px;
+        height       : 24px;
+        border-radius: $border-radius-circle;
+        background   : rgba($background-color, 0.9);
+        border       : none;
+        cursor       : pointer;
+        @include flex-center;
+        transition: $transition-normal;
+        z-index   : 10; // Ensure it's above the overlay
+
+        &:hover {
+            background: $background-color;
+            transform : scale(1.1);
+        }
+
+        .remove-icon {
+            color      : $status-out-of-stock;
+            font-size  : 1.2rem;
+            line-height: 1;
+        }
+    }
+    .error-message {
+        margin-top: $spacing-sm;
+        color     : $status-out-of-stock;
+        font-size : 0.875rem;
+        text-align: center;
+    }
+}
+    // Form Styles
+    .form-container {
+        display: flex;
+        gap    : $spacing-xl;
+        flex-direction: column;
+        .main-form {
+            flex: 1;
+        }
+    }
+
+    .form-row {
+        display              : grid;
+        grid-template-columns: 1fr 1fr;
+        gap                  : $spacing-md;
+        margin-bottom        : $spacing-md;
+
+        &.three-columns {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        &.one-columns {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .form-group {
+        margin-bottom: $spacing-md;
+
+        label {
+            display       : block;
+            margin-bottom : $spacing-xs;
+            color         : $text-primary;
+            font-weight   : $font-weight-bold;
+            text-transform: uppercase;
+            font-size     : $font-size-small;
+        }
+
+        input,
+        select,
+        textarea {
+            @include form-input;
+        }
+
+        .error-message {
+            color     : $status-out-of-stock;
+            font-size : $font-size-small;
+            margin-top: $spacing-xs;
+        }
+    }
+
+    // Settings Form
+    .settings-form {
+        min-width    : 350px;
+        background   : $card-bg;
+        padding      : $spacing-lg;
+        border-radius: $border-radius-md;
+        box-shadow   : $shadow-sm;
+
+        h3 {
+            color        : $text-primary;
+            margin-bottom: $spacing-lg;
+        }
+    }
+
+    // Form Actions
+    .form-actions {
+        margin-top     : $spacing-xl;
+        display        : flex;
+        gap            : $spacing-md;
+        justify-content: flex-end;
+
+        button {
+            padding      : $spacing-sm $spacing-xl;
+            border-radius: $border-radius-sm;
+            border       : none;
+            cursor       : pointer;
+            font-weight  : $font-weight-bold;
+            transition   : $transition-fast;
+
+            &.btn-save {
+                background: $btn-primary-bg;
+                color     : $btn-primary-text;
+
+                &:hover {
+                    background: darken($btn-primary-bg, 10%);
+                }
+            }
+
+            &.btn-cancel {
+                background: $btn-secondary-bg;
+                color     : $text-primary;
+                border    : 1px solid $input-border;
+
+                &:hover {
+                    background: darken($btn-secondary-bg, 5%);
+                }
+            }
+        }
+    }
+}
+
+// Responsive Design
+@media (max-width: $breakpoint-md) {
+    .management-add-section {
+        .form-container {
+            flex-direction: column;
+        }
+
+        .form-row,
+        .form-row.three-columns {
+            grid-template-columns: 1fr;
+        }
+
+        .settings-form {
+            min-width: 100%;
+        }
+    }
+}
+

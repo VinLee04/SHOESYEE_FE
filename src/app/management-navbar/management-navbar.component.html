@@ -1,0 +1,49 @@
+<!-- <nav class="management-navbar">
+    <div class="user-info">
+        <div class="avatar">{{ userName.charAt(0) }}</div>
+        <span class="user-name">{{ userName }}</span>
+    </div>
+    <div class="nav-section">
+        <h3>Quản Lý</h3>
+        <ul>
+            <li *ngFor="let item of managementItems">
+                <a [routerLink]="['/management', item.toLowerCase().replace(' ', '-')]" routerLinkActive="active">{{
+                    item }}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="nav-section">
+        <h3>Thống Kê</h3>
+        <ul>
+            <li *ngFor="let item of statisticsItems">
+                <a [routerLink]="['/statistics', item.toLowerCase().replace(' ', '-')]" routerLinkActive="active">{{
+                    item }}</a>
+            </li>
+        </ul>
+    </div>
+</nav> -->
+<nav class="management-navbar">
+    <div class="navbar-brand">
+        <img src="logo-transparent-white.png" alt="Logo" class="logo">
+        <span class="brand-name">DESKBOARD</span>
+    </div>
+    <div class="navbar-menu">
+        <ul class="menu-items">
+            <li *ngFor="let item of managementItems">
+                <a [routerLink]="['/management', item.name.toLowerCase().replace(' ', '-')]" routerLinkActive="active">
+                    <i [class]="item.icon"></i> {{item.name }}</a>
+            </li>
+        </ul>
+        
+    </div>
+    <div class="navbar-footer">
+        @for (item of statisticsItems; track $index) {
+            @if (item != "Log out") {
+                <a [routerLink]="['/statistics', item.toLowerCase().replace(' ', '-')]" routerLinkActive="active">{{item}}</a>
+            } 
+            @else {
+                <a [routerLink]="['/statistics', item.toLowerCase().replace(' ', '-')]" routerLinkActive="active" (click)="auth.logout()">{{item}}</a>
+            }
+        }
+    </div>
+</nav>

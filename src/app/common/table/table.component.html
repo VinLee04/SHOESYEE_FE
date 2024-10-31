@@ -1,0 +1,87 @@
+<!-- product-list.component.html -->
+<div class="products-container">
+    <div class="header">
+        <div class="title">
+            <h1>Products</h1>
+            <span class="count">{{totalProducts}}</span>
+        </div>
+        <div class="actions">
+            <button class="btn-filter">
+                <i class='bx bx-filter-alt'></i>
+                Filter
+            </button>
+            <button class="btn-share">
+                <i class='bx bx-share-alt'></i>
+                Share
+            </button>
+            <button class="btn-add">
+                <i class='bx bx-plus'></i>
+                Add Product
+            </button>
+        </div>
+    </div>
+
+    <div class="info-message">
+        <i class='bx bx-info-circle'></i>
+        This datatable show all of your product
+    </div>
+
+    <div class="tabs">
+        <button *ngFor="let tab of ['All Products', 'Live', 'Archive', 'Out of Stock', 'Low Stock']"
+            [class.active]="activeTab === tab">
+            <!-- [class.active]="activeTab === tab" (click)="changeTab(tab)"> -->
+            {{tab}}
+        </button>
+    </div>
+
+    <div class="search-box">
+        <i class='bx bx-search'></i>
+        <input type="text" placeholder="Search products" [(ngModel)]="searchQuery">
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>Rank <i class='bx bx-sort'></i></th>
+                    <th>Product <i class='bx bx-sort'></i></th>
+                    <th>Total Buyers <i class='bx bx-sort'></i></th>
+                    <th>Price <i class='bx bx-sort'></i></th>
+                    <th>Stock <i class='bx bx-sort'></i></th>
+                    <th>Rating <i class='bx bx-sort'></i></th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of products">
+                    <td><input type="checkbox"></td>
+                    <td>{{product.rank}}</td>
+                    <td class="product-cell">
+                        <img [src]="product.image" [alt]="product.name">
+                        <div class="product-info">
+                            <span class="name">{{product.name}}</span>
+                            <span class="id">IDS: {{product.id}}</span>
+                        </div>
+                    </td>
+                    <td>{{product.totalBuyers}}</td>
+                    <td>${{product.price}}</td>
+                    <td>{{product.stock}}</td>
+                    <td>
+                        <div class="rating">
+                            <span>Score: {{product.rating}}</span>
+                            <div [class]="getRatingClass(product.rating)">
+                                <span></span><span></span><span></span><span></span><span></span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="status-toggle" [class.active]="product.status === 'Active'">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

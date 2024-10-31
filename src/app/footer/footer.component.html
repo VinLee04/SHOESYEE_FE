@@ -1,0 +1,38 @@
+<div class="partners">
+    <h2 class="partners-title">Our Partners</h2>
+    <ul class="partner-logos">
+        <li *ngFor="let partner of partners">
+            <img [src]="partner.logo" [alt]="partner.name" class="partner-logo">
+        </li>
+    </ul>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-section about">
+            <h3>About Shoesyee</h3>
+            <p>Shoesyee is a leading brand providing the best quality footwear to customers worldwide.</p>
+        </div>
+
+        <div class="footer-section links">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/contact">Contact Us</a></li>
+                <li><a href="/privacy">Privacy Policy</a></li>
+                <li><a href="/terms">Terms of Service</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section contact">
+            <h3>Contact Us</h3>
+            <p>Email: info&#64;shoesyee.com</p>
+            <p>Phone: +123-456-7890</p>
+            <p>Address: 123 Fashion Street, New York, NY</p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2024 Shoesyee. All rights reserved.</p>
+    </div>
+</footer>

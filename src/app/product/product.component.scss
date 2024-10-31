@@ -1,0 +1,218 @@
+@import '../../variables';
+
+.product-section {
+  background-color: $gray-100;
+  min-height      : 100vh;
+  padding         : 2rem;
+  padding-top     : 4rem;
+  padding-right   : 320px; // Make room for the fixed filter sidebar
+}
+
+.container {
+  max-width: 1200px;
+  margin   : 0 auto;
+  padding  : 20px;
+}
+
+.search-bar {
+  position        : fixed;
+  top             : $header-height;
+  left            : 0;
+  right           : 320px; // Make room for the filter sidebar
+  background-color: white;
+  z-index         : 10;
+  padding         : 20px;
+  display         : flex;
+  align-items     : center;
+  box-shadow      : 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  input {
+    flex-grow    : 1;
+    padding      : 12px;
+    border       : 1px solid $border-color;
+    border-radius: 4px;
+    font-size    : 16px;
+    transition   : border-color 0.3s;
+
+    &:focus {
+      border-color: $primary-color;
+      outline     : none;
+    }
+  }
+
+  button {
+    margin-left     : 10px;
+    padding         : 12px 20px;
+    border          : none;
+    border-radius   : 4px;
+    background-color: $primary-color;
+    color           : white;
+    cursor          : pointer;
+    transition      : background-color 0.3s;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+}
+
+.content-wrapper {
+  margin-top: 80px; // Make room for the fixed search bar
+}
+
+.filters {
+  position        : fixed;
+  right           : 0;
+  top             : $header-height;
+  width           : 300px;
+  height          : calc(100vh - #{$header-height});
+  background-color: white;
+  box-shadow      : -2px 0 5px rgba(0, 0, 0, 0.1);
+  padding         : 20px;
+  overflow-y      : auto;
+  z-index         : 9;
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  .clear-filters {
+    width           : 100%;
+    padding         : 10px;
+    background-color: $primary-color;
+    color           : white;
+    border          : none;
+    border-radius   : 4px;
+    cursor          : pointer;
+    margin-bottom   : 20px;
+    transition      : background-color 0.3s;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+}
+
+.filter-group {
+  margin-bottom: 20px;
+
+  label {
+    display      : block;
+    margin-bottom: 5px;
+    font-weight  : bold;
+    color        : $text-primary-color;
+    cursor       : pointer;
+  }
+
+  select,
+  input {
+    width           : 100%;
+    padding         : 10px;
+    border          : 1px solid $border-color;
+    border-radius   : 4px;
+    font-size       : 14px;
+    background-color: white;
+  }
+}
+
+.size-options,
+.discount-options {
+  display   : none;
+  margin-top: 10px;
+
+  &.show {
+    display: block;
+  }
+
+  label {
+    display      : block;
+    margin-bottom: 5px;
+    font-weight  : normal;
+  }
+}
+
+.price-range .price-inputs {
+  display    : flex;
+  gap        : 10px;
+  align-items: center;
+}
+
+.sort-controls {
+  display       : flex;
+  flex-direction: column;
+  gap           : 10px;
+  margin-bottom : 20px;
+
+  button {
+    padding         : 10px;
+    border          : none;
+    border-radius   : 4px;
+    background-color: $gray-200;
+    color           : $text-primary-color;
+    cursor          : pointer;
+    transition      : background-color 0.3s, color 0.3s;
+
+    &:hover,
+    &.active {
+      background-color: $primary-color;
+      color           : white;
+    }
+  }
+}
+
+
+.pagination {
+  display        : flex;
+  justify-content: center;
+  align-items    : center;
+  margin-top     : 20px;
+  gap            : 10px;
+
+  button {
+    padding         : 5px 10px;
+    background-color: $primary-color;
+    color           : white;
+    border          : none;
+    border-radius   : 4px;
+    cursor          : pointer;
+
+    &:disabled {
+      background-color: $gray-200;
+      cursor          : not-allowed;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .product-section {
+    padding-right: 0;
+  }
+
+  .search-bar {
+    right: 0;
+  }
+
+  .filters {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-list {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  .search-bar {
+    flex-direction: column;
+    align-items   : stretch;
+
+    input {
+      margin-bottom: 10px;
+    }
+
+    button {
+      margin-left: 0;
+      margin-top : 10px;
+    }
+  }
+}

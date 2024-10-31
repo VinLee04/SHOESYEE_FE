@@ -1,0 +1,46 @@
+@import '../../variables';
+
+.not-found-section{
+    height: 100vh;
+    color:$text-primary-color;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    .not-found-container{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: auto;
+        text-align: center;
+        .code{
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: $info-color;
+        } 
+        .body{
+            .title{
+                font-size: 2rem;
+            } 
+            .description{
+                line-height: 1.4;
+                color: $gray-400;
+            }
+        }
+        .buttons{
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-around;
+            .btn{
+                padding: .4rem 1.2rem;
+            }
+            .btn__home{
+                background: $success-color;
+            } 
+            .btn__support{
+                background: $error-color;
+            }
+        }
+    }
+}

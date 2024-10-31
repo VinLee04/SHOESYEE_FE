@@ -1,0 +1,417 @@
+ @import '../../manage-variables';
+   .management {
+    width: 90%;
+    margin: auto;
+      .header-section {
+          display        : flex;
+          justify-content: space-between;
+          align-items    : center;
+          margin-bottom  : 1.5rem;
+          padding        : 1rem;
+          background     : linear-gradient(to right, $table-header-bg, darken($table-header-bg, 10%));
+          border-radius  : $border-radius-md;
+          box-shadow     : $shadow-sm;
+
+          h2 {
+              color      : $table-header-text;
+              font-size  : 1.5rem;
+              margin     : 0;
+              font-weight: 600;
+              display    : flex;
+              align-items: center;
+              gap        : 0.5rem;
+
+              &::before {
+                  content         : "";
+                  width           : 4px;
+                  height          : 24px;
+                  background-color: $accent-color;
+                  border-radius   : $border-radius-sm;
+              }
+          }
+
+          .add {
+              padding      : 0.6rem 1.2rem;
+              font-weight  : 500;
+              transition   : all 0.3s ease;
+              display      : flex;
+              align-items  : center;
+              gap          : 0.5rem;
+              border-radius: $border-radius-md;
+
+              i {
+                  font-size: 0.9rem;
+              }
+
+              &:hover {
+                  transform : translateY(-2px);
+                  box-shadow: $shadow-md;
+              }
+          }
+      }
+
+      .table-list {
+          background   : $card-bg;
+          border-radius: $border-radius-lg;
+          box-shadow   : $shadow-sm;
+          margin-bottom: 2rem;
+          overflow     : hidden;
+          border       : 1px solid $card-border;
+
+          .table {
+              margin: 0;
+              width: 100%;
+              border-collapse: collapse;
+
+              thead {
+                text-align: left;
+                  background: linear-gradient(to right, $table-header-bg, darken($table-header-bg, 5%));
+
+                  th {
+                      text-wrap: nowrap;
+                      color         : $table-header-text;
+                      font-weight   : 600;
+                      padding       : 1rem;
+                      font-size     : 0.9rem;
+                      text-transform: uppercase;
+                      letter-spacing: 0.5px;
+                      border        : none;
+
+                      &:nth-last-child(1){
+                        text-align: right;
+                        padding-right: 6%;
+                      }
+
+                      &+.role-action{
+                        text-align: center;
+                      }
+                  }
+              }
+
+              tbody {
+                  tr {
+                      border-bottom: 1px solid $table-border;
+                      transition   : all 0.2s ease;
+
+                      &:hover {
+                          background-color: rgba($primary-color, 0.05);
+                      }
+
+                      td {
+                          padding       : .4rem;
+                          vertical-align: middle;
+                          color         : $text-primary;
+                          font-size     : 0.95rem;
+                      }
+                  }
+              }
+          }
+      }
+
+      .badge {
+          background    : linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+          color         : white;
+          padding       : 0.4rem 1rem;
+          border-radius : 20px;
+          font-size     : 0.85rem;
+          font-weight   : 500;
+          letter-spacing: 0.5px;
+          box-shadow    : 0 2px 4px rgba($primary-color, 0.3);
+      }
+
+      .modal {
+          backdrop-filter : blur(5px);
+          background-color: rgba($background-color, 0.8);
+          transition      : all 0.3s ease;
+
+          .modal-content {
+              max-height: 80vh;
+              overflow-y: scroll;
+              background   : $card-bg;
+              padding      : 2rem;
+              border-radius: $border-radius-lg;
+              width        : 500px;
+              max-width    : 90%;
+              box-shadow   : $shadow-lg;
+              transform    : translateY(0);
+              animation    : modalSlideIn 0.3s ease;
+
+              h3 {
+                  color         : $text-primary;
+                  margin-bottom : 1.5rem;
+                  padding-bottom: 1rem;
+                  border-bottom : 2px solid $primary-color;
+                  font-weight   : 600;
+                  position      : relative;
+
+                  &::after {
+                      content         : '';
+                      position        : absolute;
+                      bottom          : -2px;
+                      left            : 0;
+                      width           : 50px;
+                      height          : 2px;
+                      background-color: $accent-color;
+                  }
+              }
+
+              .form-group {
+                  margin-bottom: 1.5rem;
+
+                  label {
+                      display      : block;
+                      margin-bottom: 0.5rem;
+                      color        : $text-secondary;
+                      font-weight  : 500;
+                      font-size    : 0.9rem;
+                  }
+
+                  .inp {
+                      transition: all 0.3s ease;
+                      border    : 1px solid $input-border;
+
+                      &:focus {
+                          border-color: $input-focus-border;
+                          box-shadow  : 0 0 0 2px rgba($input-focus-border, 0.1);
+                      }
+                  }
+
+                  .error {
+                      color       : $btn-danger-bg;
+                      font-size   : 0.8rem;
+                      margin-top  : 0.5rem;
+                      padding-left: 0.5rem;
+                      border-left : 2px solid $btn-danger-bg;
+                      animation   : fadeIn 0.3s ease;
+                  }
+              }
+
+              .modal-actions {
+                  display        : flex;
+                  justify-content: flex-end;
+                  gap            : 1rem;
+                  margin-top     : 2rem;
+                  padding-top    : 1rem;
+                  border-top     : 1px solid $card-border;
+
+                  button {
+                      padding    : 0.6rem 1.5rem;
+                      font-weight: 500;
+                      transition : all 0.3s ease;
+
+                      &:hover {
+                          transform : translateY(-2px);
+                          box-shadow: $shadow-sm;
+                      }
+
+                      &:disabled {
+                          opacity  : 0.7;
+                          cursor   : not-allowed;
+                          transform: none;
+                      }
+                  }
+              }
+          }
+      }
+
+      .buttons {
+        text-align: center;
+          display: flex;
+          gap    : 0.5rem;
+
+            button {
+            cursor: pointer;
+              padding      : 0.5rem 1rem;
+              border-radius: $border-radius-sm;
+              font-size    : 0.85rem;
+              font-weight  : 500;
+              display      : flex;
+              align-items  : center;
+              gap          : 0.5rem;
+              transition   : all 0.2s ease;
+
+              i {
+                  font-size: 1rem;
+              }
+
+              &:hover {
+                  transform : translateY(-2px);
+                  box-shadow: $shadow-sm;
+              }
+
+              &.edit:hover {
+                  background-color: $edit-bg-hover;
+              }
+
+              &.delete:hover {
+                  background-color: $delete-bg-hover;
+              }
+
+              &.save:hover {
+                  background-color: $save-bg-hover;
+              }
+          }
+      }
+  }
+
+  @keyframes modalSlideIn {
+      from {
+          opacity  : 0;
+          transform: translateY(-20px);
+      }
+
+      to {
+          opacity  : 1;
+          transform: translateY(0);
+      }
+  }
+
+  @keyframes fadeIn {
+      from {
+          opacity: 0;
+      }
+
+      to {
+          opacity: 1;
+      }
+  }
+
+  // Responsive styles
+  @media (max-width: $breakpoint-md) {
+      .management {
+          .header-section {
+              flex-direction: column;
+              gap           : 1rem;
+              text-align    : center;
+
+              h2 {
+                  justify-content: center;
+              }
+          }
+
+          .table-list {
+              overflow-x: auto;
+
+              .table {
+                  min-width: 800px;
+              }
+          }
+
+          .buttons {
+              flex-wrap      : wrap;
+              justify-content: center;
+
+              button {
+                  min-width: 120px;
+              }
+          }
+      }
+  }
+
+  // Dark mode support (if needed)
+  @media (prefers-color-scheme: dark) {
+      .management {
+          .table-list {
+              background  : darken($card-bg, 10%);
+              border-color: rgba($card-border, 0.2);
+          }
+
+          .table {
+              tbody {
+                  tr:hover {
+                      background-color: rgba($primary-color, 0.1);
+                  }
+              }
+          }
+
+          .modal-content {
+              background: darken($card-bg, 5%);
+          }
+      }
+  }
+.modal {
+    position        : fixed;
+    top             : 0;
+    left            : 0;
+    width           : 100%;
+    height          : 100%;
+    display         : flex;
+    justify-content : center;
+    align-items     : center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index         : 1000;
+
+    .modal-content {
+        background   : white;
+        padding      : 2rem;
+        border-radius: $border-radius-md;
+        width        : 500px;
+        max-width    : 90%;
+        box-shadow   : $shadow-lg;
+        // Thêm animation cho modal
+        animation    : modalFadeIn 0.3s ease;
+
+        h3 {
+            color        : $text-primary;
+            margin-bottom: 1.5rem;
+        }
+
+        // Phần còn lại giữ nguyên
+    }
+}
+
+// Thêm keyframe animation
+@keyframes modalFadeIn {
+    from {
+        opacity  : 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity  : 1;
+        transform: translateY(0);
+    }
+}
+
+.permissions-section {
+    margin-top : 20px;
+    border-top : 1px solid #eee;
+    padding-top: 20px;
+
+    .permissions-header {
+        display        : flex;
+        justify-content: space-between;
+        align-items    : center;
+        margin-bottom  : 15px;
+
+        h4 {
+            margin: 0;
+        }
+    }
+}
+
+.permission-item {
+    background-color: #f8f9fa;
+    padding         : 15px;
+    margin-bottom   : 10px;
+    border-radius   : 4px;
+
+    .permission-fields {
+        display    : flex;
+        gap        : 15px;
+        align-items: flex-start;
+
+        .form-group {
+            flex: 1;
+        }
+
+        .btn.delete {
+            margin-top: 25px;
+        }
+    }
+}
+
+.btn.add {
+    padding  : 5px 10px;
+    font-size: 14px;
+}

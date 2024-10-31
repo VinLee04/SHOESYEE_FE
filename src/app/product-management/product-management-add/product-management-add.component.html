@@ -1,0 +1,155 @@
+<div class="section">
+      <div class="management-add-section">
+        <!-- <div class="header">
+          <nav>
+            <span>Clients</span>
+            <span>/</span>
+            <span>New Client</span>
+          </nav>
+          <h2>Welcome To The New Client Page</h2>
+          <p>Enter First and Last Name or Company Name is Required To Save This Client.</p>
+        </div> -->
+
+        <div class="title__container">
+            <h1>USER MANAGEMENT FILTER</h1>
+            <span (click)="close()"><i class='bx bxs-x-circle'></i></span>
+        </div>
+
+        <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
+          <div class="form-container">
+            <div class="main-form">
+              <!-- Profile Image Upload -->
+              <div class="profile-upload">
+                <div class="image-preview" 
+                     [class.has-image]="previewUrl"
+                     [style.backgroundImage]="previewUrl ? 'url(' + previewUrl + ')' : 'none'">
+                  <input type="file" 
+                         #fileInput 
+                         (change)="onFileSelected($event)" 
+                         accept="image/*" 
+                         hidden>
+                  <button type="button" 
+                          (click)="fileInput.click()" 
+                          *ngIf="!previewUrl">
+                    <i class="upload-icon">📷</i>
+                    <span>Upload Profile Image</span>
+                  </button>
+                  <!-- Add remove button when image exists -->
+                  <button type="button" 
+                          *ngIf="previewUrl" 
+                          class="remove-image"
+                          (click)="removeProfileImage()">
+                    <i class="remove-icon">×</i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Existing form fields -->
+              <div class="form-row three-columns">
+                <div class="form-group">
+                  <label>USERNAME</label>
+                  <input type="text" formControlName="username" placeholder="User name">
+                </div>
+                <div class="form-group">
+                  <label>EMAIL</label>
+                  <input type="email" formControlName="email" placeholder="Email">
+                </div>
+                <div class="form-group">
+                  <label>PHONE</label>
+                  <input type="text" formControlName="phone" placeholder="Phone">
+                </div>
+              </div> 
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label>DATE</label>
+                  <input type="date" formControlName="date" placeholder="Date">
+                </div>
+                <div class="form-group">
+                  <label>SALARY</label>
+                  <input type="text" formControlName="Salary" placeholder="Salary">
+                </div>
+              </div>
+
+              <div class="form-row one-columns">
+                <div class="form-group">
+                  <label>Address</label>
+                <textarea rows="3" name="" id=""></textarea>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>PASSWORD</label>
+                  <input type="password" formControlName="password" placeholder="Password">
+                </div>
+                 <div class="form-group">
+                  <label>CONFIRM PASSWORD</label>
+                  <input type="password" formControlName="confirmPassword" placeholder="Confirm Password">
+                </div>
+              </div>
+
+              <div class="form-row three-columns">
+                <div class="form-group">
+                  <label>GENDER</label>
+                  <select name="" id="">
+                    <option value="">Male</option>
+                    <option value="">FeMale</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>STATUS</label>
+                  <select name="" id="">
+                    <option value="">Active</option>
+                    <option value="">InActive</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Role</label>
+                  <select name="" id="">
+                    <option value="">ADMIN</option>
+                    <option value="">HR_MANAGEMENT</option>
+                    <option value="">SALES_MANAGEMENT</option>
+                  </select>
+                </div>
+              </div>
+              
+
+              <!-- Rest of your existing form fields -->
+              <!-- ... -->
+
+              <!-- Additional file attachments section -->
+              <!-- <div class="attachments-section">
+                <h3>Additional Documents</h3>
+                <div class="file-upload-container">
+                  <div class="file-upload" *ngFor="let file of attachedFiles; let i = index">
+                    <span>{{file.name}}</span>
+                    <button type="button" (click)="removeFile(i)">×</button>
+                  </div>
+                  <div class="upload-button">
+                    <input type="file" 
+                           #multipleFiles 
+                           (change)="onFileSelected($event)" 
+                           multiple 
+                           hidden>
+                    <button type="button" (click)="multipleFiles.click()">
+                      Add Documents
+                    </button>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+
+            <!-- Existing settings form -->
+            <div class="settings-form">
+              <!-- ... your existing settings ... -->
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-save">Save</button>
+            <button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>

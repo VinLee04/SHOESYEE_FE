@@ -1,0 +1,54 @@
+ <!-- <div class="product-container" *ngIf="productDetail">
+      <div class="product-info">
+        <h1>{{ productDetail.product.name }}</h1>
+        <p>Brand: {{ productDetail.product.brandName }}</p>
+        <p>Category: {{ productDetail.product.categoryName }}</p>
+      </div>
+
+      <div class="product-image">
+        <img [src]="selectedOption?.image || productDetail.product.thumbnail" 
+             [alt]="productDetail.product.name">
+      </div>
+
+      <div class="color-options">
+        <h3>Available Colors</h3>
+        <div class="color-buttons">
+          <button *ngFor="let option of productDetail.options"
+                  [class.selected]="selectedOption?.color === option.color"
+                  (click)="selectColor(option)">
+            <img [src]="option.image" [alt]="option.color">
+            <span>{{ option.color }}</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="size-options" *ngIf="selectedOption">
+        <h3>Available Sizes</h3>
+        <div class="size-buttons">
+          <button *ngFor="let detail of selectedOption.details"
+                  [class.selected]="selectedDetail?.id === detail.id"
+                  [disabled]="detail.quantity === 0"
+                  (click)="selectSize(detail)">
+            {{ detail.size }}
+          </button>
+        </div>
+      </div>
+
+      <div class="price-quantity" *ngIf="selectedDetail">
+        <div class="price">
+          <h3>Price: ${{ selectedDetail.price }}</h3>
+          <p>Available: {{ selectedDetail.quantity }} items</p>
+        </div>
+        
+        <div class="add-to-cart" *ngIf="selectedDetail.quantity > 0">
+          <input type="number" 
+                 [max]="selectedDetail.quantity"
+                 [min]="1"
+                 [(ngModel)]="quantity">
+          <button (click)="addToCart()"
+                  [disabled]="!quantity || quantity > selectedDetail.quantity">
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </div> -->

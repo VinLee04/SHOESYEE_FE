@@ -1,0 +1,162 @@
+<section class="user-profile-edit-section">
+  <div class="user__profile__edit__container">
+    <h2 class="profile__edit__title">Edit Profile</h2>
+    
+    <div *ngIf="errorMessage" class="alert alert-error">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile__edit__form">
+      <div class="profile__edit__items">
+        <!-- Username -->
+        <div class="profile__edit__item">
+          <label for="username">Username</label>
+          <input 
+            id="username"
+            type="text"
+            formControlName="username"
+            [class.error]="isFieldInvalid('username')"
+          >
+          <div *ngIf="isFieldInvalid('username')" class="error-hint">
+            {{ getErrorMessage('username') }}
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="profile__edit__item">
+          <label for="email">Email</label>
+          <input 
+            id="email"
+            type="email"
+            formControlName="email"
+            [class.error]="isFieldInvalid('email')"
+          >
+          <div *ngIf="isFieldInvalid('email')" class="error-hint">
+            {{ getErrorMessage('email') }}
+          </div>
+        </div>
+
+        <!-- Phone -->
+        <div class="profile__edit__item phone-field">
+          <label for="phone">Phone</label>
+          <input 
+            id="phone"
+            type="tel"
+            formControlName="phone"
+            [class.error]="isFieldInvalid('phone')"
+          >
+          <div *ngIf="isFieldInvalid('phone')" class="error-hint">
+            {{ getErrorMessage('phone') }}
+          </div>
+        </div>
+
+        <!-- Birth Date -->
+        <div class="profile__edit__item birth-date-field">
+          <label for="birthdate">Birth Date</label>
+          <input 
+            id="birthdate"
+            type="date"
+            formControlName="birthdate"
+            [class.error]="isFieldInvalid('birthdate')"
+            onfocus="this.showPicker()"
+          >
+          <div *ngIf="isFieldInvalid('birthdate')" class="error-hint">
+            {{ getErrorMessage('birthdate') }}
+          </div>
+        </div>
+
+        <!-- Gender -->
+        <div class="profile__edit__item gender-field">
+          <label for="gender">Gender</label>
+          <select 
+            id="gender"
+            formControlName="gender"
+            [class.error]="isFieldInvalid('gender')"
+          >
+            <option value="">Select gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+          <div *ngIf="isFieldInvalid('gender')" class="error-hint">
+            {{ getErrorMessage('gender') }}
+          </div>
+        </div>
+
+        <!-- Avatar Upload -->
+        <div class="profile__edit__item">
+          <label>Avatar</label>
+          <div class="input__file__avatar">
+            <div class="file__img" (click)="toggleImagePreview()">
+              <img 
+                [src]="previewUrl || defaultAvatar" 
+                [class.showImgFullScreen]="showFullscreen"
+                alt="Profile avatar"
+              >
+            </div>
+            <div class="overlay" *ngIf="showFullscreen" (click)="toggleImagePreview()"></div>
+            <div class="description">
+              <i class="bx bx-upload icon"></i>
+              <span class="upload__title">Upload Your Avatar</span>
+             
+            </div>
+             <button *ngIf="hasNewImage" type="button" class="btn-remove" (click)="removeImage()">
+                <i class="bx bx-x"></i>
+              </button> 
+            <input
+              type="file"
+              class="file__choose"
+              accept="image/*"
+              (change)="onFileChange($event)"
+              #fileInput
+            >
+          </div>
+        </div>
+
+        <!-- Address -->
+        <div class="profile__edit__item full-width">
+          <label for="address">Address</label>
+          <textarea 
+            id="address"
+            formControlName="address"
+            [class.error]="isFieldInvalid('address')"
+            rows="4"
+          ></textarea>
+          <div *ngIf="isFieldInvalid('address')" class="error-hint">
+            {{ getErrorMessage('address') }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="buttons__cancel__save">
+        <button type="button" class="btn cancel" routerLink="/user-profile">
+          Cancel
+        </button>
+        <button 
+          type="submit" 
+          class="btn save__change"
+          [disabled]="profileForm.invalid || isSubmitting"
+        >
+          {{ isSubmitting ? 'Saving...' : 'Save Changes' }}
+        </button>
+      </div>
+    </form>
+
+    <!-- Additional Actions -->
+    <div class="profile__edit__buttons">
+      <button 
+        type="button" 
+        class="btn change__password"
+        (click)="navigateToChangePassword()"
+      >
+        Change Password
+      </button>
+      <button 
+        type="button" 
+        class="btn logout"
+        (click)="logout()"
+      >
+        Logout
+      </button>
+    </div>
+  </div>
+</section>

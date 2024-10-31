@@ -1,0 +1,73 @@
+<section class="user-profile-section">
+    <div class="user__profile__container">
+        <div class="user__profile__img"><img [src]="userImage()" alt=""></div>
+        <div class="user__profile__info">
+            <div class="info__items">
+                <div class="info__item">
+                    <div class="item__icon"><i class='bx bx-user'></i></div>
+                    <div class="item__description">
+                        <div class="item__description__title">Username</div>
+                        <div class="item__description__value">{{auth.currentUser?.username}}</div>
+                    </div>
+                </div>
+                <div class="info__item">
+                    <div class="item__icon">
+                        @if (auth.currentUser?.gender == "male") {<i class='bx bx-male-sign'></i>} @else {<i class='bx bx-female-sign'></i>}
+                    </div>
+                    <div class="item__description">
+                        <div class="item__description__title">Gender</div>
+                        <div class="item__description__value">{{auth.currentUser?.gender}}</div>
+                    </div>
+                </div>
+                <div class="info__item">
+                    <div class="item__icon"><i class='bx bx-envelope'></i></div>
+                    <div class="item__description">
+                        <div class="item__description__title">Email</div>
+                        <div class="item__description__value">{{auth.currentUser?.email}}</div>
+                    </div>
+                </div>
+                <div class="info__item">
+                    <div class="item__icon"><i class='bx bx-money'></i></div>
+                    <div class="item__description">
+                        <div class="item__description__title">Total Expenditure</div>
+                        <div class="item__description__value">{{auth.currentUser?.totalExpenditure ? auth.currentUser?.totalExpenditure : 0 }}</div>
+                    </div>
+                </div>
+                <div class="info__item">
+                    <div class="item__icon"><i class='bx bx-phone'></i></div>
+                    <div class="item__description">
+                        <div class="item__description__title">Phone</div>
+                        <div class="item__description__value">{{auth.currentUser?.phone}}</div>
+                    </div>
+                </div>
+                <div class="info__item">
+                    <div class="item__icon"><i class='bx bx-shopping-bag'></i></div>
+                    <div class="item__description">
+                        <div class="item__description__title">Total Orders</div>
+                        <div class="item__description__value">{{auth.currentUser?.totalOrder ? auth.currentUser?.totalOrder : 0}}</div>
+                    </div>
+                </div>
+                <div class="info__item address">
+                    <div class="item__icon"><i class='bx bx-map'></i></div>
+                    <div class="item__description">
+                        <div class="item__description__title">Address</div>
+                        <div class="item__description__value">{{auth.currentUser?.address ? auth.currentUser?.address : "Please Edit Your Address"}}</div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="user__profile__buttons">
+            <a routerLink="/user-profile-edit" class="btn edit__profile">Edit Profile</a>
+            <a (click)="showChangePassword=true" class="btn change__password">Change Password</a>
+            <button (click)="auth.logout()" class="btn btn__logout">Logout</button>
+        </div>
+    </div>
+
+     @if (showChangePassword) {
+    <app-change-password
+        [(close)]="showChangePassword"
+    ></app-change-password>
+  }
+</section>

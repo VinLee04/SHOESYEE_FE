@@ -1,0 +1,79 @@
+<div class="product-management management">
+    <h1>PRODUCT MANAGEMENT</h1>
+
+    <div class="header">
+        <div class="title">
+            <h1>Products</h1>
+            <span class="count">{{totalProducts}}</span>
+        </div>
+        <div class="actions">
+            <button class="btn-filter">
+                <i class='bx bx-filter-alt'></i>
+                Filter
+            </button>
+            <button class="btn-share">
+                <i class='bx bx-share-alt'></i>
+                Share
+            </button>
+            <button class="btn">
+                <i class='bx bx-plus'></i>
+                Add Product
+            </button>
+        </div>
+    </div>
+    
+    <div class="info-message">
+        <i class='bx bx-info-circle'></i>
+        This datatable show all of your product
+    </div>
+    
+    <div class="tabs">
+        <button *ngFor="let tab of ['All Products', 'Live', 'Archive', 'Out of Stock', 'Low Stock']"
+            [class.active]="activeTab === tab">
+            <!-- [class.active]="activeTab === tab" (click)="changeTab(tab)"> -->
+            {{tab}}
+        </button>
+    </div>
+
+    <!-- <app-management-table [data]="products"
+      [columns]="columns"
+      [showSearch]="true"
+      [showActions]="true"
+      (edit)="onEditProduct($event)"
+      (delete)="onDeleteProduct($event)"></app-management-table> -->
+
+    <div class="table-detail" *ngIf="selectedProduct">
+        <h2>Chi tiết sản phẩm</h2>
+        <form (ngSubmit)="saveProduct()">
+            <div class="form-group">
+                <label for="productId">Mã sản phẩm:</label>
+                <input type="text" id="productId" [(ngModel)]="selectedProduct.id" name="id" readonly>
+            </div>
+            <div class="form-group">
+                <label for="productName">Tên sản phẩm:</label>
+                <input type="text" id="productName" [(ngModel)]="selectedProduct.name" name="name">
+            </div>
+            <div class="form-group">
+                <label for="productBrand">Tên nhãn hàng:</label>
+                <input type="text" id="productBrand" [(ngModel)]="selectedProduct.brand" name="brand">
+            </div>
+            <div class="form-group">
+                <label for="productCategory">Tên thể loại:</label>
+                <input type="text" id="productCategory" [(ngModel)]="selectedProduct.category" name="category">
+            </div>
+            <div class="form-group">
+                <label for="productStatus">Trạng thái:</label>
+                <select id="productStatus" [(ngModel)]="selectedProduct.status" name="status">
+                    <option value="Đang bán">Đang bán</option>
+                    <option value="Hết hàng">Hết hàng</option>
+                    <option value="Ngừng kinh doanh">Ngừng kinh doanh</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="productImage">Hình ảnh sản phẩm:</label>
+                <input type="text" id="productImage" [(ngModel)]="selectedProduct.image" name="image">
+            </div>
+            <button type="submit" class="btn btn-save">Lưu thay đổi</button>
+        </form>
+    </div>
+</div>

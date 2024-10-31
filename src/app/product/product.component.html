@@ -1,0 +1,133 @@
+<section class="product-section">
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()"
+                placeholder="Tìm kiếm sản phẩm">
+            <button class="clear-search" (click)="clearSearch()">Clear Search</button>
+            <button class="clear-all" (click)="clearAll()">Clear All</button>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="product-list-container">
+                <ul class="product-list">
+                    <li *ngFor="let product of filteredProducts$ | async" class="product-item">
+                        <div class="product-image-container">
+                            <img [src]="product.image" [alt]="product.name" class="product-image">
+                            <span *ngIf="product.discountPercentage" class="discount-badge">-{{ product.discountPercentage
+                                }}%</span>
+                            <i class="heart-icon" [class.active]="isFavorite(product.id)"
+                                (click)="toggleFavorite(product.id)">❤</i>
+                        </div>
+                        <div class="product-info">
+                            <p class="brand">{{ product.brand }}</p>
+                            <h3>{{ product.name }}</h3>
+                            <div class="color-options">
+                                <span *ngFor="let color of product.colors" [style.background-color]="color"
+                                    class="color-circle"></span>
+                            </div>
+                            <p class="type">Loại: {{ product.type }}</p>
+                            <p class="price">
+                                <span class="original-price" [class.line-through]="product.discountPercentage">{{ product.price
+                                    | currency }}</span>
+                                <span class="discounted-price" *ngIf="product.discountPercentage">
+                                    {{ product.price * (1 - product.discountPercentage / 100) | currency }}
+                                </span>
+                            </p>
+                            <div class="card-actions">
+                                <button class="btn view-details-btn" (click)="viewDetails(product.id)">View Detail</button>
+                                <button class="btn add-to-cart-btn" (click)="addToCart(product.id)">Add to card</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+                <!-- <div class="pagination">
+                    <button class="page-nav prev" [disabled]="!canGoPrev()" (click)="prevPage()" [class.disabled]="!canGoPrev()">
+                        <i class='bx bx-chevron-left'></i>
+                        Prev
+                    </button>
+                
+                    @for (page of getPageNumbers(); track page) {
+                    <button class="page-number" [class.active]="page === currentPage" (click)="changePage(page)">
+                        {{page}}
+                    </button>
+                    }
+                
+                    <button class="page-nav next" [disabled]="!canGoNext()" (click)="nextPage()" [class.disabled]="!canGoNext()">
+                        Next
+                        <i class='bx bx-chevron-right'></i>
+                    </button>
+                </div> -->
+                <div class="pagination">
+                    <button (click)="prevPage()" [disabled]="currentPage === 1">Trang trước</button>
+                    <span>Trang {{ currentPage }} / {{ totalPages }}</span>
+                    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Trang sau</button>
+                </div>
+            </div>
+
+            <div class="filters">
+                <h2>Bộ lọc</h2>
+                <button class="clear-filters" (click)="clearFilters()">Clear Filters</button>
+
+                <div class="filter-group">
+                    <label for="brand">Thương hiệu:</label>
+                    <select id="brand" name="brand" [(ngModel)]="selectedBrand" (change)="applyFilters()">
+                        <option value="">Tất cả</option>
+                        <option *ngFor="let brand of brands" [value]="brand">{{ brand }}</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="color">Màu sắc:</label>
+                    <select id="color" name="color" [(ngModel)]="selectedColor" (change)="applyFilters()">
+                        <option value="">Tất cả</option>
+                        <option *ngFor="let color of colors" [value]="color">{{ color }}</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="category">Danh mục:</label>
+                    <select id="category" name="category" [(ngModel)]="selectedCategory" (change)="applyFilters()">
+                        <option value="">Tất cả</option>
+                        <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label (click)="toggleSizeFilter()">Kích thước:</label>
+                    <div class="size-options" [class.show]="showSizeFilter">
+                        <label *ngFor="let size of sizes">
+                            <input type="checkbox" [value]="size" (change)="onSizeChange($event)"> {{ size }}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-group price-range">
+                    <label>Khoảng giá:</label>
+                    <div class="price-inputs">
+                        <input type="number" [(ngModel)]="minPrice" placeholder="Tối thiểu" (change)="applyFilters()">
+                        <span>-</span>
+                        <input type="number" [(ngModel)]="maxPrice" placeholder="Tối đa" (change)="applyFilters()">
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Giảm giá:</label>
+                    <div class="discount-options">
+                        <label *ngFor="let discount of discounts">
+                            <input type="checkbox" [value]="discount" (change)="onDiscountChange($event)"> {{ discount
+                            }}%
+                        </label>
+                    </div>
+                </div>
+
+                <div class="sort-controls">
+                    <button (click)="sortOrder = 'asc'; applyFilters()" [class.active]="sortOrder === 'asc'">Giá: Thấp
+                        đến Cao</button>
+                    <button (click)="sortOrder = 'desc'; applyFilters()" [class.active]="sortOrder === 'desc'">Giá: Cao
+                        đến Thấp</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

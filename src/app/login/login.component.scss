@@ -1,0 +1,128 @@
+@import '../../variables';
+
+.login-section {
+  background-color: $background-color;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 500px;
+  padding: 2rem;
+  width: 100%;
+
+  .title {
+    font-size: 2rem;
+    color: $text-primary-color;
+    margin-bottom: 1.5rem;
+  }
+
+  form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .input__group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+
+      input {
+        all: unset;
+        font-size: 1.2rem;
+        font-weight: bold;
+        padding: 1rem 2rem;
+        background: $gray-200;
+        border-radius: 4px;
+        border: 1px solid $border-color;
+
+        &:focus {
+          border-color: $primary-color;
+          outline: none;
+        }
+      }
+
+      .toggle-password {
+        position: absolute;
+        right: 4%;
+        padding: 15px 0;
+        top:50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: $primary-color;
+        cursor: pointer;
+      }
+    }
+
+    .btn__submit {
+      margin-top: 1rem;
+
+      button {
+        all: unset;
+        width: 100%;
+        padding: 1.2rem 0;
+        background-color: $primary-color;
+        color: $btn-text-color;
+        text-align: center;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover:not(:disabled) {
+          background-color: $btn-primary-hover;
+        }
+
+        &:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  .forgot-password {
+    margin-top: 1rem;
+    text-align: center;
+
+    a {
+      color: $primary-color;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  form {
+    .input__group input {
+      font-size: 1rem;
+      padding: 0.9rem;
+    }
+
+    .btn__submit button {
+      padding: 0.9rem;
+      font-size: 1rem;
+    }
+  }
+}

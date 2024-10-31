@@ -1,0 +1,44 @@
+<section class="sell-off-section">
+    <div class="sell-off-container">
+        <h2>Sản phẩm Giảm Giá Đặc Biệt</h2>
+    
+        <div class="filters">
+            <select [(ngModel)]="selectedCategory" (change)="applyFilters()" class="filter-select">
+                <option value="">Tất cả danh mục</option>
+                <option *ngFor="let category of categories" [value]="category">{{category}}</option>
+            </select>
+    
+            <select [(ngModel)]="selectedDiscount" (change)="applyFilters()" class="filter-select">
+                <option value="">Tất cả mức giảm giá</option>
+                <option value="10">10% trở lên</option>
+                <option value="20">20% trở lên</option>
+                <option value="30">30% trở lên</option>
+                <option value="50">50% trở lên</option>
+            </select>
+    
+            <input type="text" [(ngModel)]="searchTerm" (input)="applyFilters()" placeholder="Tìm kiếm sản phẩm"
+                class="search-input">
+        </div>
+    
+        <div class="product-grid">
+            <div *ngFor="let product of displayedProducts" class="product-card">
+                <img [src]="product.image" [alt]="product.name" class="product-image">
+                <div class="product-info">
+                    <h3>{{product.name}}</h3>
+                    <p class="original-price">{{product.originalPrice | currency:'VND':'symbol':'1.0-0'}}</p>
+                    <p class="discounted-price">
+                        {{calculateDiscountedPrice(product) | currency:'VND':'symbol':'1.0-0'}}
+                    </p>
+                    <div class="discount-badge">-{{product.discountPercentage}}%</div>
+                </div>
+                <button class="btn add-to-cart">Thêm vào giỏ hàng</button>
+            </div>
+        </div>
+    
+        <div class="pagination">
+            <button (click)="previousPage()" [disabled]="currentPage === 1" class="btn page-btn">Trước</button>
+            <span>Trang {{currentPage}} / {{totalPages}}</span>
+            <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="btn page-btn">Sau</button>
+        </div>
+    </div>
+</section>

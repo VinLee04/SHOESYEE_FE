@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import '../../variables.scss';
+
+
+.about-us {
+    font-family: Be, Vietnam, Pro;
+
+    padding         : 4rem 0;
+    background-color: #f8f8f8;
+
+    .container {
+        max-width: 1200px;
+        margin   : 0 auto;
+        padding  : 0 15px;
+    }
+
+    h2,
+    h3 {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        text-align   : center;
+        margin-bottom: 2rem;
+        font-size    : 2rem;
+        color        : #333;
+    }
+
+    .about-content {
+        display    : flex;
+        align-items: center;
+        gap        : 2rem;
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+        }
+    }
+
+    .about-image {
+        flex: 1;
+
+        img {
+            width        : 100%;
+            border-radius: 8px;
+            box-shadow   : 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    .about-text {
+        flex: 1;
+
+        h3 {
+            font-size    : 1.8rem;
+            margin-bottom: 1rem;
+            color        : #333;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            line-height  : 1.6;
+            color        : #666;
+        }
+
+        // .cta-button {
+        //     transition      : background-color 0.3s ease;
+
+        //     &:hover {
+        //         background-color: #0056b3;
+        //     }
+        // }
+    }
+
+    .team-section {
+        margin-top: 4rem;
+
+        .team-members {
+            display        : flex;
+            flex-wrap      : wrap;
+            gap            : 2rem;
+            justify-content: center;
+
+            .team-member {
+                flex            : 1 1 250px;
+                text-align      : center;
+                padding         : 1rem;
+                border          : 1px solid #ddd;
+                border-radius   : 8px;
+                background-color: #fff;
+
+                img {
+                    width        : 100px;
+                    height       : 100px;
+                    border-radius: 50%;
+                    margin-bottom: 1rem;
+                }
+
+                h4 {
+                    font-size: 1.5rem;
+                    color    : #333;
+                }
+
+                p {
+                    color: #666;
+                }
+            }
+        }
+    }
+
+    .services-section {
+        margin-top: 4rem;
+        text-align: center;
+
+        ul {
+            list-style-type: none;
+            padding        : 0;
+
+            li {
+                margin          : 1rem 0;
+                background-color: #fff;
+                padding         : 1rem;
+                border-radius   : 8px;
+                box-shadow      : 0 4px 6px rgba(0, 0, 0, 0.1);
+
+                h4 {
+                    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+                    font-size    : 1.3rem;
+                    margin-bottom: 0.5rem;
+                    color        : $primary-color;
+                }
+
+                p {
+                    color: #666;
+                }
+            }
+        }
+    }
+}

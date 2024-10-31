@@ -1,0 +1,244 @@
+//manage
+// Main Colors
+$primary-color   : #3498db;
+$secondary-color : #2c3e50;
+$accent-color    : #e74c3c;
+$background-color: #fff;
+$text-color      : #333333;
+$background-overlay: rgba(167, 167, 167, 0.377);
+
+// Shoe-specific Colors
+$shoe-red   : #e74c3c;
+$shoe-blue  : #3498db;
+$shoe-green : #2ecc71;
+$shoe-yellow: #f1c40f;
+$shoe-purple: #9b59b6;
+$shoe-orange: #e67e22;
+
+// Status Colors
+$status-in-stock    : #27ae60;
+$status-low-stock   : #f39c12;
+$status-out-of-stock: #c0392b;
+$status-discontinued: #7f8c8d;
+
+// Text Colors
+$text-primary  : #2c3e50;
+$text-secondary: #7f8c8d;
+$text-light    : #ecf0f1;
+$text-dark     : #34495e;
+$text-accent   : #e74c3c;
+
+// Link Colors
+$link-color      : #3498db;
+$link-hover-color: #2980b9;
+
+// Button Colors
+$btn-primary-bg    : #3498db;
+$btn-primary-text  : #ffffff;
+$btn-secondary-bg  : #2c3e50;
+$btn-secondary-text: #ffffff;
+$btn-success-bg    : #2ecc71;
+$btn-success-text  : #ffffff;
+$btn-danger-bg     : #e74c3c;
+$btn-danger-text   : #ffffff;
+$btn-warning-bg    : #f1c40f;
+$btn-warning-text  : #ffffff;
+
+$save-bg   : #B7E0FF;
+$edit-bg   : #FFF5CD;
+$delete-bg : #E78F81;
+$save-text   : #004080; 
+$edit-text   : #A67C00; 
+$delete-text : #A80000; 
+$add-bg    : #0b0c10;
+$restore-bg: #C1E7D8;
+$restore-text: #006644;
+
+// Màu nền khi hover
+$save-bg-hover  : #93c9ff; 
+$edit-bg-hover  : #ffe68a; 
+$delete-bg-hover: #ff5c49; 
+$save-text-hover: #003366;
+$edit-text-hover: #856300;
+$delete-text-hover: #800000;
+$restore-bg-hover: #A1D5C2;
+$restore-text-hover: #004D33;
+
+// Màu nền cho các trạng thái sản phẩm
+$available-bg    : #DFF0D8; // Màu nền cho trạng thái "Available" (Đang bán)
+$out-of-stock-bg : #F2DEDE; // Màu nền cho trạng thái "Out of Stock" (Hết hàng)
+$discontinued-bg : #FCF8E3; // Màu nền cho trạng thái "Discontinued" (Ngừng kinh doanh)
+
+// Màu text tương ứng
+$available-text    : #3C763D; // Màu text cho "Available"
+$out-of-stock-text : #A94442; // Màu text cho "Out of Stock"
+$discontinued-text : #8A6D3B; // Màu text cho "Discontinued"
+
+// Màu nền khi hover
+$available-bg-hover   : #c3e6cb; // Màu nền khi hover cho "Available"
+$out-of-stock-bg-hover: #ebcccc; // Màu nền khi hover cho "Out of Stock"
+$discontinued-bg-hover: #faf2cc; // Màu nền khi hover cho "Discontinued"
+
+// Màu text khi hover
+$available-text-hover   : #2b542c;
+$out-of-stock-text-hover: #843534;
+$discontinued-text-hover: #66512c;
+
+// Form Colors
+$input-bg          : #ffffff;
+$input-border      : #bdc3c7;
+$input-focus-border: #3498db;
+$input-placeholder : #95a5a6;
+
+// Table Colors
+$table-header-bg  : #85add4;
+$table-header-text: #ffffff;
+$table-row-even   : #ecf0f1;
+$table-row-odd    : #ffffff;
+$table-border     : #bdc3c7;
+$table-bg         : #fff;
+$table-box-shadow :0 0 3px $table-bg,
+3px 3px 4px $table-border;
+
+$pending-color: #ff7f57;
+$pending-bg: #fff0eb;
+$paid-color: #c85ed4;
+$paid-bg   : #fdebff;
+$shipped-color: #0d6efd;
+$shipped-bg   : #e6f8ff;
+$delivered-color: #50d863;
+$delivered-bg   : #e8ffeb;
+
+
+
+// Sidebar Colors
+$sidebar-bg   : #2c3e50;
+$sidebar-text : #ecf0f1;
+$sidebar-hover: #34495e;
+
+// Navbar Colors
+$navbar-bg   : #34495e;
+$navbar-text : #ecf0f1;
+$navbar-hover: #2c3e50;
+$navbar-bottom-border: $navbar-text; 
+
+// Card Colors
+$card-bg    : #ffffff;
+$card-border: #bdc3c7;
+$card-shadow: rgba(0, 0, 0, 0.1);
+
+// Alert Colors
+$alert-success-bg  : #d4edda;
+$alert-success-text: #155724;
+$alert-warning-bg  : #fff3cd;
+$alert-warning-text: #856404;
+$alert-danger-bg   : #f8d7da;
+$alert-danger-text : #721c24;
+$alert-info-bg     : #d1ecf1;
+$alert-info-text   : #0c5460;
+
+// Typography
+$font-family-sans-serif: 'Roboto',
+'Arial',
+sans-serif;
+$font-family-serif: 'Georgia',
+'Times New Roman',
+serif;
+$font-size-base    : 1rem;
+$font-size-large   : 1.2rem;
+$font-size-small   : .8rem;
+$font-weight-normal: 400;
+$font-weight-bold  : 700;
+$line-height-base  : 1.5;
+
+// Spacing
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+// Border Radius
+$border-radius-sm    : 4px;
+$border-radius-md    : 8px;
+$border-radius-lg    : 16px;
+$border-radius-circle: 50%;
+
+// Shadows
+$shadow-sm: 0 0px 2px rgba(0, 0, 0, 0.645),
+0 1px 3px rgba(0, 0, 0, 0.24);
+$shadow-md: 0 3px 6px rgb(0, 0, 0),
+0 3px 6px rgba(0, 0, 0, 0.23);
+$shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.74),
+0 6px 6px rgba(0, 0, 0, 0.189);
+
+// Transitions
+$transition-fast  : 0.2s ease;
+$transition-normal: 0.3s ease;
+$transition-slow  : 0.5s ease;
+
+// Z-index
+$z-index-dropdown      : 1000;
+$z-index-sticky        : 1020;
+$z-index-fixed         : 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal         : 1050;
+$z-index-popover       : 1060;
+$z-index-tooltip       : 1070;
+
+// Breakpoints
+$breakpoint-xs: 0;
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+// Grid
+$grid-columns     : 12;
+$grid-gutter-width: 30px;
+
+// Container max widths
+$container-max-width-sm: 540px;
+$container-max-width-md: 720px;
+$container-max-width-lg: 960px;
+$container-max-width-xl: 1140px;
+
+// Shoe Management Specific
+$shoe-size-chart-bg    : #f9f9f9;
+$shoe-size-chart-border: #e0e0e0;
+$shoe-image-border     : #d5d5d5;
+$shoe-price-color      : #e74c3c;
+$shoe-discount-color   : #27ae60;
+$shoe-brand-bg         : #3498db;
+$shoe-category-bg      : #2ecc71;
+$shoe-rating-color     : #f1c40f;
+
+// Inventory Management
+$inventory-low-stock-threshold     : 10;
+$inventory-critical-stock-threshold: 5;
+
+// Order Management
+$order-new-bg       : #d1ecf1;
+$order-processing-bg: #fff3cd;
+$order-shipped-bg   : #d4edda;
+$order-delivered-bg : #e8f5e9;
+$order-cancelled-bg : #f8d7da;
+
+// Dashboard
+$dashboard-widget-bg    : #ffffff;
+$dashboard-widget-border: #e0e0e0;
+$dashboard-chart-color-1: #3498db;
+$dashboard-chart-color-2: #e74c3c;
+$dashboard-chart-color-3: #2ecc71;
+$dashboard-chart-color-4: #f1c40f;
+$dashboard-chart-color-5: #9b59b6;
+
+// Animation
+$animation-duration-fast  : 0.2s;
+$animation-duration-normal: 0.3s;
+$animation-duration-slow  : 0.5s;
+$animation-timing-function: ease-in-out;
+
+$border-left-add-edit-bg     : 4px solid $secondary-color;
+
+$with-management-navbar : 250px;

@@ -1,0 +1,114 @@
+@import 'variable_add_filter';
+
+
+
+.management-filter-section{
+
+    .filter__container{
+
+        animation: fadeIn .5s ease-in-out;
+        transform-origin: right;
+        box-shadow: $box-shadow;
+
+        margin: auto;
+        width: 70%;
+        height: auto;
+        min-height: 40vh;
+        background: #fff;
+        border-radius: $border-radius-xl;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .title__container{
+            display: flex;
+            justify-content: space-between;
+
+            h1{
+                font-size: 1.4rem;
+            }
+
+            span{
+                font-size: 2rem;
+                cursor: pointer;
+            }
+
+        }
+
+        .filter__group{
+            display: flex;
+            padding: 1rem;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            justify-content: space-between;
+
+
+            .filter__left {}
+
+            .filter__right {
+                display       : flex;
+            }
+
+
+            .filter__item{
+                position: relative;
+                display: flex;
+                flex-wrap: wrap;
+                margin-inline: 10px;
+                
+                &.input{
+                    flex: 1;
+                }
+
+                label{
+                    position: absolute;
+                    top:0;
+                    left: 0;
+                    transform: translate(-10px , -15px);
+                    font-size  : .9rem;
+                    padding: .2rem .5rem;
+                    font-weight: bold;
+                    color      : $label-text;
+                    z-index: 1;
+                    background: white;
+                    border-radius: $border-radius-sm;
+                    // border: 1px solid black;
+                    box-shadow: $box-shadow;
+                }
+
+                input, select {
+                    width: 100%;
+                }
+
+                .active {
+                    background: gold;
+                    color     : black;
+                }
+            }
+            
+        }
+    }
+
+    .button__actions{
+        padding: .4rem;
+        
+        button{
+            float: right;
+            font-weight: 600;
+            margin-inline: 5px;
+            box-shadow: $box-shadow;
+            padding: .4rem 3rem;
+            text-shadow: 2px 2px 3px black;
+
+            &.clear {
+                background-color: greenyellow;
+            }
+
+            &.applyFilter{
+                background-color: skyblue;
+            }   
+        }
+    }
+}

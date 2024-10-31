@@ -1,0 +1,90 @@
+<header>
+    <div class="web__logo">
+        <img src="logo-transparent-black.png" alt="">
+    </div>
+    <button class="menu-icon">
+        <i class='bx bx-menu'></i>
+    </button>
+    <nav class="navbar"  [class]="!auth.isLoggedIn() ? 'nav--unLogin' : ''">
+        <ul class="navbar__main">
+            <li><a routerLink="home">HOME</a></li>
+            <li><a routerLink="product">PRODUCT</a></li>
+            <li><a routerLink="sell-off">SELL OFF</a></li>
+            <li><a routerLink="wishlist">WISH LIST</a></li>
+            <li><a routerLink="about-us">ABOUT US</a></li>
+        </ul>
+    </nav>
+    <div  class="header__end">
+        <div class="header-navigation">
+          
+            <!-- <div class="header-currency">
+                <a href="#" class="header-currency-selector">
+                    <img src="https://tailwindui.com/plus/img/flags/flag-canada.svg" alt="" class="header-flag">
+                    <span class="header-currency-code">LANGUAGE</span>
+                </a>
+            </div>
+        
+            <div class="header-search">
+                <a href="#" class="header-search-icon">
+                    <svg class="header-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                        aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+                </a>
+            </div> -->
+        
+            <!-- <div class="header-cart">
+                <a class="header-cart-icon" (click)="isShowCart = !isShowCart">
+                    <svg class="header-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                        aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                    </svg>
+                    <span class="header-item-count">10</span>
+                </a>
+                @if (isShowCart) {
+                    <app-cart (close) = "isShowCart = false"></app-cart>
+                }
+            </div> -->
+
+            <div class="header-cart">
+                <a class="header-cart-icon">
+                    <svg class="header-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                        aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                    </svg>
+                    <span class="header-item-count">10</span>
+                </a>
+                @if (isShowCart) {
+                <app-cart (close)="isShowCart = false"></app-cart>
+                }
+            </div>
+        </div>
+
+        @if (auth.currentUser !== undefined && auth.currentUser!== null) {
+            <div class="user">
+                <button class="user__img">
+                    <img [src]="userImage()"
+                        alt="">
+                </button>
+                <div class="user__menu">
+                    <ul>
+                        <li><a routerLink="user-profile">PROFILE</a></li>
+                        <li><a href="">SETTING</a></li>
+                        <li><a (click)="auth.logout()">LOGOUT</a></li>
+                    </ul>
+                </div>
+            </div>
+        }@else {
+            <div class="user__unLogin">
+                <div class="header-auth">
+                    <a routerLink="login" class="header-auth-link">Sign in</a>
+                    <span class="header-divider" aria-hidden="true"></span>
+                    <a routerLink="register" class="header-auth-link">Create account</a>
+                </div>
+            </div>
+        }
+    </div>
+</header>

@@ -1,0 +1,293 @@
+@import '../../../../src/variables';
+
+.user-profile-edit-section {
+    min-height : 100vh;
+    padding-top: 4rem;
+    display    : flex;
+    align-items: center;
+
+    .user__profile__edit__container {
+        width          : 80%;
+        margin-inline  : auto;
+        display        : flex;
+        flex-direction : column;
+        justify-content: center;
+        align-items    : center;
+        row-gap        : 20px;
+
+        .profile__edit__title {
+            margin-right: auto;
+            font-size   : 1.4rem;
+            font-weight : 600;
+        }
+
+        .alert {
+            width        : 100%;
+            padding      : 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+
+            &.alert-error {
+                background-color: $error-color;
+                color           : white;
+            }
+
+            &.alert-success {
+                background-color: $success-color;
+                color           : white;
+            }
+        }
+
+        .profile__edit__form {
+            width         : 100%;
+            display       : flex;
+            flex-direction: column;
+            row-gap       : 10px;
+            border        : 2px solid $border-color;
+            border-radius : 8px;
+
+            .profile__edit__items {
+                border-bottom : 2px solid $border-color;
+                padding       : 1.3rem 2.5rem;
+                display       : flex;
+                flex-direction: row;
+                gap           : 15px 20px;
+                flex-wrap     : wrap;
+
+                .profile__edit__item {
+                    position: relative;
+
+                    // Default width (50-50 layout)
+                    width: calc(50% - 10px);
+
+                    // Phone field (50%)
+                    &.phone-field {
+                        width: calc(50% - 10px);
+                    }
+
+                    // Birth date field (25%)
+                    &.birth-date-field {
+                        width: calc(25% - 15px);
+                    }
+
+                    // Gender field (25%)
+                    &.gender-field {
+                        width: calc(25% - 15px);
+                    }
+
+                    // Full width items
+                    &.full-width {
+                        width: 100%;
+                    }
+
+                    label {
+                        padding-bottom: .5rem;
+                        display       : block;
+                        font-weight   : 500;
+                    }
+
+                    input,
+                    select,
+                    textarea {
+                        width        : 100%;
+                        padding      : 0.5rem;
+                        border       : 1px solid $border-color;
+                        border-radius: 4px;
+                        font-family  : inherit; // Để đảm bảo font chữ nhất quán
+
+                        &.error {
+                            border-color: $error-color;
+                        }
+
+                        &:focus {
+                            outline     : none;
+                            border-color: $primary-color;
+                            box-shadow  : 0 0 0 2px rgba($primary-color, 0.1);
+                        }
+                    }
+
+                    // Specific styles for textarea
+                    textarea {
+                        resize     : vertical;
+                        min-height : 100px;
+                        line-height: 1.5;
+                    }
+
+                    // Specific styles for date input
+                    input[type="date"] {
+                        cursor: pointer;
+
+                        &::-webkit-calendar-picker-indicator {
+                            cursor      : pointer;
+                            padding     : 0.2rem;
+                            margin-right: -0.2rem;
+                            opacity     : 0.6;
+
+                            &:hover {
+                                opacity: 1;
+                            }
+                        }
+                    }
+
+                    .error-hint {
+                        color     : $error-color;
+                        font-size : 0.8rem;
+                        margin-top: 0.25rem;
+                    }
+
+                    .input__file__avatar {
+                        display      : flex;
+                        gap          : 1rem;
+                        border       : 2px dashed $border-color;
+                        padding      : 1rem;
+                        border-radius: 8px;
+                        position     : relative;
+
+                        .file__img {
+                            width        : 80px;
+                            height       : 80px;
+                            border-radius: 50%;
+                            overflow     : hidden;
+                            cursor       : pointer;
+
+                            img {
+                                width     : 100%;
+                                height    : 100%;
+                                object-fit: cover;
+                             
+                                &.showImgFullScreen{
+                                    width: auto;
+                                    height: auto;
+                                    object-fit: cover;
+                                }
+                            }
+
+                            .showImgFullScreen {
+                                position     : fixed;
+                                max-height   : 80vh;
+                                max-width    : 80vw;
+                                left         : 50%;
+                                top          : 50%;
+                                transform    : translate(-50%, -50%);
+                                z-index      : 5;
+                                border-radius: 8px;
+                                box-shadow   : 0 0 20px rgba(0, 0, 0, 0.3);
+                                
+                            }
+                        }
+
+                        .overlay {
+                            position        : fixed;
+                            inset           : 0;
+                            background-color: rgba(0, 0, 0, 0.7);
+                            z-index         : 4;
+                            cursor          : pointer;
+                        }
+
+                        .description {
+                            display    : flex;
+                            align-items: center;
+                            gap        : 10px;
+                            flex       : 1;
+
+                            .icon {
+                                font-size: 2rem;
+                                color    : $primary-color;
+                            }
+
+                            .upload__title {
+                                font-size: 1.1rem;
+                                color    : $text-secondary-color;
+                            }
+
+                        }
+
+                        .btn-remove {
+                            padding        : 0.25rem;
+                            border-radius  : 50%;
+                            height         : 30px;
+                            margin         : auto;
+                            background     : $error-color;
+                            color          : white;
+                            border         : none;
+                            cursor         : pointer;
+                            display        : flex;
+                            align-items    : center;
+                            justify-content: center;
+
+                            i {
+                                font-size: 1.2rem;
+                            }
+                        }
+
+                        .file__choose {
+                            position: absolute;
+                            opacity : 0;
+                            cursor  : pointer;
+                            width   : 70%;
+                            right   : 10%;
+                            top     : 0;
+                            bottom  : 0;
+                        }
+                    }
+                }
+            }
+
+            .buttons__cancel__save {
+                margin-left: auto;
+                display    : flex;
+                gap        : 1rem;
+                padding    : 2rem;
+
+                .btn {
+                    padding      : 0.75rem 1.5rem;
+                    border       : none;
+                    border-radius: 4px;
+                    font-weight  : 500;
+                    cursor       : pointer;
+                    transition   : opacity 0.2s;
+
+                    &:disabled {
+                        opacity: 0.7;
+                        cursor : not-allowed;
+                    }
+                }
+
+                .cancel {
+                    background: $gray-300;
+                    color     : $text-primary-color;
+                }
+
+                .save__change {
+                    background: $success-color;
+                    color     : white;
+                }
+            }
+        }
+
+        .profile__edit__buttons {
+            display: flex;
+            width  : 100%;
+            gap    : 20px;
+
+            .btn {
+                flex         : 1;
+                padding      : 1rem;
+                border       : none;
+                border-radius: 4px;
+                font-size    : 1.2rem;
+                font-weight  : 500;
+                cursor       : pointer;
+                color        : white;
+            }
+
+            .change__password {
+                background: $info-color;
+            }
+
+            .logout {
+                background: $error-color;
+            }
+        }
+    }
+}

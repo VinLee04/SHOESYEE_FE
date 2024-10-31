@@ -1,0 +1,47 @@
+.pagination {
+    display        : flex;
+    justify-content: center;
+    gap            : 2px;
+}
+
+.page-number {
+    width          : 40px;
+    height         : 40px;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    border-radius  : 8px;
+    cursor         : pointer;
+    font-size      : 14px;
+    border         : none;
+
+    &:hover {
+        background: #F9FAFB;
+    }
+
+    &.active {
+        background : #F9FAFB;
+        font-weight: 500;
+    }
+}
+
+.page-nav {
+    border        : none;
+    padding-inline: 10px;
+    cursor        : pointer;
+    margin-inline : 5px;
+
+    &.next {
+        border-top-right-radius   : 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+    &.prev {
+        border-top-left-radius   : 5px;
+        border-bottom-left-radius: 5px;
+    }
+
+    &:disabled {
+        visibility: hidden;
+    }
+}

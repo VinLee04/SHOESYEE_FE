@@ -1,0 +1,11 @@
+@import '../../src/manage-variables';
+
+
+.maganement-section{
+
+    .router{
+        width: calc(100vw - $with-management-navbar);
+        float: right;
+    }
+}
+

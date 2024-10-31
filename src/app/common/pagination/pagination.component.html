@@ -1,0 +1,31 @@
+<div class="pagination">
+    <button
+      class="page-nav prev"
+      [disabled]="!canGoPrev()"
+      (click)="prevPage()"
+      [class.disabled]="!canGoPrev()"
+    >
+      <i class="bx bx-chevron-left"></i>
+      Prev
+    </button>
+
+    @for (page of visiblePages(); track page) {
+    <button
+      class="page-number"
+      [class.active]="page === currentPage()"
+      (click)="goToPage(page)"
+    >
+      {{ page }}
+    </button>
+    }
+
+    <button
+      class="page-nav next"
+      [disabled]="!canGoNext()"
+      (click)="nextPage()"
+      [class.disabled]="!canGoNext()"
+    >
+      Next
+      <i class="bx bx-chevron-right"></i>
+    </button>
+  </div>

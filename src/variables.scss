@@ -1,0 +1,58 @@
+// src/styles/variables.scss
+
+// Main Colors
+$primary-color      : #0b0c10; // Màu chủ đạo chính
+$secondary-color    : #202833; // Màu thứ hai, có thể sử dụng cho background
+$accent-color       : #66fcf1; // Màu nhấn cho các thành phần nổi bật
+$neutral-color      : #c5c6c8; // Màu trung tính cho các chi tiết nhẹ nhàng
+$complementary-color: #46a29f; // Màu bổ sung cho các thành phần phối hợp
+
+// Interactive Colors
+$hover-color        : #ff8686; // Màu khi hover (có thể cho buttons, links)
+$primary-hover-color: darken($primary-color, 10%); // Màu hover cho primary color
+$text-remove        : #c62e2ea0;
+$text-remove-hover  : #F95454;
+$text-price         : #72BF78;
+$close-color        : rgb(253, 70, 70);
+
+// Text and Background Colors
+$text-primary-color        : #1f2937; // Màu chính cho text
+$text-secondary-color      : #6b7280; // Màu thứ cấp cho text
+$background-color          : #ffffff; // Màu nền chính
+$background-secondary-color: #f3f4f6; // Màu nền phụ
+$background-transparent-gray: #777d8bd7;
+
+// Gray Scale Colors
+$gray-100: #f3f4f6; // Màu xám nhạt, sử dụng cho nền hoặc viền
+$gray-200: #e5e7eb; // Màu xám nhẹ hơn, cho viền hoặc nền phụ
+$gray-300: #d1d5db; // Màu xám trung tính, cho phân biệt chi tiết
+$gray-400: #9ca3af; // Màu xám đậm hơn, cho text hoặc icon thứ cấp
+$gray-500: #6b7280; // Màu xám đậm, sử dụng cho text chính
+
+// Button Colors
+$btn-primary-color     : $primary-color; // Màu nền cho button chính
+$btn-primary-hover     : darken($primary-color, 10%); // Màu nền khi hover
+$btn-text-color        : #ffffff; // Màu text trên button
+$btn-border-color      : $primary-color; // Màu viền button
+$btn-border-hover-color: darken($primary-color, 10%); // Màu viền khi hover
+
+// Border Colors
+$border-color       : $gray-200; // Màu viền mặc định
+$border-active-color: $gray-500; // Màu viền khi được active
+
+// Status Colors
+$success-color: #10b981; // Màu cho trạng thái thành công
+$error-color  : #ef4444; // Màu cho trạng thái lỗi
+$warning-color: #f59e0b; // Màu cho cảnh báo
+
+// Additional Colors
+$info-color    : #3b82f6; // Màu cho thông tin chung
+$disabled-color: #9ca3af; // Màu cho các thành phần bị vô hiệu hóa
+
+// Shadows
+$box-shadow  : 0 2px 4px rgba(0, 0, 0, 0.1); // Đổ bóng chung cho card, modal
+$hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); // Đổ bóng khi hover
+
+// Layout
+$header-height: 50px;
+$scrollbar-color:$secondary-color $neutral-color ;

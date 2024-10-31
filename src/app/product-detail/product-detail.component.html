@@ -1,0 +1,54 @@
+<div class="product-detail-container">
+    <div class="product-images">
+        <div class="main-image">
+            <img [src]="product.mainImage" [alt]="product.name">
+        </div>
+        <div class="thumbnail-list">
+            <img *ngFor="let img of product.images" [src]="img" [alt]="product.name" class="thumbnail">
+        </div>
+    </div>
+
+    <div class="product-detail-info">
+        <div class="detail-description">
+            <h1 class="product-name">{{ product.name }}</h1>
+            <p class="product-price">${{ product.price.toFixed(2) }}</p>
+            
+            <div class="color-selector">
+                <p>Color: </p>
+                <div class="color-options">
+                    <button  *ngFor="let color of product.colors" [style.background-color]="color" class="color-circle"></button>
+                </div>
+            </div>
+
+            <div class="size-selector">
+                <p>Size</p>
+                <div class="size-options">
+                    <button *ngFor="let size of product.sizes" class="size-option">{{ size }}</button>
+                </div>
+            </div>
+            
+            
+            <div class="product-description">
+                <h2>Product Details</h2>
+                <p>{{ product.description }}</p>
+            </div>
+        </div>
+
+        <button class="btn add-to-cart-btn">Add to Cart</button>
+
+
+    </div>
+
+    <div class="related-products">
+        <h2>You may also like</h2>
+        <div class="product-list">
+            <div *ngFor="let relatedProduct of relatedProducts" class="related-product-item">
+                <img [src]="relatedProduct.mainImage" [alt]="relatedProduct.name">
+                <p class="related-product-name">{{ relatedProduct.name }}</p>
+                <p class="related-product-price">${{ relatedProduct.price.toFixed(2) }}</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<app-review-detail></app-review-detail>

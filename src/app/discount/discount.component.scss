@@ -1,0 +1,30 @@
+ @import '../../../src/variables';
+ 
+ .discount-container {
+     background-color: $background-secondary-color;
+     padding         : 1rem;
+     border-radius   : 8px;
+     margin-bottom   : 1rem;
+ }
+
+ h3 {
+     color        : $text-primary-color;
+     margin-bottom: 0.5rem;
+ }
+
+ .discount-input {
+     display: flex;
+     gap    : 0.5rem;
+ }
+
+ .inp {
+     flex-grow: 1;
+ }
+
+ .success {
+     color: $success-color;
+ }
+
+ .error {
+     color: $error-color;
+ }

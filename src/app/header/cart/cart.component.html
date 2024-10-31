@@ -1,0 +1,37 @@
+<section class="cart-section" (click)="stopPropagation($event)">
+    <div class="cart__container">
+        <div class="cart__header">
+            <div class="header__title">Shopping cart</div>
+            <div class="header__close">x</div>
+        </div>
+        <div class="cart__body">
+            @for (item of items; track $index) {
+                <div class="cart__items">
+                    <div class="cart__item">
+                        <div class="image">
+                            <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg"
+                                alt="">
+                        </div>
+                        <div class="order__detail">
+                            <div class="product__detail">
+                                <div class="name__color">
+                                    <div class="name">Adifom Climacool Shoes</div>
+                                    <span class="color">Grey</span>
+                                </div>
+                                <div class="price">$100</div>
+                            </div>
+                            <div class="qty__remove">
+                                <span class="quantity">Qty: 1</span>
+                                <span class="remove">Remove</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="cart__footer">
+        <div class="total"><b>Total</b>: <span class="price">$1000</span></div>
+        <a routerLink="shopping-cart" class="btn btn__checkout" (click)="closeCart()">GO TO CHECKOUT</a>
+    </div>
+</section>

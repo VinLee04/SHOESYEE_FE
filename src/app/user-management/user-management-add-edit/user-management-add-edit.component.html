@@ -1,0 +1,255 @@
+ <div class="section">
+      <div class="management-add-section">
+        <div class="title__container" [class.bg-edit]="editMode()" [class.bg-add]="!editMode()">
+          <h1 >STAFF {{editMode() ? 'EDITING' : 'CREATING'}}</h1>
+          <span (click)="close()"><i class='bx bxs-x-circle'></i></span>
+        </div>
+
+        @if (errorMessage) {
+          <div class="alert alert-error">{{ errorMessage }}</div>
+        }
+        @if (successMessage) {
+          <div class="alert alert-success">{{ successMessage }}</div>
+        }
+
+        <form [formGroup]="clientForm" (ngSubmit)="onSubmit()" class="form-container">
+          <div class="main-form">
+           <div class="profile-upload">
+            <div class="image-preview" [class.has-image]="getCurrentImageUrl()">
+              @if (getCurrentImageUrl()) {
+                <img [src]="getCurrentImageUrl()" 
+                    alt="Profile preview"
+                    class="preview-img"
+                    (click)="fileInput.click()">
+                
+                <div class="preview-overlay"
+                    (click)="fileInput.click()">
+                    <i class="camera-icon">📷</i>
+                </div>
+              } @else {
+                <button type="button" 
+                    class="upload-button" 
+                    (click)="fileInput.click()">
+                    <i class="upload-icon">📷</i>
+                    <span>Upload Profile Image</span>
+                </button>
+              }
+                
+                <input type="file" 
+                   #fileInput 
+                   (change)="onFileSelected($event)" 
+                   accept="image/*" 
+                     hidden>
+              
+            </div>
+
+                  
+              @if (getCurrentImageUrl()) {
+                <button type="button" 
+                    class="remove-image"
+                    (click)="removeProfileImage()">
+                    <i class="remove-icon">×</i>
+                </button>
+              }
+            @if (errorMessage) {
+                <div class="error-message">{{ errorMessage }}</div>
+            }
+        </div>
+            <div class="form-row three-columns">
+              <!-- Username -->
+              <div class="form-group">
+                <label>USERNAME</label>
+                <input type="text" 
+                       formControlName="username" 
+                       placeholder="User name"
+                       [class.error]="isFieldInvalid('username')">
+                @if (isFieldInvalid('username')) {
+                  <div class="error-message">
+                    {{ getErrorMessage('username') }}
+                  </div>
+                }
+              </div>
+
+              <!-- Email -->
+              <div class="form-group">
+                <label>EMAIL</label>
+                <input type="email" 
+                       formControlName="email" 
+                       placeholder="Email"
+                       [class.error]="isFieldInvalid('email')">
+                @if (isFieldInvalid('email')) {
+                  <div class="error-message">
+                    {{ getErrorMessage('email') }}
+                  </div>
+                }
+              </div>
+
+              <!-- Phone -->
+              <div class="form-group">
+                <label>PHONE</label>
+                <input type="text" 
+                       formControlName="phone" 
+                       placeholder="Phone"
+                       [class.error]="isFieldInvalid('phone')">
+                @if (isFieldInvalid('phone')) {
+                  <div class="error-message">
+                    {{ getErrorMessage('phone') }}
+                  </div>
+                }
+              </div>
+            </div>
+
+            <!-- Date and Salary -->
+            <div class="form-row">
+              <div class="form-group">
+                <label>DATE</label>
+                <input type="date" 
+                       formControlName="birthdate" 
+                       [class.error]="isFieldInvalid('birthdate')">
+                @if (isFieldInvalid('birthdate')) {
+                  <div class="error-message">
+                    {{ getErrorMessage('birthdate') }}
+                  </div>
+                }
+              </div>
+              <div class="form-group">
+                <label>SALARY</label>
+                <input type="text" 
+                       formControlName="salary" 
+                       placeholder="Salary"
+                       [class.error]="isFieldInvalid('salary')">
+                @if (isFieldInvalid('salary')) {
+                  <div class="error-message">
+                    {{ getErrorMessage('salary') }}
+                  </div>
+                }
+              </div>
+            </div>
+
+            <!-- Address -->
+            <div class="form-row one-columns">
+              <div class="form-group">
+                <label>ADDRESS</label>
+                <textarea rows="3" 
+                          formControlName="address"
+                          [class.error]="isFieldInvalid('address')"></textarea>
+                @if (isFieldInvalid('address')) {
+                  <div class="error-message">
+                    {{ getErrorMessage('address') }}
+                  </div>
+                }
+              </div>
+            </div>
+
+            <!-- Password Fields -->
+            <!-- <div class="form-row">
+              <div class="form-group">
+                <label>PASSWORD</label>
+                <input type="password" 
+                       formControlName="password" 
+                       placeholder="Password"
+                       [class.error]="isFieldInvalid('password')">
+                @if (isFieldInvalid('password')) {
+                  <div class="error-message">
+                    {{ getErrorMessage('password') }}
+                  </div>
+                }
+              </div>
+              <div class="form-group">
+                <label>CONFIRM PASSWORD</label>
+                <input type="password" 
+                       formControlName="confirmPassword" 
+                       placeholder="Confirm Password"
+                       [class.error]="isFieldInvalid('confirmPassword')">
+                @if (isFieldInvalid('confirmPassword')) {
+                  <div class="error-message">
+                    {{ getErrorMessage('confirmPassword') }}
+                  </div>
+                }
+              </div>
+            </div> -->
+            @if (!editMode()) {
+              <div class="form-row">
+                <div class="form-group">
+                  <label>PASSWORD</label>
+                  <input type="password" 
+                        formControlName="password" 
+                        placeholder="Password"
+                        [class.error]="isFieldInvalid('password')">
+                  @if (isFieldInvalid('password')) {
+                    <div class="error-message">
+                      {{ getErrorMessage('password') }}
+                    </div>
+                  }
+                </div>
+                <div class="form-group">
+                  <label>CONFIRM PASSWORD</label>
+                  <input type="password" 
+                        formControlName="confirmPassword" 
+                        placeholder="Confirm Password"
+                        [class.error]="isFieldInvalid('confirmPassword')">
+                  @if (isFieldInvalid('confirmPassword')) {
+                    <div class="error-message">
+                      {{ getErrorMessage('confirmPassword') }}
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+
+            <!-- Selections -->
+            <div class="form-row three-columns">
+              <div class="form-group">
+                <select formControlName="gender"
+                        [class.error]="isFieldInvalid('gender')">
+                  <option [value]="true">Male</option>
+                  <option [value]="false">Female</option>
+                </select>
+                @if (isFieldInvalid('gender')) {
+                  <div class="error-message">
+                    {{ getErrorMessage('gender') }}
+                  </div>
+                }
+              </div>
+              <div class="form-group">
+                <select formControlName="isActive"
+                        [class.error]="isFieldInvalid('isActive')">
+                  <option [value]="true">Active</option>
+                  <option [value]="false">InActive</option>
+                </select>
+                @if (isFieldInvalid('isActive')) {
+                  <div class="error-message">
+                    {{ getErrorMessage('isActive') }}
+                  </div>
+                }
+              </div>
+              <div class="form-group">
+                <select formControlName="roleId"[class.error]="isFieldInvalid('roleId')">
+                  <option value="">SELECT ROLE</option>
+                    @for (role of roles; track $index) {
+                      <option [value]="role.id">{{role.id}}</option>
+                    }
+                </select>
+                @if (isFieldInvalid('roleId')) {
+                  <div class="error-message">
+                    {{ getErrorMessage('roleId') }}
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="form-actions">
+          <button type="button" 
+                  class="btn-cancel" 
+                  (click)="onCancel()">Cancel</button>
+          <button type="submit" 
+                  class="btn-save" 
+                  [disabled]="clientForm.invalid || isSubmitting">
+            {{ isSubmitting ? 'Saving...' : (editMode() ? 'Update' : 'Save') }}
+          </button>
+          </div>
+        </form>
+      </div>
+    </div>

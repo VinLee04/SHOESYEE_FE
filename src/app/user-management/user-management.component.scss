@@ -1,0 +1,185 @@
+/* user-management.component.scss */
+@import '../../manage-variables' ;
+
+.user-management {
+    padding  : 24px;
+    max-width: 1200px;
+    margin   : 0 auto;
+
+    header {
+        margin-bottom: 24px;
+
+        .title {
+            margin-bottom: 24px;
+
+            h1 {
+                font-size    : 24px;
+                font-weight  : 600;
+                margin-bottom: 8px;
+            }
+
+            .subtitle {
+                color: #667085;
+            }
+        }
+
+        .header-actions {
+            display    : flex;
+            gap        : 12px;
+            align-items: center;
+
+            .search-container {
+                position: relative;
+                flex    : 1;
+
+                input {
+                    width        : 100%;
+                    padding      : 10px 16px 10px 40px;
+                    border       : 1px solid #D0D5DD;
+                    border-radius: 8px;
+                    font-size    : 14px;
+
+                    &::placeholder {
+                        color: #667085;
+                    }
+                }
+
+                i {
+                    position : absolute;
+                    left     : 14px;
+                    top      : 50%;
+                    transform: translateY(-50%);
+                    color    : #667085;
+                }
+            }
+        }
+    }
+
+    .btn {
+       
+        &.btn-primary {
+            background: #000000;
+            color     : white;
+            border    : none;
+        }
+
+        &.btn-icon {
+            padding: 8px;
+            background-color: white;
+            color  : #667085;
+        }
+
+    
+    }
+    
+
+    .table-container {
+        background   : white;
+        border       : 1px solid #EAECF0;
+        border-radius: 8px;
+        overflow     : hidden;
+        margin-bottom: 24px;
+
+        table {
+            width          : 100%;
+            border-collapse: collapse;
+
+            th,
+            td {
+                padding      : 12px 24px;
+                text-align   : left;
+                border-bottom: 1px solid #EAECF0;
+            }
+
+            th {
+                background : #F9FAFB;
+                color      : #667085;
+                font-weight: 500;
+                font-size  : 12px;
+            }
+
+            .user-info {
+                display    : flex;
+                align-items: center;
+                gap        : 12px;
+
+                img {
+                    width        : 40px;
+                    height       : 40px;
+                    border-radius: 50%;
+                    object-fit   : cover;
+                }
+
+                .user-name {
+                    font-weight  : 500;
+                    margin-bottom: 4px;
+                }
+
+                .user-email {
+                    font-size: 14px;
+                    color    : #667085;
+                }
+            }
+
+            .access-badges {
+                display  : flex;
+                gap      : 8px;
+                flex-wrap: wrap;
+
+                .badge {
+                    padding      : 2px 8px;
+                    border-radius: 16px;
+                    font-size    : 12px;
+
+                    &.badge-admin {
+                        background: #ECFDF3;
+                        color     : #027A48;
+                    }
+
+                    &.badge-export,
+                    &.badge-import {
+                        background: #F2F4F7;
+                        color     : #344054;
+                    }
+                }
+            }
+        }
+    }
+
+    .toast {
+        position     : fixed;
+        bottom       : 24px;
+        right        : 24px;
+        background   : #0C111D;
+        color        : white;
+        padding      : 12px;
+        border-radius: 8px;
+        display      : flex;
+        align-items  : center;
+        gap          : 12px;
+
+        .toast-content {
+            display    : flex;
+            align-items: center;
+            gap        : 8px;
+        }
+
+        .toast-actions {
+            display: flex;
+            gap    : 12px;
+
+            .btn-link {
+                color: white;
+            }
+        }
+
+        .btn-close {
+            padding   : 4px 8px;
+            background: none;
+            border    : none;
+            color     : white;
+            cursor    : pointer;
+        }
+    }
+}
+

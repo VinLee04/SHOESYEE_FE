@@ -1,0 +1,92 @@
+@import '../../../src/manage-variables';
+
+.management-navbar {
+    position: fixed;
+    width           : $with-management-navbar;
+    height          : 100vh;
+    background-color: $sidebar-bg;
+    color           : $sidebar-text;
+    display         : flex;
+    flex-direction  : column;
+    padding         : $spacing-md;
+    box-shadow      : $shadow-md;
+
+    .navbar-brand {
+        display      : flex;
+        align-items  : center;
+        margin-bottom: $spacing-lg;
+        border-bottom: 1px solid $navbar-bottom-border;
+
+        .logo {
+            width       : 80px;
+            height      : 60px;
+            margin-right: $spacing-sm;
+        }
+
+        .brand-name {
+            font-size  : $font-size-large;
+            font-weight: $font-weight-bold;
+        }
+    }
+
+    /* Navbar Menu */
+    .navbar-menu {
+        flex-grow : 1;
+        overflow-y: auto;
+        height    : calc(100vh - #{$spacing-lg} - #{$spacing-md});
+        width     : 100%;
+        position  : relative;
+        border-bottom: 1px solid $navbar-bottom-border;
+        
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        scrollbar-width: none;
+
+        .menu-items {
+            list-style-type: none;
+            padding        : 0;
+
+            li {
+                margin-bottom: $spacing-sm;
+
+                a {
+                    font-size      : $font-size-large;
+                    display        : block;
+                    padding        : $spacing-md;
+                    color          : $sidebar-text;
+                    text-decoration: none;
+                    border-radius  : $border-radius-sm;
+                    transition     : background-color $transition-fast;
+
+                    &:hover,
+                    &.active {
+                        background-color: $sidebar-hover;
+                    }
+                }
+            }
+        }
+    }
+
+    .navbar-footer {
+        padding-top: 2px;
+        a {
+            text-align     : center;
+            font-size      : $font-size-small;
+            border-radius  : $border-radius-sm;
+            transition     : background-color $transition-fast;
+            display        : block;
+            padding        : $spacing-sm;
+            color          : $sidebar-text;
+            text-decoration: none;
+            margin-bottom  : $spacing-xs;
+            transition     : color $transition-fast, font-size $transition-fast;
+
+            &:hover,
+            &.active {
+                background-color: $sidebar-text;
+                color           : $alert-danger-text;
+            }
+        }
+    }
+}

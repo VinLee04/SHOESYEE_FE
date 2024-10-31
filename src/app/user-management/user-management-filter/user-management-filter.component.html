@@ -1,0 +1,58 @@
+<section class="management-filter-section section">
+    <div class="filter__container container">
+        <div class="title__container">
+            <h1>USER MANAGEMENT FILTER</h1>
+            <span (click)="close()"><i class='bx bxs-x-circle'></i></span>
+        </div>
+
+        <form [formGroup]="filterForm">
+            <div class="filter__group">
+                <div class="filter__item input">
+                    <label for="email">EMAIL</label>
+                    <input class="inp" type="text" id="email" formControlName="email">
+                </div>
+                <div class="filter__item input">
+                    <label for="phone">PHONE</label>
+                    <input class="inp" type="text" id="phone" formControlName="phone">
+                </div>
+            </div>
+
+            <div class="filter__group">
+                <div class="filter__left">
+                    <div class="filter__item">
+                        <label for="role">ROLE</label>
+                        <select class="inp" id="role" formControlName="role">
+                            <option value="">ALL</option>
+                            @for (role of roles; track $index) {
+                            <option [value]="role">{{role}}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="filter__right">
+                    <div class="filter__item">
+                        <label for="gender">GENDER</label>
+                        <select class="inp" id="gender" formControlName="gender">
+                            <option value="">ALL</option>
+                            <option value="true">MALE</option>
+                            <option value="false">FEMALE</option>
+                        </select>
+                    </div>
+                    <div class="filter__item">
+                        <label for="status">STATUS</label>
+                        <select class="inp" id="status" formControlName="status">
+                            <option value="">ALL</option>
+                            <option value="true">Active</option>
+                            <option value="false">InActive</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button__actions">
+                <button type="button" class="btn applyFilter" (click)="applyFilter()">Apply Filter</button>
+                <button type="button" class="btn clear" (click)="clearFilter()">Clear</button>
+            </div>
+        </form>
+    </div>
+</section>

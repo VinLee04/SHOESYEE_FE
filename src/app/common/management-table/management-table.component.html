@@ -1,0 +1,70 @@
+  <div class="table-list">
+    <table class="table">
+      <thead>
+        <tr>
+          @for(column of columns(); track column.key) {
+            <th [class]="column.class">
+              @if(column.sortable) {
+                <a (click)="onSort(column.key)">
+                  {{ column.title }}
+                  @if(sortColumn() === column.key) {
+                    {{ sortDirection() === 'ASC' ? '↑' : '↓' }}
+                  }
+                </a>
+              }
+              @else {
+                {{ column.title }}
+              }
+            </th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for(item of data(); track $index) {
+          <tr>
+            @for(column of columns(); track column.key) {
+              <td [class]="column.class">
+                @if (column.key === 'image' || column.key === 'avatar') {
+                    <img [src]="item[column.key]" alt="{{ item[column.key] }}" class="product-image">
+                }@else if (column.key === 'status') {
+                    <span [class]="item[column.key]">{{ item[column.key] }}</span>
+                }
+                @else if (column.key === 'userInfo') {
+                    <div class="user-info">
+                      @if (item[column.key].image) {
+                        <img [src]="url + '/' + item[column.key].image" [alt]="item[column.key].image" />
+                      }@else {
+                        <img [src]="url + '/avatars/default.png'" [alt]="item[column.key].image" />
+                      }
+                      
+                      <div>
+                        <div class="user-name">{{  item[column.key].name }}</div>
+                        <div class="user-email">{{  item[column.key].email }}</div>
+                      </div>
+                    </div>
+                }
+                @else if (column.key === 'action') {
+                  <span class="buttons" style="float: right;">
+                    <button class="btn edit" (click)="onEdit(item)">Edit</button>
+                    @if (item.status === 'Active') {
+                      <button class="btn delete" (click)="onDelete(item)">Delete</button>
+                    } @else {
+                      <button class="btn restore" (click)="onRestore(item)">Restore</button>
+                    }
+                  </span>
+                }
+                @else {
+                  {{ item[column.key] }}
+                }
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+</div>
+
+
+
+
+    

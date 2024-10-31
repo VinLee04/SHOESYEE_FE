@@ -1,0 +1,10 @@
+<div class="discount-container">
+    <h3>Áp dụng mã giảm giá</h3>
+    <div class="discount-input">
+        <input type="text" [(ngModel)]="discountCode" placeholder="Nhập mã giảm giá" class="inp">
+        <button (click)="applyDiscount()" class="btn">Áp dụng</button>
+    </div>
+    <p *ngIf="discountMessage" [ngClass]="{'success': discountApplied, 'error': !discountApplied}">
+        {{ discountMessage }}
+    </p>
+</div>

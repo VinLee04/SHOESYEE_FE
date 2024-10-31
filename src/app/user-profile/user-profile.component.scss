@@ -1,0 +1,186 @@
+@import '../../../src/variables';
+
+.user-profile-section{
+    padding-block: 1rem;
+    min-height: 100vh;
+
+    .user__profile__container{
+        padding: 4em 0;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: 30px;
+
+        .user__profile__img {
+
+            img{
+                border-radius: 40px;
+                max-width: 150px;
+                height: fit-content;
+                object-fit: cover;
+            }
+        }
+        .user__profile__info {
+                width: 100%;
+            .info__items{
+                width: 60%;
+                padding: 1rem 2rem;
+                margin: auto;
+                display: flex;
+                flex-direction: row;
+                column-gap: 10px;
+                row-gap: 20px;
+                flex-wrap: wrap;
+
+                .info__item{
+                    width: calc(50% - 10px);
+                    box-sizing: border-box;
+                    padding: 1rem 1.2rem;
+                    font-size: 1rem;
+                    border-radius: 5px;
+                    border: 2px solid $border-color;
+                    box-shadow: $box-shadow;
+                    display: flex;
+                    flex-direction: row;
+
+                    .item__icon{
+                        margin: auto;
+                        font-size: 2rem;
+                        padding-inline: 1rem;
+                       
+                    } 
+                     .item__description {
+                        flex: 1;
+                    }
+
+                    .item__description__title {}
+
+                    .item__description__value {}
+                }
+
+                .info__item.address {
+                    width     : 100%;
+                    display   : inline;
+                    position  : relative;
+                    min-height: 150px;
+
+                    .item__icon {
+                        position        : absolute;
+                        top             : 50%;
+                        left            : 50%;
+                        transform       : translate(-170%, -150%);
+                        background-color: transparent;
+                        box-shadow      : unset;
+                        color           : $text-primary-color;
+                        border-radius   : 50%;
+                        padding         : 8px 8px 3px 10px;
+                        animation       : AddressIconMove 1s cubic-bezier(0.47, 0, 0.745, 0.715) 0.8s forwards;
+                    }
+
+                    @keyframes AddressIconMove {
+                        0% {
+                            top             : 50%;
+                            left            : 50%;
+                            transform       : translate(-170%, -150%);
+                            background-color: transparent;
+                            box-shadow      : unset;
+                            color           : $text-primary-color;
+                            scale: 1;
+                        }
+
+                        10% {
+                            top             : 50%;
+                            left            : 50%;
+                            transform       : translate(-170%, -150%);
+                            background-color: transparent;
+                            box-shadow      : unset;
+                            color           : $text-primary-color;
+                            opacity: 0;
+                        }
+
+                        40% {
+                            top  : 0;
+                            left : 0;
+                            transform : translate(-15px, -15px);
+                            opacity: 0;
+                        }
+
+                        70% {
+                            scale           : 1.2;
+                            transform-origin: center;
+                            top             : 0;
+                            left            : 0;
+                            transform       : translate(-15px, -15px);
+                            box-shadow      : $box-shadow;
+                            background-color: black;
+                            color           : white;
+                        }
+
+                        100% {
+                            scale           : 1;
+                            transform-origin: center;
+                            top             : 0;
+                            left            : 0;
+                            transform       : translate(-15px, -15px);
+                            box-shadow      : $box-shadow;
+                            background-color: black;
+                            color           : white;
+                        }
+                    }
+
+                    .item__description {
+                        .item__description__title {
+                            text-align: center;
+                        }
+
+                        .item__description__value {
+                            padding-top: 0.2rem;
+                        }
+                    }
+                }
+            }
+
+            @media screen and (max-width: 1030px) {
+                .info__items {
+                    width: 90%;
+                }
+            }
+            @media screen and (max-width: 750px) {
+                .info__items {
+                    width: 100%;
+                    .info__item{
+                        width: 100%;
+                    }
+                    
+                }
+                ~.user__profile__buttons{
+                        display: flex;
+                        flex-direction: column;
+                        width: 80%;
+                        gap: 10px;
+                    }
+            }
+        }
+
+        .user__profile__buttons{
+            display: flex;
+            gap: 20px;
+            .btn{
+                font-size: 1.2rem;
+                padding: .8rem 2rem;
+            }
+            .edit__profile {
+                background: $info-color;
+            }
+
+            .change__password {
+                background: $success-color;
+            }
+
+            .btn__logout {
+                background-color: $error-color;
+            }
+        }
+    }
+}

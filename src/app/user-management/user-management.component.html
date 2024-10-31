@@ -1,0 +1,61 @@
+<div class="user-management management">
+  <header>
+    <div class="title">
+      <h1>User management <span class="totalElement">{{totalElements()}} Users</span></h1>
+      <p class="subtitle">
+        Manage your team members and their account permissions here.
+      </p>
+    </div>
+
+    <div class="header-actions">
+      <div class="search-container">
+        <input
+          type="text"
+          placeholder="Search"
+          (input)="handleSearch($event)"
+          [value]="searchQuery"
+        />
+        <i class="bx bx-search-alt-2"></i>
+      </div>
+      <button class="btn add btn-filter" (click)="handleClean()">
+        <i class='bx bx-revision'></i>
+      </button>
+      <button class="btn add btn-filter" (click)="showFilter = true">
+        <i class="bx bx-filter-alt"></i>
+      </button>
+
+      <button class="btn add" (click)="handleAdd()">
+        <i class="bx bx-plus"></i>
+      </button>
+    </div>
+  </header>
+  <app-management-table
+    [data]="users()"
+    [columns]="tableColumns"
+    (sort)="handleSort($event)"
+    (edit)="handleEdit($event)"      
+    (delete)="handleDelete($event)"
+    (restore)="handleRestore($event)"
+    />
+
+  <app-pagination
+      [currentPage]="currentPage()"
+      [totalPages]="totalPages()"
+      (pageChange)="handlePageChange($event)"
+    />
+
+  <app-user-management-filter
+    [hidden]="!showFilter"
+    [(closeFilter)]="showFilter"
+    [initialValues]="filterValues"
+    (filterApplied)="handleFilterApplied($event)"
+  >
+  </app-user-management-filter>
+
+  @if (showAddUser) {
+    <app-user-management-add-edit
+    [(show)]="showAddUser" 
+    [editMode]="isEditMode"
+    [userData]="editModeData"></app-user-management-add-edit>
+  }
+</div>

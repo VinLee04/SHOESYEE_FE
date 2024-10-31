@@ -1,0 +1,178 @@
+ <div class="management">
+      <!-- Role Management Section -->
+      <div class="table-list">
+        <div class="header-section">
+          <h2>Role Management</h2>
+          <button class="btn add" (click)="showAddRoleModal()">
+            <i class='bx bx-plus'></i> Add New Role
+          </button>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Role ID</th>
+              <th>Description</th>
+              <th>Permissions Count</th>
+              <th class="role-action">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let role of roles">
+              <td>{{role.id}}</td>
+              <td>{{role.description}}</td>
+              <td style="text-align: center;">
+                <span class="badge">
+                  {{getPermissionCount(role.id)}}
+                </span>
+              </td>
+              <td>
+                <div class="buttons">
+                  <button class="edit" (click)="editRole(role)">
+                    <i class='bx bx-edit'></i> Edit
+                  </button>
+                  <button class="delete" (click)="deleteRole(role)">
+                    <i class='bx bx-trash'></i> Delete 
+                  </button>
+                  <button class="save" (click)="showPermissions(role)">
+                    <i class='bx bx-key'></i> Permissions
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Permission Management Section -->
+      <div class="table-list" *ngIf="selectedRole">
+        <div class="header-section">
+          <h2>Permissions for {{selectedRole.id}}</h2>
+          <button class="btn add" (click)="showAddPermissionModal()">
+            <i class='bx bx-plus'></i> Add Permission
+          </button>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Permission ID</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let permission of getPermissionsByRole(selectedRole.id)">
+              <td>{{permission.id}}</td>
+              <td>{{permission.description}}</td>
+              <td>
+                <div class="buttons" style="float: right;">
+                  <button class="edit" (click)="editPermission(permission)">
+                    <i class='bx bx-edit'></i> Edit
+                  </button>
+                  <button class="delete" (click)="deletePermission(permission)">
+                    <i class='bx bx-trash'></i> Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Role Modal -->
+<div class="modal" *ngIf="showRoleModal">
+  <div class="modal-content">
+    <h3>{{editingRole ? 'Edit Role' : 'Add New Role'}}</h3>
+    <form [formGroup]="roleForm" (ngSubmit)="submitRole()">
+      <div class="form-group">
+        <label>Role ID</label>
+        <input type="text" formControlName="id" class="inp" 
+               [readonly]="editingRole" placeholder="Enter role ID">
+        <div class="error" *ngIf="roleForm.get('id')?.errors?.['required'] && roleForm.get('id')?.touched">
+          Role ID is required
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <input type="text" formControlName="description" class="inp" 
+               placeholder="Enter description">
+        <div class="error" *ngIf="roleForm.get('description')?.errors?.['required'] && roleForm.get('description')?.touched">
+          Description is required
+        </div>
+      </div>
+
+      <!-- Permissions Section -->
+      <div class="permissions-section">
+        <div class="permissions-header">
+          <h4>Permissions</h4>
+          <button type="button" class="btn add" (click)="addPermissionToForm()">
+            <i class='bx bx-plus'></i> Add Permission
+          </button>
+        </div>
+
+        <div formArrayName="permissions">
+          <div *ngFor="let permission of permissionsFormArray.controls; let i=index" 
+               [formGroupName]="i" class="permission-item">
+            <div class="permission-fields">
+              <div class="form-group">
+                <label>Permission ID</label>
+                <input type="text" formControlName="id" class="inp" 
+                       placeholder="Enter permission ID">
+                <div class="error" *ngIf="permission.get('id')?.errors?.['required'] && permission.get('id')?.touched">
+                  Permission ID is required
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <input type="text" formControlName="description" class="inp" 
+                       placeholder="Enter description">
+                <div class="error" *ngIf="permission.get('description')?.errors?.['required'] && permission.get('description')?.touched">
+                  Description is required
+                </div>
+              </div>
+              <button type="button" class="btn delete" (click)="removePermissionFromForm(i)">
+                <i class='bx bx-trash' ></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn delete" (click)="closeRoleModal()">Cancel</button>
+        <button type="submit" class="btn save" [disabled]="roleForm.invalid">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+      <!-- Permission Modal -->
+      <div class="modal" *ngIf="showPermissionModal">
+        <div class="modal-content">
+          <h3>{{editingPermission ? 'Edit Permission' : 'Add New Permission'}}</h3>
+          <form [formGroup]="permissionForm" (ngSubmit)="submitPermission()">
+            <div class="form-group">
+              <label>Permission ID</label>
+              <input type="text" formControlName="id" class="inp" 
+                     [readonly]="editingPermission" placeholder="Enter permission ID">
+              <div class="error" *ngIf="permissionForm.get('id')?.errors?.['required'] && permissionForm.get('id')?.touched">
+                Permission ID is required
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <input type="text" formControlName="description" class="inp" 
+                     placeholder="Enter description">
+              <div class="error" *ngIf="permissionForm.get('description')?.errors?.['required'] && permissionForm.get('description')?.touched">
+                Description is required
+              </div>
+            </div>
+            <div class="modal-actions">
+              <button type="button" class="btn delete" (click)="closePermissionModal()">Cancel</button>
+              <button type="submit" class="btn save" [disabled]="permissionForm.invalid">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>

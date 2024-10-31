@@ -1,0 +1,48 @@
+<section class="checkout-section">
+    <div class="checkout-container">
+        <div class="title">
+            <h2>Thanh toán</h2>
+            <span class="close" (click)="closeCheckout()"><i class='bx bx-x'></i></span>
+        </div>
+        <form action="" class="user-info-form">
+            <div class="user-info">
+                <h3>Thông tin người dùng</h3>
+                <input type="text"  placeholder="Họ và tên" class="inp">
+                <input type="email" placeholder="Email" class="inp">
+                <input type="tel"  placeholder="Số điện thoại" class="inp">
+            </div>
+            <div class="address-selection">
+                <h3>Địa chỉ giao hàng</h3>
+                <!-- <select [(ngModel)]="selectedAddress" class="inp"> -->
+                <select class="inp">
+                    <option value="current">Địa chỉ hiện tại</option>
+                    <option value="new">Địa chỉ khác</option>
+                </select>
+                <input *ngIf="selectedAddress === 'new'" type="text" [(ngModel)]="newAddress" placeholder="Nhập địa chỉ mới"
+                    class="inp">
+            </div>
+            <div class="product-list">
+                <h3>Sản phẩm</h3>
+                <ul>
+                    <li *ngFor="let product of products">
+                        {{ product.name }} - {{ product.price | currency:'VND':'symbol':'1.0-0' }} x {{ product.quantity }}
+                    </li>
+                </ul>
+            </div>
+            <div class="payment-method">
+                <h3>Phương thức thanh toán</h3>
+                <!-- <select [(ngModel)]="paymentMethod" class="inp"> -->
+                <select class="inp">
+                    <option value="cod">Thanh toán khi nhận hàng</option>
+                    <option value="card">Thanh toán bằng thẻ</option>
+                </select>
+            </div>
+            <div class="order-summary">
+                <p>Tổng giá: {{ calculateTotal() | currency:'VND':'symbol':'1.0-0' }}</p>
+                <p>Giảm giá: {{ calculateDiscount() | currency:'VND':'symbol':'1.0-0' }}</p>
+                <p class="total">Tổng cộng: {{ calculateFinalTotal() | currency:'VND':'symbol':'1.0-0' }}</p>
+            </div>
+        </form>
+        <button (click)="placeOrder()" class="btn checkout-btn">Đặt hàng</button>
+    </div>
+</section>

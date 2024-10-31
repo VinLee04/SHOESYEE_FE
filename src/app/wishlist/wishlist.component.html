@@ -1,0 +1,39 @@
+<!-- wishlist.component.html -->
+<div class="wishlist-container">
+    <h1>Wishlist</h1>
+    <table class="wishlist-table">
+        <thead>
+            <tr>
+                <th>Products</th>
+                <th>Price</th>
+                <th>Stock Status</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of wishlistItems">
+                <td>
+                    <div class="product-info">
+                        <img [src]="product.image" [alt]="product.name">
+                        <span>{{ product.name }}</span>
+                    </div>
+                </td>
+                <td>{{ product.price | currency }}</td>
+                <td>
+                    <span [class]="'stock-status ' + (product.inStock ? 'in-stock' : 'out-of-stock')">
+                        {{ product.inStock ? 'In Stock' : 'Out of Stock' }}
+                    </span>
+                </td>
+                <td>
+                    <button class="add-to-cart" [class.disabled]="!product.inStock" [disabled]="!product.inStock">
+                        Add To Cart
+                    </button>
+                </td>
+                <td>
+                    <button (click)="removeItem(product.id)" class="remove-item">X</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

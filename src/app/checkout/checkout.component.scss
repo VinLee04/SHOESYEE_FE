@@ -1,0 +1,88 @@
+@import '../../../src/variables';
+
+.checkout-section{
+    position: fixed;
+    width: 100%;
+    min-height: 100vh;
+    top:0;
+    left:0;
+    background: $background-transparent-gray;
+    z-index: 100;
+    
+
+}
+
+.checkout-container {
+    width: clamp(500px, 80%, 800px);
+    position    : absolute;
+    padding-block: 50px;
+    top         : 50%;
+    left        : 50%;
+    transform   : translate(-50%, -50%);
+    z-index     : 100;
+
+    // overflow-y: scroll;
+    // max-height: 90vh;
+
+    background-color: $background-color;
+    padding         : 2rem;
+    border-radius   : 8px;
+    box-shadow      : $box-shadow;
+}
+.title{
+    display: flex;
+    justify-content: space-between;
+
+    .close{
+        font-size: 2.5rem;
+        color: $close-color;
+        cursor: pointer;
+    }
+}
+h2,
+h3 {
+    color        : $text-primary-color;
+    margin-bottom: 1rem;
+}
+
+.user-info-form{
+    overflow-y: scroll;
+    max-height: 70vh;
+    padding: 20px;
+    border-bottom: 5px solid $border-color;
+}
+
+.user-info,
+.address-selection,
+.product-list,
+.payment-method,
+.order-summary {
+    margin-bottom: 1.5rem;
+}
+
+.inp {
+    margin-bottom: 0.5rem;
+}
+
+ul {
+    list-style-type: none;
+    padding        : 0;
+}
+
+li {
+    margin-bottom: 0.5rem;
+    color        : $text-secondary-color;
+}
+
+.total {
+    font-weight: bold;
+    color      : $text-price;
+}
+.checkout-btn {
+    margin-top: 2px;
+    width    : 100%;
+    padding-top: 40px;
+    padding  : 1rem;
+    font-size: 1.1rem;
+    box-sizing: border-box;
+}

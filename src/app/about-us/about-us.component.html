@@ -1,0 +1,43 @@
+<section class="about-us">
+    <div class="container">
+        <h2>Giới Thiệu</h2>
+        <div class="about-content">
+            <div class="about-image">
+                <img src="https://cdn.dribbble.com/userupload/15849153/file/original-090b6ef7ec27113a797ac641874fe21e.jpg?resize=752x" alt="Cửa hàng {{companyInfo.name}}">
+            </div>
+            <div class="about-text">
+                <h3>{{companyInfo.name}}</h3>
+                <p>Thành lập từ năm {{companyInfo.foundedYear}}, {{companyInfo.name}} đã trở thành một trong những
+                    thương hiệu giày hàng đầu tại Việt Nam.</p>
+                <p><strong>Sứ mệnh:</strong> {{companyInfo.mission}}</p>
+                <p><strong>Tầm nhìn:</strong> {{companyInfo.vision}}</p>
+                <p><strong>Giá trị cốt lõi:</strong> Chất lượng, Sáng tạo, và Khách hàng là trung tâm.</p>
+                <p>{{companyInfo.name}} cam kết mang đến những sản phẩm giày tốt nhất với thiết kế hiện đại và tiện ích
+                    tối ưu nhất cho người dùng.</p>
+                <button class="cta-button btn">Tìm hiểu thêm</button>
+            </div>
+        </div>
+
+        <div class="team-section">
+            <h3>Đội Ngũ Chúng Tôi</h3>
+            <div class="team-members">
+                <div class="team-member" *ngFor="let member of companyInfo.team">
+                    <img [src]="member.photo" alt="{{member.name}}">
+                    <h4>{{member.name}}</h4>
+                    <p>{{member.position}}</p>
+                    <p>{{member.bio}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="services-section">
+            <h3>Dịch Vụ Của Chúng Tôi</h3>
+            <ul>
+                <li *ngFor="let service of companyInfo.services">
+                    <h4>{{service.name}}</h4>
+                    <p>{{service.description}}</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>

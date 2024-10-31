@@ -1,0 +1,33 @@
+$border-radius-sm: .25rem;
+$border-radius-md: .5rem;
+$border-radius-xl: 1rem;
+
+$select-bg-color: white;
+$label-text     : skyblue;
+$box-shadow     : 0 0 4px gray;
+$bg-overlay     : rgba(119, 118, 118, 0.292);
+
+@keyframes fadeIn {
+    from {
+        transform    : translateX(800px);
+        opacity      : 0;
+        border-radius: 0;
+    }
+
+    to {
+        opacity      : 1;
+        border-radius: xl;
+    }
+
+}
+
+.section{
+    background: $bg-overlay;
+    position  : fixed;
+    height    : 100vh;
+    width     : 100%;
+    top       :0;
+    left      : 0;
+
+    display: flex;
+}

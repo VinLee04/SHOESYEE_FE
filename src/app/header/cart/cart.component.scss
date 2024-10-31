@@ -1,0 +1,130 @@
+@import '../../../../src/variables';
+
+.cart-section{
+    z-index: 100;
+    position: fixed;
+    top: calc($header-height + 4px);
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - $header-height - 4px);
+
+    .cart__container{
+        background: $background-color;
+        height: 85%;
+        width: 500px;
+        padding: 1rem 2rem;
+        box-shadow: $box-shadow;
+        overflow-y: scroll;
+        z-index: 10;
+        border-bottom: 10px solid $border-color;
+        box-shadow: 5px 0 20px $border-color;
+
+        .cart__header {
+            display: flex;
+            justify-content: space-between;
+
+            .header__title{
+                font-size: 1.5rem;
+                padding-block: 0.4rem;
+            }
+
+            .header__close{
+                
+            }
+        }
+    
+        .cart__body {
+
+            .cart__items{
+    
+            }
+        }
+    
+    }   
+    .cart__footer {
+        background: $background-color;
+        width: 500px;
+        height: 15%;
+        box-shadow: $box-shadow;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 1rem;
+
+        .total{
+            user-select: text;
+        }
+        
+        .btn__checkout{
+            width: 90%;
+            line-height: 3;
+        }
+    }
+
+
+    //  cart item
+
+    .cart__item {
+        display: flex;
+        border-bottom: 1px solid $border-color;
+        transition: all .2s ease;
+
+        &:hover{
+            transform: translateX(-15px);
+            border-bottom: 1px solid $border-active-color; 
+        }
+
+        .image{
+            padding: 0.5rem;
+            
+            img{
+                border-radius: 5px;
+                max-width: 100px;
+                object-fit: cover;
+            }
+        }
+
+        .order__detail{
+            flex:1;
+            padding: 0.9rem;
+            display       : flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            .product__detail{
+
+                display: flex;
+                justify-content: space-between;
+
+                .name__color{
+                    .name{
+                        font-size: 1.2rem;
+                    }
+
+                }
+
+                .price{
+                    padding-top: 0.2rem;
+                }
+            }
+
+            .qty__remove{
+                display: flex;
+                justify-content: space-between;
+                .quantity{}
+
+                .remove{
+                    color: $text-remove;
+                    cursor: pointer;
+
+                    &:hover{
+                        color: $text-remove-hover;
+                    }
+                }
+            }
+
+        }
+    }
+}

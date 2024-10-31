@@ -1,0 +1,54 @@
+<section class="register-section">
+    <div class="container">
+        <h1 class="title">CREATE AN ACCOUNT</h1>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+                <div class="input__group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" formControlName="username" placeholder="Enter your username">
+                </div>
+                <div class="input__group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" formControlName="email" placeholder="Enter your email">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="input__group">
+                    <label for="password">Password</label>
+                    <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" placeholder="Create a password">
+                    <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+                        {{ showPassword ? 'Hide' : 'Show' }}
+                    </button>
+                </div>
+                <div class="input__group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirmPassword" formControlName="confirmPassword"
+                        placeholder="Confirm your password">
+                    <button type="button" class="toggle-password" (click)="toggleConfirmPasswordVisibility()">
+                        {{ showConfirmPassword ? 'Hide' : 'Show' }} 
+                    </button>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="input__group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" formControlName="phone" placeholder="Enter your phone number">
+                </div>
+                <div class="input__group">
+                    <label for="">Birthdate</label>
+                    <input type="date" id="birthdate" formControlName="birthdate" (click)="openDatePicker()">
+                </div>
+            </div>
+            <div class="terms">
+                <input type="checkbox" id="agreeTerms" formControlName="agreeTerms">
+                <label for="agreeTerms">I agree to the <a href="#">Terms and Conditions</a></label>
+            </div>
+            <div class="btn__register">
+                <button type="submit" class="btn" [disabled]="registerForm.invalid">CREATE ACCOUNT</button>
+            </div>
+            <div class="login-link">
+                Already have an account? <a routerLink="/login">Log in</a>
+            </div>
+        </form>
+    </div>
+</section>
