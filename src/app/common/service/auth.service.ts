@@ -28,6 +28,12 @@ export class AuthService extends BaseService {
   private currentUserSignal = signal<UserInfo | null | undefined>(undefined);
 
   public isLoggedIn = computed(() => !!this.currentUserSignal());
+
+  isCustomerLoggedIn = computed(() => {
+    const currentUser = this.currentUserSignal();
+    return !!currentUser && currentUser.role.id === 'CUSTOMER';
+  });
+
   private loadingSignal = signal<boolean>(false);
 
   constructor(
@@ -100,7 +106,6 @@ export class AuthService extends BaseService {
           }
         }),
         switchMap(() => this.getCurrentUser().pipe(map(() => true))),
-        catchError(this.handleError),
         finalize(() => {
           this.loadingSignal.set(false);
         })
@@ -137,6 +142,10 @@ export class AuthService extends BaseService {
 
   isNotStaff(): boolean {
     return this.hasRole('CUSTOMER') || !this.isLoggedIn();
+  }
+
+  getUserId(): string | undefined {
+    return this.currentUserSignal()?.id;
   }
 
   sendPasswordResetEmail(email: string): Observable<any> {
@@ -211,7 +220,7 @@ export class AuthService extends BaseService {
 
   refreshToken(): Observable<string> {
     return this.http
-      .post<ApiResponse>(`${this.API_URL}/refresh-token`, {})
+      .post<ApiResponse>(`${this.API_URL}/auth/refresh-token`, {})
       .pipe(
         map((response) => {
           if (response.result.authenticated) {
@@ -226,6 +235,26 @@ export class AuthService extends BaseService {
         }),
         catchError(this.handleError)
       );
+  }
+
+  checkInterceptor(): Observable<boolean> {
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return of(false);
+      }
+      return this.http
+        .post<ApiResponse>(`${this.API_URL}/auth/introspect`, token)
+        .pipe(
+          map((response) => {
+            return response.result.valid;
+          }),
+          catchError(() => {
+            return of(false);
+          })
+        );
+    }
+    return of(false);
   }
 
   hasRole(roleName: string): boolean {
@@ -259,7 +288,7 @@ export class AuthService extends BaseService {
 
   scrollToBottom() {
     window.scroll({
-      top: document.body.scrollHeight, 
+      top: document.body.scrollHeight,
       left: 0,
       behavior: 'smooth',
     });

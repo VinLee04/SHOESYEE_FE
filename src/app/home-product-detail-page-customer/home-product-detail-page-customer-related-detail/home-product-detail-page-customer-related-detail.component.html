@@ -1,0 +1,10 @@
+ <div class="related-products">
+        <h2>You may also like</h2>
+        <div class="product-list">
+            <div *ngFor="let relatedProduct of relatedProducts" class="related-product-item">
+                <img [src]="relatedProduct.mainImage" [alt]="relatedProduct.name">
+                <p class="related-product-name">{{ relatedProduct.name }}</p>
+                <p class="related-product-price">${{ relatedProduct.price.toFixed(2) }}</p>
+            </div>
+        </div>
+    </div>

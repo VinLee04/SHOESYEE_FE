@@ -50,9 +50,42 @@ $info-color    : #3b82f6; // Màu cho thông tin chung
 $disabled-color: #9ca3af; // Màu cho các thành phần bị vô hiệu hóa
 
 // Shadows
-$box-shadow  : 0 2px 4px rgba(0, 0, 0, 0.1); // Đổ bóng chung cho card, modal
+$box-shadow  : 0 2px 4px rgba(0, 0, 0, 0.3); // Đổ bóng chung cho card, modal
 $hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); // Đổ bóng khi hover
 
 // Layout
 $header-height: 50px;
 $scrollbar-color:$secondary-color $neutral-color ;
+
+//home product
+$color-background           : #f9f9f9;
+$color-border               : #ccc;
+$color-input-focus          : #007bff;
+$color-clear-search-bg      : #ffcccc;
+$color-clear-search-text    : #b30000;
+$color-clear-all-bg         : #ffe6cc;
+$color-clear-all-text       : #b38f00;
+$color-clear-search-hover-bg: #ff9999;
+$color-clear-all-hover-bg   : #ffd59e;
+
+
+//cart
+$cart-background: #ffffff;
+$table-header-bg: #f8fafc;
+$table-border   : #edf2f7;
+$table-hover-bg : #f7fafc;
+
+$price-color         : #2d3748;
+$discount-price-color: #718096;
+$discount-badge-bg   : #FED7D7;
+$discount-badge-text : #E53E3E;
+
+$qty-btn-bg      : #EDF2F7;
+$qty-btn-active-bg: $color-clear-all-hover-bg;
+$qty-input-border: #CBD5E0;
+$qty-btn-hover-bg: $accent-color;
+$text-disabled-color: #bdbdbd;
+
+$summary-border     : #E2E8F0;
+$summary-title-color: #2D3748;
+$checkout-btn-hover : #3182ce;

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../common/service/auth.service';
@@ -13,6 +13,19 @@ import { AuthService } from '../common/service/auth.service';
 export class ManagementNavbarComponent {
   auth = inject(AuthService);
   userName: string = 'Your Name';
+  // show = input<boolean>();
+  // showChange = output<boolean>();
+  show = input<boolean>();
+  showChange = output<boolean>();
+
+  closeNav() {
+    this.showChange.emit(false);
+  }
+
+  showNav() {
+    this.showChange.emit(true);
+  }
+
   managementItems: { name: string; icon: string }[] = [
     { name: 'Orders', icon: 'bx bx-package' }, // đơn hàng
     { name: 'Products', icon: 'bx bx-shopping-bag' }, // sản phẩm

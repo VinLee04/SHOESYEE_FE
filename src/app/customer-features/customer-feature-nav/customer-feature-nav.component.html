@@ -1,0 +1,10 @@
+<nav class="side-nav">
+  <div class="nav-header">Account Details</div>
+  <ul class="nav-list">
+    <!-- <li><a [routerLink]="['/customer-feature', { outlets: { nav: ['profile'] } }]">My Profile</a></li> -->
+    <li><a [routerLink]="['/customer-feature', { outlets: { nav: ['order', 'CONFIRMED'] } }]" routerLinkActive="active">My Orders</a></li>
+    <li><a [routerLink]="['/customer-feature', { outlets: { nav: ['wishlist'] } }]">My Wish List</a></li>
+    <li><a [routerLink]="['/customer-feature', { outlets: { nav: ['trade-ins'] } }]">My Trade-ins</a></li>
+    <li><a (click)="signOut()" class="sign-out">Sign Out</a></li>
+  </ul>
+</nav>

@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from '../common/service/auth.service';
 import { CartComponent } from './cart/cart.component';
 import { API_URL_UPLOADS, environment } from '../../environment';
+import { HomeCartPageCustomerService } from '../home-cart-page-customer/home-cart-page-customer.service';
 
 @Component({
   selector: 'app-header',
@@ -13,6 +14,7 @@ import { API_URL_UPLOADS, environment } from '../../environment';
 })
 export class HeaderComponent {
   auth = inject(AuthService);
+  cartService = inject(HomeCartPageCustomerService);
   showMenu: boolean = false;
   isShowCart: boolean = false;
 
@@ -30,19 +32,5 @@ export class HeaderComponent {
     const cartComponent =
       this.elementRef.nativeElement.querySelector('app-cart');
 
-    if (cartIcon && cartIcon.contains(event.target as Node)) {
-      // Nếu click vào icon giỏ hàng, chuyển đổi trạng thái
-      this.toggleCart();
-    } else if (
-      (!cartComponent || !cartComponent.contains(event.target as Node)) &&
-      this.isShowCart
-    ) {
-      // Nếu click bên ngoài giỏ hàng và giỏ hàng đang mở, đóng giỏ hàng
-      this.isShowCart = false;
-    }
-  }
-
-  toggleCart() {
-    this.isShowCart = !this.isShowCart;
   }
 }

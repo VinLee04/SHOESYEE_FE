@@ -1,7 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ProductService } from '../product/product.service';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../common/service/auth.service';
 import { FormsModule } from '@angular/forms';
 
 interface Product {

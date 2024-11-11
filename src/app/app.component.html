@@ -5,18 +5,26 @@
         <app-footer></app-footer>
     </section>
 }
-@else {
+    @else {
+    <section class="management-section">
+        <app-management-navbar [(show)]="show"></app-management-navbar>
+        <div class="router" [class.full-width]="!show">
+            <router-outlet></router-outlet>
+        </div>
+    </section>
+    }
+<app-notification></app-notification>
+
+<!-- 
 <section class="maganement-section">
     <app-management-navbar></app-management-navbar>
     <div class="router">
         <router-outlet></router-outlet>
     </div>
-</section>
-}
-<app-notification></app-notification>
-
+</section> -->
+<!-- <app-product-management></app-product-management> -->
 <!-- <app-access-management></app-access-management> -->
-<!-- <app-product-management-add></app-product-management-add> -->
+<!-- <app-product-management></app-product-management> -->
 <!-- <section class="client-section">
     <app-header></app-header>
     <router-outlet></router-outlet>

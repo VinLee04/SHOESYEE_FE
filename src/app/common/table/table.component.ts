@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-export interface ProductTable {
+interface ProductTable {
   id: string;
   rank: number;
   image: string;

@@ -1,0 +1,235 @@
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="product-form">
+  <!-- Product Information -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Product Information</h2>
+    </div>
+    
+    <div class="form-grid">
+        <div class="form-group thumbnail-group">
+          <label>Thumbnail</label>
+          <app-image-upload
+            label="Product Thumbnail"
+            (fileSelected)="onThumbnailSelected($event)"
+            (fileRemoved)="onThumbnailRemoved()">
+          </app-image-upload>
+        </div>
+
+        <div class="form-group description-group">
+          <label>Description</label>
+          <textarea formControlName="description" rows="3" [class.error-block] = "productForm.get('description')?.touched && productForm.get('description')?.errors?.['required']"></textarea>
+          <div class="error" *ngIf="productForm.get('description')?.touched && productForm.get('description')?.errors?.['required']">
+            Description is required
+          </div>
+        </div>
+
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" formControlName="name" [class.error-block] = "productForm.get('name')?.touched && productForm.get('name')?.errors?.['required'] || productForm.get('name')?.touched && productForm.get('name')?.errors?.['minlength']">
+        <div class="error" *ngIf="productForm.get('name')?.touched && productForm.get('name')?.errors?.['required']">
+          Name is required
+        </div>
+        <div class="error" *ngIf="productForm.get('name')?.touched && productForm.get('name')?.errors?.['minlength']">
+          Name must be at least 3 characters
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Discount</label>
+        <select formControlName="discountId" [class.error-block] = "false">
+          <option value="">Select Discount</option>
+          <option value="2">20%</option>
+        </select>
+        <!-- <select formControlName="discountId">
+          <option value="">Select Discount</option>
+          <option *ngFor="let discount of discounts" [value]="discount.id">
+            {{discount.name}} ({{discount.percentage}}%)
+          </option>
+        </select> -->
+      </div>
+
+      <div class="form-group">
+        <label>Brand</label>
+        <select formControlName="brandId" [class.error-block] = "productForm.get('brandId')?.touched && productForm.get('brandId')?.errors?.['required']">
+          <option value="">Select Brand</option>
+          <option value="1">Nike</option>
+          <!-- Add brand options -->
+        </select>
+        <div class="error" *ngIf="productForm.get('brandId')?.touched && productForm.get('brandId')?.errors?.['required']">
+          Brand is required
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Category</label>
+        <select formControlName="categoryId" [class.error-block] = "productForm.get('categoryId')?.touched && productForm.get('categoryId')?.errors?.['required']">
+          <option value="">Select Category</option>
+          <option value="1">Sneaker</option>
+          <!-- Add category options -->
+        </select>
+        <div class="error" *ngIf="productForm.get('categoryId')?.touched && productForm.get('categoryId')?.errors?.['required']">
+          Category is required
+        </div>
+      </div>
+      
+      <div class="form-group base-price-group">
+        <label>Basic Price</label>
+        <input type="number" formControlName="basicPrice" [class.error-block] = "productForm.get('basicPrice')?.touched && productForm.get('basicPrice')?.errors?.['required'] || productForm.get('basicPrice')?.touched && productForm.get('basicPrice')?.errors?.['min']">
+        <div class="error" *ngIf="productForm.get('basicPrice')?.touched && productForm.get('basicPrice')?.errors?.['required']">
+          Basic price is required
+        </div>
+        <div class="error" *ngIf="productForm.get('basicPrice')?.touched && productForm.get('basicPrice')?.errors?.['min']">
+          Basic price must be greater than 0
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Price</label>
+        <input type="number" formControlName="price" [class.error-block] = "productForm.get('price')?.touched && productForm.get('price')?.errors?.['required'] || productForm.get('price')?.touched && productForm.get('price')?.errors?.['min']">
+        <div class="error" *ngIf="productForm.get('price')?.touched && productForm.get('price')?.errors?.['required']">
+          Price is required
+        </div>
+        <div class="error" *ngIf="productForm.get('price')?.touched && productForm.get('price')?.errors?.['min']">
+          Price must be greater than 0
+        </div>
+      </div>
+
+       <div class="form-group stock-group">
+        <label>Stock</label>
+        <input type="number" 
+              formControlName="stock" 
+              [readonly]="true"
+              class="form-control">
+        <small class="text-muted">*Automatically calculated from size quantities</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Colors -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Product Details</h2>
+      <button type="button" (click)="addProductColor()" class="btn btn-primary">
+        Add Detail
+      </button>
+    </div>
+
+    <div formArrayName="productColors">
+      <div *ngFor="let colorForm of productColors.controls; let colorIndex=index" 
+           [formGroupName]="colorIndex" 
+           class="color-item"
+           [class.box-selected]="editingColorIndex === colorIndex">
+        <div class="color-total">
+          Total Quantity: {{ getTotalQuantityForColor(colorIndex) }}
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Color</label>
+            <select formControlName="colorId">
+              <option value="">Select Color</option>
+              <option value="1">white</option>
+              <option value="2">black</option>
+              <option value="3">brown</option>
+            </select>
+            <div class="error" *ngIf="colorForm.get('colorId')?.touched && colorForm.get('colorId')?.errors?.['required']">
+              Color is required
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <app-image-upload
+              [label]="getColorLabel(colorForm)"
+              (fileSelected)="onColorImageSelected($event, colorIndex)"
+              (fileRemoved)="onColorImageRemoved(colorIndex)">
+            </app-image-upload>
+          </div>
+        </div>
+        
+        <div class="color-actions">
+          <button type="button" (click)="editColor(colorIndex)" class="btn btn-secondary">
+            {{ editingColorIndex === colorIndex ? 'Hide Sizes' : 'Edit Sizes' }}
+          </button>
+          <button type="button" (click)="removeColor(colorIndex)" class="btn btn-danger">
+            Remove Color
+          </button>
+        </div>
+
+        <!-- Color Size Details -->
+        <div *ngIf="editingColorIndex === colorIndex" class="color-size-details">
+          <!-- <h4>Size Details for Color</h4> -->
+          <div class="size-details-grid">
+            <div *ngFor="let sizeDetail of getSizeDetailsForColor(colorIndex)" class="size-detail-item">
+              <div class="size-header">
+                <span class="size-title">Size <span>{{sizeDetail.size}}</span></span>
+                <label class="active-toggle" [class]="sizeDetail.isActive ? 'bg-cyan' : 'bg-red'">
+                  <input type="checkbox"
+                         [checked]="sizeDetail.isActive"
+                         (change)="updateColorSizeDetail(colorIndex, sizeDetail.size, { isActive: !sizeDetail.isActive })">
+                  <span>Active</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label>Quantity</label>
+                <input type="number" 
+                    [value]="sizeDetail.quantity"
+                    (input)="onQuantityChange($event, colorIndex, sizeDetail.size)"
+                    (blur)="onQuantityBlur(colorIndex, sizeDetail.size)"
+                    (keydown.enter)="onQuantityBlur(colorIndex, sizeDetail.size)"
+                    min="0"
+                    class="form-control"
+                    [class.error-block]="editingQuantity[colorIndex + '-' + sizeDetail.size] < 0">
+              
+              </div>
+              <div class="form-group">
+                <label>Price</label>
+                <input type="number" 
+                    [value]="sizeDetail.price"
+                    (input)="onPriceChange($event, colorIndex, sizeDetail.size)"
+                    (blur)="onPriceBlur(colorIndex, sizeDetail.size)"
+                    (keydown.enter)="onPriceBlur(colorIndex, sizeDetail.size)"
+                    min="0"
+                    class="form-control"      
+                    [class.error-block]="editingPrice[colorIndex + '-' + sizeDetail.size] < 0">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Size Selection Section -->
+   <div class="section">
+    <div class="section-header">
+      <h2>Size Selection</h2>
+      <div class="size-actions">
+        <input type="text" #customSizeInput placeholder="Add custom size">
+        <button type="button" 
+                (click)="addCustomSize(customSizeInput); customSizeInput.value=''"
+                class="btn btn-secondary">
+          Add Size
+        </button>
+      </div>
+    </div>
+
+     <div class="size-grid">
+      <div *ngFor="let size of availableSizes" class="size-item">
+        <label [class.selected]="selectedSizes.has(size)" class="size-label">
+          <input type="checkbox" 
+                 [checked]="selectedSizes.has(size)"
+                 (change)="toggleSize(size)">
+          <span>Size {{size}}</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button type="submit" 
+            [disabled]="productForm.invalid || selectedSizes.size === 0 || productColors.length === 0" 
+            class="btn btn-primary submit-btn">
+      Create Product
+    </button>
+  </div>
+</form>
+<a routerLink="../" class="return">Return to Product Management page</a>

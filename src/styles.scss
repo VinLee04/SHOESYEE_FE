@@ -26,12 +26,12 @@
     box-sizing: border-box;
     scrollbar-width: thin;
     scrollbar-color: #888 #f1f1f1;
-
 }
 body{
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     line-height: 1.2;
     user-select: none;
+    cursor: url('../public/normal.png') !important;
 
     .btn {
         all             : unset;
@@ -74,168 +74,6 @@ body{
         }
     }
 
-    // Card styles
-    .product-list {
-        list-style           : none;
-        padding              : 0;
-        display              : grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap                  : 20px;
-    }
-
-    .product-item {
-        background-color: white;
-        border-radius   : 8px;
-        box-shadow      : $box-shadow;
-        overflow        : hidden;
-        transition      : transform 0.3s, box-shadow 0.3s;
-        height          : 420px; // Fixed height
-
-        &:hover {
-            transform : translateY(-5px);
-            box-shadow: $hover-shadow;
-        }
-    }
-
-    .product-image-container {
-        position: relative;
-        height  : 200px;
-        overflow: hidden;
-    }
-
-    .product-image {
-        width     : 100%;
-        height    : 100%;
-        object-fit: cover;
-    }
-
-    .discount-badge {
-        position        : absolute;
-        top             : 10px;
-        right           : 10px;
-        background-color: $error-color;
-        color           : white;
-        padding         : 5px 10px;
-        border-radius   : 20px;
-        font-size       : 14px;
-        font-weight     : bold;
-    }
-
-    .product-info {
-        padding : 20px;
-        position: relative;
-
-        .brand {
-            font-size    : 16px;
-            font-weight  : bold;
-            color        : $primary-color;
-            margin-bottom: 5px;
-        }
-
-        h3 {
-            margin   : 0 0 10px;
-            font-size: 18px;
-            color    : $text-primary-color;
-        }
-
-        .color-options {
-            display      : flex;
-            gap          : 5px;
-            margin-bottom: 10px;
-
-            
-        }
-
-        .type {
-            font-size    : 14px;
-            color        : $gray-500;
-            margin-bottom: 5px;
-        }
-
-        .price {
-            font-size    : 18px;
-            font-weight  : bold;
-            color        : $primary-color;
-            margin-bottom: 10px;
-
-            .original-price {
-                color       : $gray-500;
-                margin-right: 5px;
-            }
-
-            .line-through {
-                text-decoration: line-through;
-            }
-
-            .discounted-price {
-                color: $error-color;
-            }
-        }
-    }
-    .color-circle {
-    width        : 20px;
-    height       : 20px;
-    border-radius: 50%;
-    border       : 1px solid $border-color;
-}
-
-    .card-action-btn {
-        display        : inline-flex;
-        align-items    : center;
-        justify-content: center;
-        border-radius  : 4px;
-        font-weight    : 600;
-        transition     : all 0.3s ease;
-        cursor         : pointer;
-    }
-
-    .view-details-btn {
-        @extend .card-action-btn;
-        background-color: $primary-color;
-        color           : white;
-        position        : absolute;
-        top             : 10px;
-        right           : 10px;
-
-        &:hover {
-            background-color: darken($primary-color, 10%);
-        }
-    }
-
-    .add-to-cart-btn {
-        @extend .card-action-btn;
-        background-color: $secondary-color;
-        color           : white;
-        width           : 100%;
-        font-size       : 1rem;
-        padding-block   : .7rem;
-
-        &:hover {
-            background-color: darken($secondary-color, 10%);
-        }
-    }
-
-    .heart-icon {
-        position  : absolute;
-        bottom    : 0;
-        right     : 10px;
-        font-size : 2rem;
-        color     : white;
-        cursor    : pointer;
-        transition: all 0.3s ease;
-
-        &:hover,
-        &.active {
-            color: $error-color;
-        }
-    }
-
-    .card-actions {
-        display        : flex;
-        justify-content: space-between;
-        margin-top     : 10px;
-        font-size      : .7rem;
-    }
 }
 
 .management{

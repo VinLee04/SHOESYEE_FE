@@ -1,0 +1,60 @@
+<section class="order-table-nav">
+    <nav class="nav-container">
+        <ul class="nav-main">
+             <li>
+                <a [routerLink]="['/customer-feature', { outlets: { nav: ['order', 'WAITING_FOR_CONFIRMATION'] } }]" 
+                   routerLinkActive="active">
+                   WAITING FOR CONFIRMATION
+                </a>
+            </li>
+            <li>
+                <a [routerLink]="['/customer-feature', { outlets: { nav: ['order', 'CONFIRMED'] } }]" 
+                   routerLinkActive="active">
+                   CONFIRMED
+                </a>
+            </li>
+            <li>
+                <a [routerLink]="['/customer-feature', { outlets: { nav: ['order', 'PROCESSING'] } }]" 
+                   routerLinkActive="active">
+                   PROCESSING
+                </a>
+            </li>
+            <li>
+                <a [routerLink]="['/customer-feature', { outlets: { nav: ['order', 'SHIPPED'] } }]" 
+                   routerLinkActive="active">
+                   SHIPPED
+                </a>
+            </li>
+            <li>
+                <a [routerLink]="['/customer-feature', { outlets: { nav: ['order', 'OUT_FOR_DELIVERY'] } }]" 
+                   routerLinkActive="active">
+                   OUT_FOR_DELIVERY
+                </a>
+            </li>
+            <li>
+                <a [routerLink]="['/customer-feature', { outlets: { nav: ['order', 'DELIVERED'] } }]" 
+                   routerLinkActive="active">
+                   DELIVERED
+                </a>
+            </li>
+            <li>
+                <a [routerLink]="['/customer-feature', { outlets: { nav: ['order', 'CANCELED'] } }]" 
+                   routerLinkActive="active">
+                   CANCELED
+                </a>
+            </li>
+            <li>
+                <a [routerLink]="['/customer-feature', { outlets: { nav: ['order', 'RETURNED'] } }]" 
+                   routerLinkActive="active">
+                   RETURNED
+                </a>
+            </li>
+            <li>
+                <a [routerLink]="['/customer-feature', { outlets: { nav: ['order', 'REFUNDED'] } }]" 
+                   routerLinkActive="active">
+                   REFUNDED
+                </a>
+            </li>
+        </ul>
+    </nav>
+</section>

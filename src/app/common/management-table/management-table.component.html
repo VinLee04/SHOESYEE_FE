@@ -24,7 +24,7 @@
           <tr>
             @for(column of columns(); track column.key) {
               <td [class]="column.class">
-                @if (column.key === 'image' || column.key === 'avatar') {
+                @if (column.key === 'image' || column.key === 'avatar' || column.key === "thumbnail") {
                     <img [src]="item[column.key]" alt="{{ item[column.key] }}" class="product-image">
                 }@else if (column.key === 'status') {
                     <span [class]="item[column.key]">{{ item[column.key] }}</span>
@@ -40,6 +40,19 @@
                       <div>
                         <div class="user-name">{{  item[column.key].name }}</div>
                         <div class="user-email">{{  item[column.key].email }}</div>
+                      </div>
+                    </div>
+                }
+                @else if (column.key === 'productInfo') {
+                    <div class="product-info">
+                        <img [src]="item[column.key].thumbnail" [alt]="item[column.key].image" />
+                      
+                      <div>
+                        <div class="product-name">{{  item[column.key].name }}</div>
+                        <div class="product-detail">
+                          <div class="product-brand">{{  item[column.key].brand }}</div> |
+                          <div class="product-category">{{  item[column.key].category }}</div>
+                        </div>
                       </div>
                     </div>
                 }

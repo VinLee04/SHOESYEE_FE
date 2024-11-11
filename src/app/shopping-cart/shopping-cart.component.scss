@@ -1,143 +1,305 @@
-/* shopping-cart.component.scss */
+// shopping-cart.component.scss
+@import "../../variables";
+
 .shopping-cart-container {
-    max-width: 1200px;
-    min-height: 100vh;
-    margin   : 0 auto;
-    padding  : 20px;
-    padding-top: 6rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding         : 6rem 1rem;
+    max-width       : 1200px;
+    margin          : 0 auto;
+    min-height      : 100vh;
+    background-color: $background-color;
 
     h1 {
-        font-size    : 24px;
+        margin-bottom: 2rem;
+        font-size    : 2rem;
         font-weight  : bold;
-        margin-bottom: 20px;
+        color        : $text-primary-color;
+    }
+}
+
+.cart-content {
+    display              : flex;
+
+    @media (max-width: 1024px) {
+        flex-direction: column;
+    }
+}
+.cart-items{
+    width: 80%;
+    @media (max-width: 1500px) {
+        width: 75%;
+    }
+    @media (max-width: 1150px) {
+    width: 100%;
+}
+}
+.cart-table {
+    width           : 100%;
+    border-collapse : collapse;
+    background-color: $background-color;
+    border-radius   : 8px;
+    overflow        : hidden;
+    box-shadow      : $box-shadow;
+
+    th {
+        text-align      : left;
+        padding         : 1rem;
+        background-color: $table-header-bg;
+        color           : $text-primary-color;
+        font-weight     : 600;
+        border-bottom   : 1px solid $table-border;
     }
 
-    .cart-content {
-        display: flex;
-        gap    : 20px;
+    td {
+        padding       : 1rem;
+        border-bottom : 1px solid $table-border;
+        vertical-align: middle;
     }
 
-    .cart-items {
-        flex: 3;
+    tr {
+        &:hover {
+            background-color: $table-hover-bg;
+        }
+
+        &.out-of-stock {
+            background-color: $gray-100;
+            opacity         : 0.8;
+        }
+    }
+}
+
+.product-info {
+    display    : flex;
+    align-items: center;
+    gap        : 1rem;
+
+    img {
+        width        : 80px;
+        height       : 80px;
+        object-fit   : cover;
+        border-radius: 4px;
+        box-shadow   : $box-shadow;
     }
 
-    .cart-table {
+    .product-details {
+        display       : flex;
+        flex-direction: column;
+        gap           : 0.25rem;
+
+        .product-name {
+            font-weight: 500;
+            color      : $text-primary-color;
+        }
+
+        .out-of-stock-label {
+            color      : $error-color;
+            font-size  : 0.875rem;
+            font-weight: 500;
+        }
+    }
+}
+
+.price-info {
+    display       : flex;
+    flex-direction: column;
+    gap           : 0.25rem;
+
+    .original-price {
+        &.has-discount {
+            text-decoration: line-through;
+            color          : $discount-price-color;
+            font-size      : 0.875rem;
+        }
+    }
+
+    .discount-badge {
+        background-color: $discount-badge-bg;
+        color           : $discount-badge-text;
+        padding         : 0.125rem 0.375rem;
+        border-radius   : 4px;
+        font-size       : 0.75rem;
+        font-weight     : 500;
+        display         : inline-block;
+    }
+
+    .final-price {
+        color      : $text-price;
+        font-weight: 600;
+    }
+}
+
+.quantity-control {
+    display    : flex;
+    align-items: center;
+    gap        : 0.5rem;
+
+    input {
+        width        : 60px;
+        padding      : 0.5rem;
+        text-align   : center;
+        border       : 1px solid $qty-input-border;
+        border-radius: 4px;
+        color        : $text-primary-color;
+
+        &:disabled {
+            background-color: $gray-100;
+            cursor          : not-allowed;
+        }
+
+        &:focus {
+            outline     : none;
+            border-color: $color-input-focus;
+        }
+    }
+
+    .qty-btn {
+        width          : 32px;
+        height         : 32px;
+        display        : flex;
+        align-items    : center;
+        justify-content: center;
+        border         : none;
+        border-radius  : 4px;
+        background     : $qty-btn-bg;
+        color          : $text-primary-color;
+        cursor         : pointer;
+
+        &:hover {
+            background: $qty-btn-hover-bg;
+        }
+
+        &:active {
+            background: $qty-btn-active-bg;
+        }
+
+        &:disabled {
+            background: $gray-100;
+            cursor    : not-allowed;
+            color     : $text-disabled-color;
+        }
+    }
+}
+
+.cart-actions {
+    display        : flex;
+    justify-content: space-between;
+    margin-top     : 1.5rem;
+
+    .continue-shopping,
+    .clear-cart {
+        background   : $secondary-color;
+        color        : $btn-text-color;
+        padding      : 0.75rem 1.5rem;
+        border       : none;
+        border-radius: 4px;
+        cursor       : pointer;
+        font-weight  : bold;
+        transition   : background-color 0.3s ease;
+
+        &:hover {
+            background-color: $hover-color;
+        }
+    }
+}
+
+.order-summary-container {
+    padding         : 1rem 2rem;
+    background-color: $background-secondary-color;
+    border-radius   : 8px;
+    box-shadow      : $box-shadow;
+    position: fixed;
+    right: 70px;
+    top: 100px;
+
+    .order-summary{
+        width: 100%;height: 100%;
+        position: relative;
+
+        .item-show{
+            position: absolute;
+            height: 140%;
+            width: 50px;
+            left: -3rem;
+            top:-3rem;
+            cursor: pointer;
+        }
+    }
+
+    @media (max-width: 1400px) {
+        right: 10px;
+    }
+    @media (max-width: 1150px) {
+        right: -215px;
+        &.show {
+            right: 10px !important;
+        }
+    }
+
+    h2 {
+        margin-bottom: 1rem;
+        color        : $text-primary-color;
+
+        span{
+            float: right;
+            font-size: 2rem;
+            font-weight: bold;
+            color: red;
+            cursor: pointer;
+            margin-left: 50px;
+        }
+    }
+
+    .summary-row {
+        display        : flex;
+        justify-content: space-between;
+        margin         : 0.5rem 0;
+        font-size      : 1rem;
+        color          : $text-secondary-color;
+
+        &.total {
+            font-weight: bold;
+            color      : $text-primary-color;
+        }
+
+        &.discount {
+            color: $success-color;
+        }
+    }
+
+    .checkout {
         width           : 100%;
-        border-collapse : collapse;
-        background-color: #fff;
-        box-shadow      : 0 1px 3px rgba(0, 0, 0, 0.1);
+        padding         : 0.75rem;
+        margin-top      : 1.5rem;
+        background-color: $accent-color;
+        color           : $btn-text-color;
+        border          : none;
+        border-radius   : 4px;
+        font-weight     : bold;
+        cursor          : pointer;
+        transition      : background-color 0.3s ease;
 
-        th,
-        td {
-            padding      : 12px;
-            text-align   : left;
-            border-bottom: 1px solid #e2e8f0;
+        &:hover {
+            background-color: darken($accent-color, 10%);
         }
 
-        th {
-            background-color: #f7fafc;
-            font-weight     : 600;
-            text-transform  : uppercase;
-            font-size       : 12px;
-            color           : #4a5568;
-        }
-
-        .product-info {
-            display    : flex;
-            align-items: center;
-
-            img {
-                width        : 40px;
-                height       : 40px;
-                border-radius: 50%;
-                margin-right : 10px;
-            }
-        }
-
-        .quantity-control {
-            display    : flex;
-            align-items: center;
-
-            button {
-                background-color: #e2e8f0;
-                border          : none;
-                padding         : 5px 10px;
-                cursor          : pointer;
-            }
-
-            input {
-                width     : 40px;
-                text-align: center;
-                margin    : 0 5px;
-            }
-        }
-
-        .remove-item {
-            background-color: transparent;
-            color           : #e53e3e;
-            border          : none;
-            cursor          : pointer;
-            font-weight     : bold;
+        &:disabled {
+            background-color: $disabled-color;
+            cursor          : not-allowed;
         }
     }
+}
 
-    .coupon-section {
-        margin-top: 20px;
-        display   : flex;
-        gap       : 10px;
+.remove-item {
+    background: transparent;
+    color     : $text-remove;
+    font-size : 2rem;
+    font-weight: bold;
+    border    : none;
+    cursor    : pointer;
+    transition: color 0.3s ease;
+    outline: unset;
 
-        input {
-            flex         : 1;
-            padding      : 8px;
-            border       : 1px solid #e2e8f0;
-            border-radius: 4px;
-        }
-
-        .apply-coupon {
-            background-color: #4299e1;
-            color           : white;
-            border          : none;
-            padding         : 8px 16px;
-            border-radius   : 4px;
-            cursor          : pointer;
-        }
-    }
-
-    .order-summary {
-        flex            : 1;
-        background-color: #fff;
-        padding         : 20px;
-        box-shadow      : 0 1px 3px rgba(0, 0, 0, 0.1);
-
-        h2 {
-            font-size    : 18px;
-            font-weight  : bold;
-            margin-bottom: 15px;
-        }
-
-        .summary-row {
-            display        : flex;
-            justify-content: space-between;
-            margin-bottom  : 10px;
-
-            &.total {
-                font-weight: bold;
-                font-size  : 18px;
-                margin-top : 15px;
-                padding-top: 15px;
-                border-top : 1px solid #e2e8f0;
-            }
-        }
-
-        .checkout {
-            width           : 100%;
-            background-color: #4299e1;
-            color           : white;
-            border          : none;
-            padding         : 10px;
-            border-radius   : 4px;
-            cursor          : pointer;
-            margin-top      : 20px;
-        }
+    &:hover {
+        color: $text-remove-hover;
     }
 }

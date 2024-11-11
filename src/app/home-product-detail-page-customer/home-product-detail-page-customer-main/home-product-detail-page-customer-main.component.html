@@ -1,0 +1,76 @@
+    <div class="product-detail-container" *ngIf="productDetail">
+      <div class="product-images">
+        <div class="main-image">
+          <img [src]="selectedImage || imgHasNotUploadedYetThumbnail" [alt]="productDetail.productInfo.name">
+        </div>
+        <div class="thumbnail-list">
+          <img 
+            *ngFor="let color of productDetail.colorOptions" 
+            [src]="getImage(color.image) || imgHasNotUploadedYet"
+            [alt]="color.colorName"
+            class="thumbnail"
+            (click)="selectColor(color)"
+          >
+        </div>
+      </div>
+
+      <div class="product-detail-info">
+        <div>
+          <h1 class="product-name">{{productDetail.productInfo.name}}</h1>
+          <div class="product-price">
+            {{getDisplayPrice()}}
+            <span *ngIf="productDetail.productInfo.discountPercent" class="discount">
+              -{{productDetail.productInfo.discountPercent}}%
+            </span>
+          </div>
+
+          <div class="color-selector">
+            <p>Color: {{selectedColorOption?.colorName}}</p>
+            <div class="color-options">
+              <button 
+                *ngFor="let color of productDetail.colorOptions"
+                [class.selected]="color === selectedColorOption"
+                (click)="selectColor(color)"
+                [style.background-color]="color.colorName.toLowerCase()"
+              ></button>
+            </div>
+          </div>
+
+          <div class="size-selector">
+            <p>Size</p>
+            <div class="size-options">
+              <button 
+                *ngFor="let sizeOption of selectedColorOption?.sizeOptions"
+                class="size-option"
+                [class.selected]="sizeOption === selectedSizeOption"
+                [class.disabled]="!sizeOption.isActive || sizeOption.quantity === 0"
+                (click)="selectSize(sizeOption)"
+                [disabled]="!sizeOption.isActive || sizeOption.quantity === 0"
+              >
+                {{sizeOption.size}}
+              </button>
+            </div>
+          </div>
+
+          <div class="add-to-cart-btn">
+            <a href="javascript:void(0)" (click)="addToCart()">
+              Add To Cart
+            </a>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="stock-info" *ngIf="selectedSizeOption">
+            <p>In Stock: {{selectedSizeOption.quantity}} units</p>
+          </div>
+        </div>
+
+        <div class="product-description">
+          <h2>Detail</h2>
+          <p>Brand: {{productDetail.productInfo.brandName}}</p>
+          <p>Category: {{productDetail.productInfo.categoryName}}</p>
+        </div>
+      </div>
+    </div>

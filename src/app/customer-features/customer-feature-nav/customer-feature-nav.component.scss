@@ -1,0 +1,42 @@
+.side-nav {
+    width           : 250px;
+    background-color: #f8f9fa;
+    min-height      : 100vh;
+    border-right    : 1px solid #dee2e6;
+    padding         : 20px 0;
+
+    .nav-header {
+        padding      : 0 20px;
+        font-weight  : 600;
+        margin-bottom: 20px;
+    }
+
+    .nav-list {
+        list-style: none;
+        padding   : 0;
+        margin    : 0;
+
+        li {
+            a {
+                display        : block;
+                padding        : 10px 20px;
+                color          : #333;
+                text-decoration: none;
+                cursor         : pointer;
+
+                &:hover {
+                    background-color: #e9ecef;
+                }
+
+                &.active {
+                    background-color: #e9ecef;
+                    font-weight     : 500;
+                }
+            }
+
+            .sign-out {
+                color: #dc3545;
+            }
+        }
+    }
+}

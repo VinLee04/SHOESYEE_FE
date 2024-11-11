@@ -1,0 +1,76 @@
+@import '../../../../variables';
+
+section{
+    margin-block: 2rem !important;
+    margin: auto;
+
+    .table-list{
+        width: 100%;
+        border: 2px solid $border-color;
+        padding: .5rem .2rem 1rem;
+        border-radius: 5px;
+        box-shadow: -2px 4px 2px rgb(205, 248, 205);
+        border-spacing: 0;
+        
+        th,td{
+            text-wrap: nowrap;
+        }
+
+        thead{
+            th{
+                font-family: monospace;
+                font-size: .9rem;
+                padding: .5rem 0 1rem;
+                border-bottom: 2px solid $border-color;
+                border-right: 1px solid $border-color;
+                border-radius: 5px;
+                box-shadow: 2px 4px 2px rgb(205, 248, 205);
+            }
+        }
+
+        tbody{
+            border:unset;
+            tr{
+                &:nth-child(1){
+                    td{
+                        padding-top: 1rem;
+                    }
+                }
+                &:nth-child(odd) {
+                    background-color: rgba(205, 248, 205, 0.121);
+                }
+
+                &:hover{
+                    background-color: rgba(205, 248, 205, 0.121);
+                }
+            }
+            td{
+                padding: .5rem;
+            }
+        }
+    }
+}
+.buttons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    .btn{
+        margin: 0 .2rem;
+
+         &:hover {
+            transform : translateY(-2px);
+            box-shadow: 0 0 2px blanchedalmond;
+        }
+
+        &.detail {
+            color: rgb(3, 214, 144);
+            background-color: rgba(144, 252, 216, 0.292);
+        }
+
+        &.detail:hover {
+            color: rgb(162, 255, 224);
+            background-color: rgb(87, 203, 164);
+        }
+    }
+}

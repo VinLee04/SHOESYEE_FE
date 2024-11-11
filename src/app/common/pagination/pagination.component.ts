@@ -40,18 +40,21 @@ export class PaginationComponent {
 
   goToPage(page: number): void {
     if (page !== this.currentPage()) {
+      console.log("object" + page);
       this.pageChange.emit(page);
     }
   }
 
   prevPage(): void {
     if (this.canGoPrev()) {
+      console.log('object', this.currentPage() - 1);
       this.pageChange.emit(this.currentPage() - 1);
     }
   }
 
   nextPage(): void {
     if (this.canGoNext()) {
+            console.log('object', this.currentPage() + 1);
       this.pageChange.emit(this.currentPage() + 1);
     }
   }

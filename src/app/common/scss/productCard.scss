@@ -1,0 +1,179 @@
+@import "../../../variables";
+
+.content-wrapper {
+    margin-top: 2rem;
+}
+
+.product-list {
+    list-style           : none;
+    padding              : 0;
+    display              : grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap                  : 20px;
+    margin-bottom        : 1.5rem;
+}
+
+.product-item {
+    background-color: $background-color; // Sử dụng màu nền chính
+    border-radius   : 8px;
+    box-shadow      : $box-shadow;
+    overflow        : hidden;
+    transition      : transform 0.3s, box-shadow 0.3s;
+    height          : 450px; // Fixed height
+
+    &:hover {
+        transform : translateY(-5px);
+        box-shadow: $hover-shadow;
+    }
+}
+
+.product-image-container {
+    position: relative;
+    height  : 200px;
+    overflow: hidden;
+}
+
+.product-image {
+    width     : 100%;
+    height    : 100%;
+    object-fit: cover;
+}
+
+.discount-badge {
+    position        : absolute;
+    top             : 10px;
+    right           : 10px;
+    background-color: $error-color; // Màu cho badge giảm giá
+    color           : $background-color; // Sử dụng màu nền chính cho text
+    padding         : 5px 10px;
+    border-radius   : 20px;
+    font-size       : 14px;
+    font-weight     : bold;
+}
+
+.product-info {
+    padding : 20px;
+    position: relative;
+
+    .brand {
+        font-size    : 16px;
+        font-weight  : bold;
+        color        : $primary-color; // Màu chủ đạo
+        margin-bottom: 5px;
+    }
+
+    h3 {
+        margin   : 0 0 10px;
+        font-size: 18px;
+        color    : $text-primary-color; // Màu cho tiêu đề sản phẩm
+    }
+
+    .color-options {
+        display      : flex;
+        gap          : 5px;
+        margin-bottom: 10px;
+    }
+
+    .type {
+        font-size    : 14px;
+        color        : $gray-500; // Màu xám cho loại sản phẩm
+        margin-bottom: 5px;
+    }
+
+    .price {
+        font-size    : 18px;
+        font-weight  : bold;
+        color        : $primary-color; // Màu chủ đạo
+        margin-bottom: 10px;
+
+        .original-price {
+            color       : $gray-400; // Màu xám cho giá gốc
+            margin-right: 5px;
+        }
+
+        .line-through {
+            text-decoration: line-through;
+            color          : $gray-300; // Màu xám nhạt cho đường gạch ngang
+        }
+
+        .discounted-price {
+            color: $success-color; // Màu cho giá đã giảm
+        }
+    }
+}
+
+.color-circle {
+    width        : 20px;
+    height       : 20px;
+    border-radius: 50%;
+    border       : 1px solid $border-color; // Sử dụng màu viền mặc định
+}
+
+.card-action-btn {
+    display        : inline-flex;
+    align-items    : center;
+    justify-content: center;
+    border-radius  : 4px;
+    font-weight    : 600;
+    transition     : all 0.3s ease;
+    cursor         : pointer;
+}
+
+.view-details-btn {
+    @extend .card-action-btn;
+    background-color: $primary-color; // Nền cho nút xem chi tiết
+    color           : $btn-text-color; // Màu chữ nút
+    position        : absolute;
+    top             : 10px;
+    right           : 10px;
+
+    &:hover {
+        background-color: $primary-hover-color; // Màu khi hover
+    }
+}
+
+.add-to-cart-btn {
+    @extend .card-action-btn;
+    background-color: $secondary-color;
+    color           : white;
+    width           : 100%;
+    font-size       : 1rem;
+    padding-block   : .7rem;
+    border          : none; // Loại bỏ viền mặc định
+    border-radius   : 5px; // Thêm độ cong cho các góc
+    box-shadow      : 0 4px 8px rgba(0, 0, 0, 0.2); // Thêm bóng cho nút
+    transition      : background-color 0.3s ease, transform 0.3s ease; // Thêm hiệu ứng chuyển động
+
+    &:hover {
+        background-color: darken($secondary-color, 10%);
+        transform       : translateY(-2px); // Hiệu ứng nhô lên khi hover
+        box-shadow      : 0 6px 12px rgba(0, 0, 0, 0.2); // Tăng độ bóng khi hover
+    }
+
+    &:active {
+        transform : translateY(1px); // Hiệu ứng nhấn xuống
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); // Giảm độ bóng khi nhấn
+    }
+}
+
+.heart-icon {
+    position  : absolute;
+    bottom    : 0;
+    right     : 10px;
+    font-size : 2rem;
+    color     : $btn-text-color; // Màu cho biểu tượng trái tim
+    cursor    : pointer;
+    transition: all 0.3s ease;
+
+    &:hover,
+    &.active {
+        color: $error-color; // Màu khi hover hoặc active
+    }
+}
+
+.card-actions {
+    display        : flex;
+    justify-content: space-between;
+    margin-top     : 10px;
+    font-size      : .7rem;
+}

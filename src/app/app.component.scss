@@ -1,11 +1,21 @@
 @import '../../src/manage-variables';
 
 
-.maganement-section{
+.management-section {
+    min-height: 100vh;
+    width     : 100vw;
+    overflow-x: hidden;
+    position  : relative;
 
-    .router{
-        width: calc(100vw - $with-management-navbar);
-        float: right;
+    .router {
+        margin-left: $with-management-navbar;
+        width      : calc(100vw - #{$with-management-navbar});
+        min-height : 100vh;
+        transition : margin-left .5s ease, width .5s ease;
+
+        &.full-width {
+            margin-left: 0;
+            width      : 100vw;
+        }
     }
 }
-

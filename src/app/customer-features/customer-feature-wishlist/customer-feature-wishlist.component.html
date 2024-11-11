@@ -1,0 +1,52 @@
+<div class="wishlist-container">
+      <h1 class="wishlist-title">My Wishlist</h1>
+      <div class="products-grid">
+        <div *ngFor="let product of wishlistItems" 
+             class="product-card"
+             [class.in-cart]="product.quantityInCart > 0"
+             [class.purchased]="product.hasBeenPurchased"
+             [class.purchased-and-in-cart]="product.hasBeenPurchased && product.quantityInCart > 0">
+          
+          <div class="product-image">
+            <button class="remove-btn" (click)="removeFromWishlist(product.id)">×</button>
+            <img [src]="product.thumbnail" [alt]="product.name">
+            <span *ngIf="product.quantityInCart > 0" class="cart-quantity">
+              {{product.quantityInCart}}
+            </span>
+            <span *ngIf="product.discountId" class="discount-badge">Sale</span>
+          </div>
+
+          <div class="product-info">
+            <div class="product-header">
+              <h3 class="product-name">{{product.name}}</h3>
+              <div class="product-meta">
+                <span class="brand">{{product.brandName}}</span>
+                <span class="category">{{product.categoryName}}</span>
+              </div>
+            </div>
+
+            <div class="product-colors">
+              <span *ngFor="let color of product.colors" 
+                    class="color-dot"
+                    [style.background-color]="color"
+                    [attr.title]="color">
+              </span>
+            </div>
+
+            <div class="product-price">
+              <span class="price">{{product.price | currency:'USD'}}</span>
+              <span *ngIf="product.discountId" class="discount">Sale</span>
+            </div>
+
+            <div class="product-status">
+              <span *ngIf="product.hasBeenPurchased" class="status-tag purchased">
+                Previously Purchased
+              </span>
+              <span *ngIf="product.quantityInCart > 0" class="status-tag in-cart">
+                In Cart ({{product.quantityInCart}})
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

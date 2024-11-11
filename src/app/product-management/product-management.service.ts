@@ -1,8 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
-import { tableColumns } from '../interface/Table';
-import { ProductTable } from '../interface/product-management/ProductTable';
+import { PageManagement, tableColumns } from '../interface/Table';
+import { HttpClient } from '@angular/common/http';
+import { ListSearchRequest, PageResponse } from '../interface/PageRequest';
+import { API_URL_PRODUCTS, API_URL_UPLOADS } from '../../environment';
+import { productInfo, ProductTable } from '../interface/Product';
 
 @Injectable({
   providedIn: 'root',
@@ -12,271 +15,329 @@ export class ProductManagementService {
     {
       id: 'P001',
       name: 'Running Shoes',
-      category: 'Shoes',
-      brand: 'Nike',
+      categoryName
+
+: 'Shoes',
+      brandName: 'Nike',
       status: 'available',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 1299000,
       stock: 50,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description:
         'Lightweight running shoes for men, comfortable and durable.',
     },
     {
       id: 'P002',
       name: 'Basketball Shoes',
-      category: 'Shoes',
-      brand: 'Adidas',
+      categoryName: 'Shoes',
+      brandName: 'Adidas',
       status: 'available',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 1499000,
       stock: 30,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description:
         'High-performance basketball shoes for optimal grip and support.',
     },
     {
       id: 'P003',
       name: 'Casual Sneakers',
-      category: 'Shoes',
-      brand: 'Puma',
+      categoryName: 'Shoes',
+      brandName: 'Puma',
       status: 'available',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 899000,
       stock: 60,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description: 'Stylish casual sneakers for everyday wear.',
     },
     {
       id: 'P004',
       name: 'Tennis Shoes',
-      category: 'Shoes',
-      brand: 'Nike',
+      categoryName: 'Shoes',
+      brandName: 'Nike',
       status: 'available',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 1199000,
       stock: 40,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description: 'Durable tennis shoes for enhanced movement on the court.',
     },
     {
       id: 'P005',
       name: 'Football Cleats',
-      category: 'Shoes',
-      brand: 'Adidas',
+      categoryName: 'Shoes',
+      brandName: 'Adidas',
       status: 'available',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 1799000,
       stock: 20,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description:
         'Professional football cleats designed for maximum traction.',
     },
     {
       id: 'P006',
       name: 'Training Shoes',
-      category: 'Shoes',
-      brand: 'Under Armour',
+      categoryName: 'Shoes',
+      brandName: 'Under Armour',
       status: 'out-of-stock',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 1099000,
       stock: 0,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description: 'Flexible training shoes for a variety of workouts.',
     },
     {
       id: 'P007',
       name: 'Hiking Boots',
-      category: 'Shoes',
-      brand: 'The North Face',
+      categoryName: 'Shoes',
+      brandName: 'The North Face',
       status: 'available',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 2299000,
       stock: 15,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description: 'Waterproof hiking boots with superior ankle support.',
     },
     {
       id: 'P008',
       name: 'Walking Shoes',
-      category: 'Shoes',
-      brand: 'New Balance',
+      categoryName: 'Shoes',
+      brandName: 'New Balance',
       status: 'available',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 999000,
       stock: 25,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description: 'Comfortable walking shoes for everyday use.',
     },
     {
       id: 'P009',
       name: 'Skateboarding Shoes',
-      category: 'Shoes',
-      brand: 'Vans',
+      categoryName: 'Shoes',
+      brandName: 'Vans',
       status: 'available',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 799000,
       stock: 40,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description: 'Durable skate shoes with excellent grip for tricks.',
     },
     {
       id: 'P010',
       name: 'Trail Running Shoes',
-      category: 'Shoes',
-      brand: 'Salomon',
+      categoryName: 'Shoes',
+      brandName: 'Salomon',
       status: 'available',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 1999000,
       stock: 35,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description: 'Lightweight trail running shoes with superior grip.',
     },
     {
       id: 'P011',
       name: 'Gym Shoes',
-      category: 'Shoes',
-      brand: 'Reebok',
+      categoryName: 'Shoes',
+      brandName: 'Reebok',
       status: 'available',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 899000,
       stock: 20,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description: 'High-performance shoes for gym workouts.',
     },
     {
       id: 'P012',
       name: 'Soccer Cleats',
-      category: 'Shoes',
-      brand: 'Puma',
+      categoryName: 'Shoes',
+      brandName: 'Puma',
       status: 'available',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 1599000,
       stock: 25,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description: 'Lightweight soccer cleats for fast movement on the field.',
     },
     {
       id: 'P013',
       name: 'Golf Shoes',
-      category: 'Shoes',
-      brand: 'Nike',
+      categoryName: 'Shoes',
+      brandName: 'Nike',
       status: 'available',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 2199000,
       stock: 30,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description: 'Stable golf shoes with waterproof materials.',
     },
     {
       id: 'P014',
       name: 'Crossfit Shoes',
-      category: 'Shoes',
-      brand: 'Reebok',
+      categoryName: 'Shoes',
+      brandName: 'Reebok',
       status: 'available',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 1299000,
       stock: 35,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description: 'Shoes built for crossfit with enhanced grip and stability.',
     },
     {
       id: 'P015',
       name: 'Running Shoes',
-      category: 'Shoes',
-      brand: 'Asics',
+      categoryName: 'Shoes',
+      brandName: 'Asics',
       status: 'available',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 1399000,
       stock: 20,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description:
         'Premium running shoes with superior comfort and breathability.',
     },
     {
       id: 'P016',
       name: 'Indoor Court Shoes',
-      category: 'Shoes',
-      brand: 'Mizuno',
+      categoryName: 'Shoes',
+      brandName: 'Mizuno',
       status: 'available',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 999000,
       stock: 40,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description:
         'Shoes designed for indoor court sports like badminton and volleyball.',
     },
     {
       id: 'P017',
       name: 'Climbing Shoes',
-      category: 'Shoes',
-      brand: 'La Sportiva',
+      categoryName: 'Shoes',
+      brandName: 'La Sportiva',
       status: 'available',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 1899000,
       stock: 15,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description: 'High-grip climbing shoes for challenging terrains.',
     },
     {
       id: 'P018',
       name: 'Sandals',
-      category: 'Shoes',
-      brand: 'Birkenstock',
+      categoryName: 'Shoes',
+      brandName: 'Birkenstock',
       status: 'available',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 599000,
       stock: 50,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description: 'Comfortable sandals for casual wear.',
     },
     {
       id: 'P019',
       name: 'Leather Boots',
-      category: 'Shoes',
-      brand: 'Timberland',
+      categoryName: 'Shoes',
+      brandName: 'Timberland',
       status: 'available',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 2499000,
       stock: 20,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description: 'Durable leather boots for outdoor use.',
     },
     {
       id: 'P020',
       name: 'Winter Boots',
-      category: 'Shoes',
-      brand: 'Columbia',
+      categoryName: 'Shoes',
+      brandName: 'Columbia',
       status: 'available',
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
+      thumbnail:
+        'https://assets.adidas.com/thumbnails/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
       price: 2999000,
       stock: 10,
+      isActive: true,
+      color: ['white', 'black', 'green'],
       description:
         'Insulated winter boots for extreme cold weather conditions.',
     },
-    // Continue adding more shoes with unique IDs up to P030
   ];
 
-  // thead: tableColumns[] = [
-  //   { title: 'No.', class: '', sortable = false},
-  //   { title: 'Product Name', class: '' },
-  //   { title: 'Brand', class: '' },
-  //   { title: 'Category', class: '' },
-  //   { title: 'Price', class: '' },
-  //   { title: 'Thumbnail', class: 'text-center' },
-  //   { title: 'Status', class: 'text-center' },
-  //   { title: 'Actions', class: 'text-center' },
-  // ];
-
-  // getThead() {
-  //   return this.thead;
-  // }
-
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   getProducts(): Observable<ProductTable[]> {
     return of(this.products).pipe(delay(500)); // Simulate network delay
+  }
+
+  private readonly productPageSignal = signal<
+    PageManagement<ProductTable> | undefined
+  >(undefined);
+
+  getProductPage(searchRequest: ListSearchRequest): Observable<PageManagement<ProductTable>>{
+    return this.http.post<PageResponse>(`${API_URL_PRODUCTS}/specification/pagination/management`, searchRequest).pipe(
+      map(({content, pageable, totalElements, totalPages}) => {
+        if(!content) throw new Error("Hông có giá trị")
+
+          const productPage: PageManagement<ProductTable> = {
+            ItemsManagementPage: content.map((product: ProductTable) => ({
+              ...product,
+              thumbnail: product.thumbnail
+                ? `${API_URL_UPLOADS}/product-images/${product.thumbnail}`
+                : `${API_URL_UPLOADS}/product-images/default.png`,
+            })),
+            totalElements: totalElements,
+            totalPages: totalPages,
+            pageSize: pageable.pageSize,
+            currentPage: pageable.pageNumber,
+          };
+
+          this.productPageSignal.set(productPage);
+          return productPage;     
+      })
+    )
+  }
+
+  getProductPageSignal() {
+    return this.productPageSignal;
   }
 
   getProductById(id: string): Observable<ProductTable> {
@@ -326,8 +387,8 @@ export class ProductManagementService {
       this.products.filter(
         (p) =>
           p.name.toLowerCase().includes(lowercaseTerm) ||
-          p.brand.toLowerCase().includes(lowercaseTerm) ||
-          p.category.toLowerCase().includes(lowercaseTerm)
+          p.brandName.toLowerCase().includes(lowercaseTerm) ||
+          p.categoryName.toLowerCase().includes(lowercaseTerm)
       )
     ).pipe(delay(500));
   }
@@ -337,4 +398,25 @@ export class ProductManagementService {
     const numericPart = parseInt(lastId.slice(2)) + 1;
     return `SP${numericPart.toString().padStart(3, '0')}`;
   }
+
+  tableColumns: tableColumns[] = [
+    { key: 'id', title: 'No.', sortable: false },
+    { key: 'productInfo', title: 'Product', sortable: true },
+    { key: 'stock', title: 'stock', sortable: true },
+    { key: 'status', title: 'status', sortable: true },
+    { key: 'categoryName', title: 'categoryName', sortable: true },
+    { key: 'price', title: 'Price', sortable: true },
+    { key: 'discountPercent', title: 'Discount', sortable: true, class: 'text-center'  },
+    { key: 'action', title: 'Actions', sortable: false, class: 'text-center' },
+  ];
+
+  filterValues: {
+    email?: string;
+    phone?: string;
+    role?: string;
+    gender?: boolean | null;
+    status?: boolean | null;
+  } = {
+    status: true,
+  };
 }

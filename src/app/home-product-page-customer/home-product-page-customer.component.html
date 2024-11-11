@@ -1,0 +1,25 @@
+<!-- home-product-page-customer.component.html  -->
+ 
+<section>
+    <aside [class.show]="!filterService.showFilter()">
+        <app-home-product-page-customer-filter 
+            [hidden]="!filterService.showFilter()"
+            [initialValues]="filterValues"
+            (filterApplied)="handleFilterApplied($event)"
+    />
+    </aside>
+
+    <article>
+        <app-home-product-page-customer-search (search)="handleSearch($event)"/>
+        <app-home-product-page-customer-list 
+            [products]="products()"
+            />
+        <app-pagination
+            [currentPage]="currentPage()"
+            [totalPages]="totalPages()"
+            (pageChange)="handlePageChange($event)"
+        />
+    </article>
+</section>
+
+ 

@@ -1,83 +1,161 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CheckoutComponent } from '../checkout/checkout.component';
+import { HomeCartPageCustomerService } from '../home-cart-page-customer/home-cart-page-customer.service';
+import { Router } from '@angular/router';
+import { HomeCartPageCustomerCheckoutComponent } from '../home-cart-page-customer/home-cart-page-customer-checkout/home-cart-page-customer-checkout.component';
+import { API_URL_UPLOADS } from '../../environment';
 
-interface CartItem {
+
+export interface CartItem {
   id: number;
   name: string;
   price: number;
-  image: string;
   quantity: number;
+  image: string;
+  categoryName: string;
+  brandName: string;
+  discountPercent: number;
 }
+
+interface CartSummary {
+  subtotal: number;
+  shipping: number;
+  tax: number;
+  discount: number;
+  total: number;
+}
+
 
 @Component({
   selector: 'app-shopping-cart',
   standalone: true,
-  imports: [CommonModule, FormsModule, CheckoutComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CheckoutComponent,
+    HomeCartPageCustomerCheckoutComponent,
+  ],
   templateUrl: './shopping-cart.component.html',
   styleUrl: './shopping-cart.component.scss',
 })
 export class ShoppingCartComponent {
-  showCheckOut:boolean = false;
+  protected cartService = inject(HomeCartPageCustomerService);
+  protected showCheckout = false;
+  showSummary = false;
+  private router = inject(Router);
+  imageDefault = `${API_URL_UPLOADS}/products/default.png`;
 
-  cartItems: CartItem[] = [
-    {
-      id: 1,
-      name: 'Sofa For Living Room',
-      price: 250.0,
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
-      quantity: 1,
-    },
-    {
-      id: 2,
-      name: 'Sofa For Living Room',
-      price: 250.0,
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
-      quantity: 1,
-    },
-    {
-      id: 3,
-      name: 'Sofa For Living Room',
-      price: 250.0,
-      image:
-        'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fcc143f8340a43cf90e09dad71a3c7e4_9366/Adifom_Climacool_Shoes_Grey_IF3935_01_standard.jpg',
-      quantity: 1,
-    },
-  ];
+  protected cartSummary: CartSummary = {
+    subtotal: 0,
+    shipping: 30000, // Fixed shipping cost
+    tax: 0,
+    discount: 0,
+    total: 0,
+  };
 
-  couponCode: string = '';
-
-  onInputChange(id: number, event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    const newQuantity: number = Number(inputElement.value);
-    this.updateQuantity(id, newQuantity);
+  ngOnInit() {
+    setTimeout(() => {
+      this.updateCartSummary();
+    }, 100);
   }
 
-  updateQuantity(id: number, newQuantity: number): void {
-    this.cartItems = this.cartItems.map((item) =>
-      item.id === id ? { ...item, quantity: Math.max(1, newQuantity) } : item
+  protected updateQuantity(
+    productDetailColorsId: number,
+    newQuantity: number
+  ): void {
+    if (newQuantity < 1) return;
+
+    this.cartService
+      .updateQuantity(productDetailColorsId, newQuantity)
+      .subscribe({
+        next: () => {
+          this.updateCartSummary();
+          // alert('Cart updated successfully');
+        },
+      });
+  }
+
+  protected onInputChange(
+    productDetailColorsId: number,
+    newQuantity: number
+  ): void {
+    if (isNaN(newQuantity) || newQuantity < 1) {
+      this.updateQuantity(productDetailColorsId, 1);
+      return;
+    }
+
+    this.updateQuantity(productDetailColorsId, newQuantity);
+  }
+
+  protected removeItem(productDetailColorsId: number): void {
+    // if (confirm('Are you sure you want to remove this item from your cart?')) {
+      this.cartService.removeFromCart(productDetailColorsId).subscribe({
+        next: () => {
+          this.updateCartSummary();
+        },
+      });
+    // }
+  }
+
+  protected clearCart(): void {
+    if (confirm('Are you sure you want to clear your entire cart?')) {
+      this.cartService.clearCart();
+      this.updateCartSummary();
+      // alert('Cart cleared successfully');
+    }
+  }
+
+  protected calculateSubtotal(): number {
+    return this.cartService.totalAmount();
+  }
+
+  private updateCartSummary(): void {
+    const subtotal = this.calculateSubtotal();
+    const tax = subtotal * 0.1; // 10% tax
+
+    this.cartSummary = {
+      subtotal,
+      shipping: this.cartSummary.shipping,
+      tax,
+      discount: 0, // You can implement discount logic here
+      total:
+        subtotal + this.cartSummary.shipping + tax - this.cartSummary.discount,
+    };
+  }
+
+  protected continueShopping(): void {
+    this.router.navigate(['/product']);
+  }
+
+  protected proceedToCheckout(): void {
+    if (this.isCheckoutAvailable()) {
+      this.showCheckout = true;
+    } else {
+      // alert('Please remove out of stock items before proceeding to checkout');
+    }
+  }
+
+  protected isCheckoutAvailable(): boolean {
+    return this.cartService.orderDetails.every(
+      (item) => item.isProductDetailActive
     );
   }
 
-  removeItem(id: number): void {
-    this.cartItems = this.cartItems.filter((item) => item.id !== id);
+  protected onCheckoutComplete(): void {
+    this.showCheckout = false;
+    this.cartService.clearCart();
+    // alert('Order placed successfully!');
+    this.router.navigate(['/orders']);
   }
 
-  get subtotal(): number {
-    return this.cartItems.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
+  protected onCheckoutCancel(): void {
+    this.showCheckout = false;
   }
 
-  get discount(): number {
-    return 0.28; // 28% discount
-  }
-
-  get total(): number {
-    return this.subtotal * (1 - this.discount);
+  protected onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/images/placeholder-product.png';
   }
 }

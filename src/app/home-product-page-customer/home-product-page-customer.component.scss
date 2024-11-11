@@ -1,0 +1,16 @@
+section{
+    margin-top: 5rem;
+    display: flex;
+    
+    aside{
+        min-width: 270px;
+        &.show{
+            min-width: unset !important;
+        }
+    }
+    
+    article{
+        padding-inline: 4rem;
+        flex:1;
+    }
+}

@@ -1,0 +1,78 @@
+  <div class="filters">
+      <h2>Bộ lọc</h2>
+      <button class="clear-filters" (click)="clearFilters()">Clear Filters</button>
+
+      <div class="filter-group">
+        <label for="brand">Thương hiệu:</label>
+        <select id="brand" [(ngModel)]="filters.brand" (change)="applyFilters()">
+          <option value="">Tất cả</option>
+          <option *ngFor="let brand of brands" [value]="brand">{{ brand }}</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="color">Màu sắc:</label>
+        <select id="color" [(ngModel)]="filters.color" (change)="applyFilters()">
+          <option value="">Tất cả</option>
+          <option *ngFor="let color of colors" [value]="color">{{ color }}</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="category">Danh mục:</label>
+        <select id="category" [(ngModel)]="filters.category" (change)="applyFilters()">
+          <option value="">Tất cả</option>
+          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label (click)="toggleSizeFilter()">Kích thước:</label>
+        <div class="size-options" [class.show]="showSizeFilter">
+          <label *ngFor="let size of sizes">
+            <input type="checkbox" 
+                   [value]="size" 
+                   [checked]="filters.sizes.includes(size)"
+                   (change)="onSizeChange($event)"> {{ size }}
+          </label>
+        </div>
+      </div>
+
+      <div class="filter-group price-range">
+        <label>Khoảng giá:</label>
+        <div class="price-inputs">
+          <input type="number" 
+                 [(ngModel)]="filters.minPrice" 
+                 placeholder="Tối thiểu" 
+                 (change)="applyFilters()">
+          <span>-</span>
+          <input type="number" 
+                 [(ngModel)]="filters.maxPrice" 
+                 placeholder="Tối đa" 
+                 (change)="applyFilters()">
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label>Giảm giá:</label>
+        <div class="discount-options">
+          <label *ngFor="let discount of discounts">
+            <input type="checkbox" 
+                   [value]="discount" 
+                   [checked]="filters.discounts.includes(discount)"
+                   (change)="onDiscountChange($event)"> {{ discount }}%
+          </label>
+        </div>
+      </div>
+
+      <div class="sort-controls">
+        <button (click)="setSortOrder('asc')" 
+                [class.active]="filters.sortOrder === 'asc'">
+          Giá: Thấp đến Cao
+        </button>
+        <button (click)="setSortOrder('desc')" 
+                [class.active]="filters.sortOrder === 'desc'">
+          Giá: Cao đến Thấp
+        </button>
+      </div>
+    </div>

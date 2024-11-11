@@ -1,0 +1,172 @@
+<!-- Template -->
+<div class="filter-sidebar">
+  <div class="title__container">
+    <h2 class="filter-title">Filters</h2>
+    <span (click)="closeFilter()"><i class='bx bxs-x-circle'></i></span>
+  </div>
+
+  <form [formGroup]="filterForm">
+    <!-- Categories -->
+    <div class="filter-section">
+      <div class="dropdown-container">
+        <button type="button" 
+                class="dropdown-trigger"
+                (click)="toggleDropdown('categories')">
+          Categories
+          <i class='bx bx-chevron-down' [class.open]="activeDropdown === 'categories'"></i>
+        </button>
+        <div class="dropdown-content" [class.show]="activeDropdown === 'categories'">
+          @for (category of categories; track $index) {
+            <div class="checkbox-item" 
+                (click)="toggleCategory(category); $event.stopPropagation()"
+                [class.selected]="isCategorySelected(category)">
+              <input
+                type="checkbox"
+                [id]="'category-'+category"
+                [checked]="isCategorySelected(category)"
+                (click)="$event.stopPropagation()">
+              <label [for]="'category-'+category">{{ category }}</label>
+            </div>
+          }
+        </div>
+      </div>
+      <div class="selected-tags">
+        @for (category of getSelectedCategories(); track $index) {
+          <div class="tag" (click)="toggleCategory(category)">
+            {{ category }}
+            <i class='bx bx-x'></i>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Brand -->
+     <div class="filter-section">
+      <div class="dropdown-container">
+        <button type="button" 
+                class="dropdown-trigger"
+                (click)="toggleDropdown('brands')">
+          Brands
+          <i class='bx bx-chevron-down' [class.open]="activeDropdown === 'brands'"></i>
+        </button>
+        <div class="dropdown-content" [class.show]="activeDropdown === 'brands'">
+          @for (brand of brands; track $index) {
+            <div class="checkbox-item"
+                (click)="toggleBrand(brand); $event.stopPropagation()"
+                [class.selected]="isBrandSelected(brand)">
+              <input
+                type="checkbox"
+                [id]="'brand-'+brand"
+                [checked]="isBrandSelected(brand)"
+                (click)="$event.stopPropagation()">
+              <label [for]="'brand-'+brand">{{ brand }}</label>
+            </div>
+          }
+        </div>
+      </div>
+      <div class="selected-tags">
+        @for (brand of getSelectedBrands(); track $index) {
+          <div class="tag" (click)="toggleBrand(brand)">
+            {{ brand }}
+            <i class='bx bx-x'></i>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Colors -->
+    <div class="filter-section">
+      <div class="dropdown-container">
+        <button type="button" 
+                class="dropdown-trigger"
+                (click)="toggleDropdown('colors')">
+          Colors
+          <i class='bx bx-chevron-down' [class.open]="activeDropdown === 'colors'"></i>
+        </button>
+        <div class="dropdown-content" [class.show]="activeDropdown === 'colors'">
+          @for (color of colors; track $index) {
+            <div class="checkbox-item"
+                (click)="toggleColor(color); $event.stopPropagation()"
+                [class.selected]="isColorSelected(color)">
+              <input
+                type="checkbox"
+                [id]="'color-'+color"
+                [checked]="isColorSelected(color)"
+                (click)="$event.stopPropagation()">
+              <label [for]="'color-'+color">
+                <span class="color-box" [style.backgroundColor]="color.toLowerCase()"></span>
+                {{ color }}
+              </label>
+            </div>
+          }
+        </div>
+      </div>
+      <div class="selected-tags color-tags">
+        @for (color of getSelectedColors(); track $index) {
+          <div class="color-tag" 
+               (click)="toggleColor(color)"
+               [style.backgroundColor]="color.toLowerCase()"
+               [title]="color">
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Price Range -->
+    <div class="filter-section">
+      <h3 class="section-title">Price Range</h3>
+      <div class="price-range">
+        <input
+          type="number"
+          formControlName="priceMin"
+          placeholder="Min"
+          class="number-input">
+        <input
+          type="number"
+          formControlName="priceMax"
+          placeholder="Max"
+          class="number-input">
+      </div>
+    </div>
+
+    <!-- Discounts -->
+    <div class="filter-section">
+      <div class="dropdown-container">
+        <button type="button" 
+                class="dropdown-trigger"
+                (click)="toggleDropdown('discounts')">
+          Discount Rates
+          <i class='bx bx-chevron-down' [class.open]="activeDropdown === 'discounts'"></i>
+        </button>
+        <div class="dropdown-content" [class.show]="activeDropdown === 'discounts'">
+          @for (discount of discounts; track $index) {
+            <div class="checkbox-item"
+              (click)="toggleDiscount(discount); $event.stopPropagation()"
+                [class.selected]="isDiscountSelected(discount)">
+              <input
+                type="checkbox"
+                [id]="'discount-'+ discount"
+                [checked]="isDiscountSelected(discount)"
+                (click)="$event.stopPropagation()">
+              <label [for]="'discount-'+discount">{{ discount }}% off</label>
+            </div>
+          }
+        </div>
+      </div>
+      <div class="selected-tags">
+        @for (discount of getSelectedDiscounts(); track $index) {
+          <div class="tag" (click)="toggleDiscount(discount)">
+            {{ discount }}% off
+            <i class='bx bx-x'></i>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="button__actions">
+      <button type="button" class="btn applyFilter" (click)="applyFilter()">Apply Filter</button>
+      <button type="button" class="btn clear" (click)="clearFilter()">Clear</button>
+    </div>
+  </form>
+</div>

@@ -112,6 +112,7 @@ header {
 
   .user {
     position: relative;
+    z-index: 110;
 
     .user__img {
       cursor: pointer;
@@ -355,6 +356,7 @@ header {
       text-decoration: none;
       margin-bottom: 5px;
       position: relative;
+      z-index: 110;
 
       &:hover {
         color: #718096;
@@ -389,4 +391,8 @@ header {
   .nav--unLogin{
     margin:0;
   }
+}
+
+.hidden{
+  display: none;
 }

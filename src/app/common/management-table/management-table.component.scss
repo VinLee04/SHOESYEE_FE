@@ -25,6 +25,37 @@
     }
 }
 
+.product-info{
+    display    : flex;
+    align-items: center;
+    gap        : 12px;
+    
+    img {
+        width        : 50px;
+        aspect-ratio: 1;
+        border-radius: 3px;
+        object-fit   : cover;
+    }
+
+    .product-name{
+        font-size: 1rem;
+        font-weight  : 500;
+        margin-bottom: 4px;
+    }
+
+    .product-brand, .product-category {
+        font-size: .8rem;
+        color    : #667085;
+        font-style: italic;
+        display: inline;
+        padding-right: 4px;
+    }
+
+    .product-detail{
+        padding-block: .2rem;
+    }
+}
+
 .user-info {
     display    : flex;
     align-items: center;
@@ -38,12 +69,13 @@
     }
 
     .user-name {
+        font-size: 1rem;
         font-weight  : 500;
         margin-bottom: 4px;
     }
 
     .user-email {
-        font-size: 14px;
+        font-size: .8rem;
         color    : #667085;
     }
 }

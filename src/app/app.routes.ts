@@ -21,6 +21,13 @@ import { TableComponent } from './common/table/table.component';
 import { UserManagementFilterComponent } from './user-management/user-management-filter/user-management-filter.component';
 import { AccessManagementComponent } from './access-management/access-management.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { HomeProductPageCustomerComponent } from './home-product-page-customer/home-product-page-customer.component';
+import { HomeProductDetailPageCustomerComponent } from './home-product-detail-page-customer/home-product-detail-page-customer.component';
+import { ProductManagementAddEditComponent } from './product-management/product-management-add-edit/product-management-add-edit.component';
+import { CustomerFeaturesComponent } from './customer-features/customer-features.component';
+import { CustomerFeatureNavComponent } from './customer-features/customer-feature-nav/customer-feature-nav.component';
+import { CustomerFeatureWishlistComponent } from './customer-features/customer-feature-wishlist/customer-feature-wishlist.component';
+import { CustomerFeatureOrderComponent } from './customer-features/customer-feature-order/customer-feature-order.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -31,8 +38,42 @@ export const routes: Routes = [
   {
     path: 'product',
     children: [
-      { path: '', component: ProductComponent },
-      { path: 'viewDetail/:id', component: ProductDetailComponent },
+      { path: '', component: HomeProductPageCustomerComponent },
+      {
+        path: 'viewDetail/:id',
+        component: HomeProductDetailPageCustomerComponent,
+      },
+    ],
+  },
+  {
+    path: 'customer-feature',
+    component: CustomerFeaturesComponent,
+    children: [
+      {
+        path: 'profile',
+        component: UserProfileComponent,
+        outlet: 'nav',
+      },
+      {
+        path: 'order',
+        component: CustomerFeatureOrderComponent,
+        outlet: 'nav',
+      },
+      {
+        path: 'order/:status', 
+        component: CustomerFeatureOrderComponent,
+        outlet: 'nav',
+      },
+      {
+        path: 'wishlist',
+        component: CustomerFeatureWishlistComponent,
+        outlet: 'nav',
+      },
+      // {
+      //   path: 'trade-ins',
+      //   component: CustomerFeatureTradeInsComponent,
+      //   outlet: 'nav',
+      // },
     ],
   },
   { path: 'discount', component: DiscountComponent },
@@ -57,12 +98,17 @@ export const routes: Routes = [
     path: 'management',
     children: [
       { path: 'navbar', component: ManagementNavbarComponent },
-      { path: 'products', component: ProductManagementComponent },
+      {
+        path: 'products',
+        children: [
+          { path: '', component: ProductManagementComponent },
+          { path: 'add', component: ProductManagementAddEditComponent },
+        ],
+      },
       { path: 'users', component: UserManagementComponent },
       { path: 'orders', component: TableComponent },
       { path: 'filter', component: UserManagementFilterComponent },
       { path: 'authorization', component: AccessManagementComponent },
-
     ],
   },
 

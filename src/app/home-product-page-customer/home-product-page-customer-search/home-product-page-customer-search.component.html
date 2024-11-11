@@ -1,0 +1,14 @@
+<!-- home-product-page-customer-search.component.html -->
+<div class="search-bar">
+    <button class="filter-icon" *ngIf="!showFilter()" (click)="toggleFilter()">
+        <i class="bx bxs-filter-alt"></i></button>
+  <input
+    type="text"
+    [(ngModel)]="searchTerm"
+    (ngModelChange)="onSearchChange()"
+    (keyup)="onKeyUp($event)"
+    placeholder="Search here..."
+  />
+  <button class="clear-search" (click)="clearSearch()">Clear Search</button>
+  <button class="clear-all" (click)="clearAll()">Clear All</button>
+</div>

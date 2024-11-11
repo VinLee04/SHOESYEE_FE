@@ -1,0 +1,45 @@
+@import '../../../../variables';
+
+.order-table-nav{
+    margin-top: 1rem;
+
+    .nav-container{
+
+        .nav-main{
+            list-style: none;
+            
+            li{
+                display: inline-block;
+                padding: .5rem .4rem;
+
+                a{
+                    cursor: pointer;
+                    padding: .2rem;
+
+                    &.active {
+                        color: $hover-color;
+                        border-bottom: 5px solid $hover-color;
+                        animation: identifier cubic-bezier(0.165, 0.84, 0.44, 1) .5s;
+                        border-radius: 20%;
+                        @keyframes identifier {
+                            from{
+                                border-bottom-width: 7px;
+                                border-radius: 0;
+                                border-color: $accent-color;
+                                color: $accent-color;
+                            }
+                            to{
+                                border-radius: 20%;
+                                border-color: $hover-color;
+                            }
+                        }
+                    }
+
+                    &:not(.active){
+                        border-bottom: 2px solid $table-border;
+                    }
+                }
+            }
+        }   
+    }
+}

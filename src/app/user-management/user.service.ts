@@ -24,7 +24,31 @@ export class UserService extends BaseService {
     super(notificationService);
   }
 
-  getUsersPage(
+  getUsersPage(searchRequest: ListSearchRequest): Observable<PageManagement<UsersManagementTable>>{
+    return this.http.post<PageResponse>(`${API_URL_USERS}/specification/pagination/staffs`, searchRequest).pipe(
+      map(({content, totalElements, totalPages, pageable}) => {
+        if(!content) throw new Error("khum tim thay user");
+
+        const userPage: PageManagement<UsersManagementTable> = {
+          ItemsManagementPage: content.map((user: UsersManagementTable) => ({
+            ...user,
+            address: user.address || '',
+            salary: user.salary || 0,
+            image: user.image || '',
+            phone: user.phone || '',
+          })),
+          currentPage: pageable.currentPage + 1,
+          pageSize: pageable.pageNumber,
+          totalElements: totalElements,
+          totalPages: totalPages,
+        };
+
+        this.currentUserPageSignal.set(userPage);
+        return userPage;
+      })
+    )
+  }
+  getUsersPage1(
     searchRequest: ListSearchRequest
   ): Observable<PageManagement<UsersManagementTable>> {
     return this.http
@@ -79,7 +103,10 @@ export class UserService extends BaseService {
       .pipe(map((response) => this.handleResponse(response)));
   }
 
-  updateStaff(staffId:string, staffData: FormData): Observable<DataResponse<any>> {
+  updateStaff(
+    staffId: string,
+    staffData: FormData
+  ): Observable<DataResponse<any>> {
     return this.http
       .put<ApiResponse>(`${API_URL_USERS}/staff/${staffId}`, staffData)
       .pipe(map((response) => this.handleResponse(response)));
@@ -131,12 +158,6 @@ export class UserService extends BaseService {
     { key: 'gender', title: 'Gender', sortable: true },
     { key: 'role', title: 'Role', sortable: true },
     { key: 'salary', title: 'Salary', sortable: true },
-    {
-      key: 'status',
-      title: 'Status',
-      sortable: true,
-      class: 'text-center',
-    },
     { key: 'action', title: 'Actions', sortable: false, class: 'text-center' },
   ];
 

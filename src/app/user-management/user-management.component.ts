@@ -209,23 +209,12 @@ export class UserManagementComponent {
     return true;
   }
 
-  private createSearchRequest(
-    column: string,
-    value: any,
-    operation: Operation,
-    joinTable?: string
-  ): AttributeSearchRequest {
-    return {
-      column,
-      value,
-      operation,
-      ...(joinTable && { joinTable }),
+  private createSearchRequest(column: string, value: any, operation: Operation, joinTable?: string): AttributeSearchRequest {
+    return {column, value, operation, ...(joinTable && { joinTable }),
     };
   }
 
-  private normalizeFilterValues(
-    values: Partial<UserManagementFilterValues>
-  ): UserManagementFilterValues {
+  private normalizeFilterValues(values: Partial<UserManagementFilterValues>): UserManagementFilterValues {
     return {
       ...values,
       gender: this.parseBoolean(values.gender),

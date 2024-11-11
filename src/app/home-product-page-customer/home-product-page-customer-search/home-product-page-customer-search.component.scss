@@ -1,0 +1,55 @@
+// Định nghĩa các biến màu sắc
+@import "../../../variables";
+
+// home-product-page-customer-search.component.scss
+.search-bar {
+    display         : flex;
+    align-items     : center;
+    gap             : 10px;
+    padding         : 10px;
+    border          : 1px solid $color-border;
+    border-radius   : 5px;
+    background-color: $color-background;
+
+    input[type="text"] {
+        flex         : 1;
+        padding      : 8px;
+        border       : 1px solid $color-border;
+        border-radius: 4px;
+        font-size    : 16px;
+        outline      : none;
+        transition   : border-color 0.3s ease;
+
+        &:focus {
+            border-color: $color-input-focus;
+        }
+    }
+
+    button {
+        padding      : 8px 12px;
+        border       : none;
+        border-radius: 4px;
+        font-size    : 16px;
+        cursor       : pointer;
+
+        &.clear-search {
+            background-color: $color-clear-search-bg;
+            color           : $color-clear-search-text;
+            transition      : background-color 0.3s ease;
+
+            &:hover {
+                background-color: $color-clear-search-hover-bg;
+            }
+        }
+
+        &.clear-all {
+            background-color: $color-clear-all-bg;
+            color           : $color-clear-all-text;
+            transition      : background-color 0.3s ease;
+
+            &:hover {
+                background-color: $color-clear-all-hover-bg;
+            }
+        }
+    }
+}

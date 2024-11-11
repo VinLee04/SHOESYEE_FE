@@ -1,0 +1,10 @@
+  <div class="search-bar">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        (input)="onSearch($event)"
+        placeholder="Tìm kiếm sản phẩm"
+      >
+      <button class="clear-search" (click)="clearSearch()">Clear Search</button>
+      <button class="clear-all" (click)="clearAllP()">Clear All</button>
+    </div>

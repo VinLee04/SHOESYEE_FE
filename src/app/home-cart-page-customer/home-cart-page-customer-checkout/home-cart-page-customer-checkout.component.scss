@@ -1,0 +1,237 @@
+// checkout.component.scss
+@import "../../../variables";
+
+.checkout-container {
+    max-width : 1200px;
+    margin    : 0 auto;
+    padding   : 2rem;
+    min-height: 100vh;
+
+    .checkout-header {
+        margin-bottom: 2rem;
+
+        h1 {
+            font-size    : 2rem;
+            color        : $text-primary-color;
+            margin-bottom: 1rem;
+        }
+    }
+
+    .checkout-steps {
+        display        : flex;
+        justify-content: space-between;
+        margin-bottom  : 3rem;
+        position       : relative;
+
+        &::before {
+            content   : '';
+            position  : absolute;
+            top       : 50%;
+            left      : 0;
+            right     : 0;
+            height    : 2px;
+            background: $border-color;
+            z-index   : 1;
+        }
+
+        .step {
+            position  : relative;
+            z-index   : 2;
+            background: $background-color;
+            padding   : 0 1rem;
+
+            .step-number {
+                width          : 40px;
+                height         : 40px;
+                border-radius  : 50%;
+                background     : $gray-200;
+                display        : flex;
+                align-items    : center;
+                justify-content: center;
+                margin-bottom  : 0.5rem;
+                color          : $text-secondary-color;
+
+                &.active {
+                    background: $primary-color;
+                    color     : white;
+                }
+
+                &.completed {
+                    background: $success-color;
+                    color     : white;
+                }
+            }
+
+            .step-label {
+                font-size: 0.875rem;
+                color    : $text-secondary-color;
+
+                &.active {
+                    color      : $primary-color;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+
+    .checkout-content {
+        display              : grid;
+        grid-template-columns: 1fr 320px;
+        gap                  : 2rem;
+
+        @media (max-width: 1024px) {
+            grid-template-columns: 1fr;
+        }
+
+        .checkout-form {
+            background   : white;
+            padding      : 2rem;
+            border-radius: 8px;
+            box-shadow   : $box-shadow;
+
+            .form-section {
+                margin-bottom: 2rem;
+
+                h2 {
+                    font-size    : 1.25rem;
+                    margin-bottom: 1rem;
+                    color        : $text-primary-color;
+                }
+
+                .form-group {
+                    margin-bottom: 1.5rem;
+
+                    label {
+                        display      : block;
+                        margin-bottom: 0.5rem;
+                        color        : $text-primary-color;
+                    }
+
+                    input,
+                    select,
+                    textarea {
+                        width        : 100%;
+                        padding      : 0.75rem;
+                        border       : 1px solid $border-color;
+                        border-radius: 4px;
+
+                        &:focus {
+                            outline     : none;
+                            border-color: $primary-color;
+                        }
+                    }
+
+                    .error-message {
+                        color     : $error-color;
+                        font-size : 0.875rem;
+                        margin-top: 0.25rem;
+                    }
+                }
+            }
+        }
+
+        .order-summary {
+            background   : white;
+            padding      : 1.5rem;
+            border-radius: 8px;
+            box-shadow   : $box-shadow;
+            height       : fit-content;
+
+            h3 {
+                font-size    : 1.25rem;
+                margin-bottom: 1.5rem;
+                color        : $text-primary-color;
+            }
+
+            .summary-item {
+                display        : flex;
+                justify-content: space-between;
+                margin-bottom  : 1rem;
+                color          : $text-secondary-color;
+
+                &.total {
+                    margin-top : 1rem;
+                    padding-top: 1rem;
+                    border-top : 1px solid $border-color;
+                    font-weight: 600;
+                    color      : $text-primary-color;
+                }
+            }
+        }
+    }
+
+    .checkout-actions {
+        margin-top     : 2rem;
+        display        : flex;
+        justify-content: space-between;
+        align-items    : center;
+
+        button {
+            padding      : 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight  : 500;
+            cursor       : pointer;
+            transition   : all 0.2s;
+
+            &.btn-back {
+                background: $gray-200;
+                color     : $text-primary-color;
+                border    : none;
+
+                &:hover {
+                    background: $gray-300;
+                }
+            }
+
+            &.btn-next,
+            &.btn-submit {
+                background: $primary-color;
+                color     : white;
+                border    : none;
+
+                &:hover {
+                    background: darken($primary-color, 5%);
+                }
+
+                &:disabled {
+                    background: $gray-300;
+                    cursor    : not-allowed;
+                }
+            }
+        }
+    }
+}
+
+.payment-methods {
+    display              : grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap                  : 1rem;
+    margin               : 1rem 0;
+
+    .payment-method {
+        border       : 1px solid $border-color;
+        border-radius: 8px;
+        padding      : 1rem;
+        cursor       : pointer;
+        transition   : all 0.2s;
+
+        &:hover {
+            border-color: $primary-color;
+        }
+
+        &.selected {
+            border-color: $primary-color;
+            background  : rgba($primary-color, 0.05);
+        }
+
+        .method-name {
+            font-weight  : 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .method-description {
+            font-size: 0.875rem;
+            color    : $text-secondary-color;
+        }
+    }
+}

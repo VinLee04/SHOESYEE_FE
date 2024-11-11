@@ -1,7 +1,10 @@
 @import '../../../src/manage-variables';
-
-.management-navbar {
-    position: fixed;
+.close-menu {
+     left: -$with-management-navbar;
+}.management-navbar {
+    position        : fixed;
+    left            : 0;
+    top             : 0;
     width           : $with-management-navbar;
     height          : 100vh;
     background-color: $sidebar-bg;
@@ -10,6 +13,40 @@
     flex-direction  : column;
     padding         : $spacing-md;
     box-shadow      : $shadow-md;
+    transition      : left .5s ease;
+    z-index         : 1000;
+
+    &.close-menu {
+        left: -$with-management-navbar;
+    }
+
+    .menu {
+        right           : -2rem;
+        background-color: $sidebar-bg;
+        border          : 5px solid $background-color;
+        box-shadow      : 0 0 1px transparent, 0 0 4px gray inset, 0 2px 5px rgba(128, 128, 128, 0.815) inset;
+        color           : $sidebar-text;
+        padding         : 4px 8px;
+        padding-top     : 7px;
+        border-radius   : 30%;
+        font-size       : 2rem;
+        position        : absolute;
+        cursor          : pointer;
+        transition      : all .3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        z-index         : 1001;
+
+        &.show {
+            &:hover {
+                right: -3.5rem;
+            }
+        }
+    }
+
+    .show{
+        &:hover {
+            right: -3.5rem;
+        }
+    }
 
     .navbar-brand {
         display      : flex;

@@ -12,13 +12,6 @@ import { RouterModule } from '@angular/router';
 export class CartComponent {
   items: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  close = output<boolean>();
-
-
-  closeCart() {
-    this.close.emit(true);
-  }
-
   stopPropagation(event: Event) {
     event.stopPropagation();
   }

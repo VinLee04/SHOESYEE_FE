@@ -2,7 +2,6 @@
     <div class="cart__container">
         <div class="cart__header">
             <div class="header__title">Shopping cart</div>
-            <div class="header__close">x</div>
         </div>
         <div class="cart__body">
             @for (item of items; track $index) {
@@ -32,6 +31,6 @@
     </div>
     <div class="cart__footer">
         <div class="total"><b>Total</b>: <span class="price">$1000</span></div>
-        <a routerLink="shopping-cart" class="btn btn__checkout" (click)="closeCart()">GO TO CHECKOUT</a>
+        <a routerLink="shopping-cart" class="btn btn__checkout">GO TO CHECKOUT</a>
     </div>
 </section>

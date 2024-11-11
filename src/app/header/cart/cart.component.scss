@@ -5,9 +5,11 @@
     position: fixed;
     top: calc($header-height + 4px);
     right: 0;
+    top: 0;
+    padding-top: $header-height - 4px;
     display: flex;
     flex-direction: column;
-    height: calc(100vh - $header-height - 4px);
+    height: 100vh;
 
     .cart__container{
         background: $background-color;

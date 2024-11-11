@@ -1,296 +1,188 @@
-import { Component, computed, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, OnInit, signal } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FilterCriteria, Product, ProductResponse } from '../interface/Product';
-import { ProductService } from './product.service';
-import { Router } from '@angular/router';
+import { ProductShowForUser } from '../interface/Product';
 import { AttributeSearchRequest, GlobalOperator, ListSearchRequest, Operation } from '../interface/PageRequest';
+import { API_URL_UPLOADS } from '../../environment';
+import { PaginationComponent } from '../common/pagination/pagination.component';
+import { ProductService } from './product.service';
+
+interface FilterState {
+  brand?: string;
+  color?: string[];
+  category?: string;
+  sizes?: string[];
+  minPrice?: number;
+  maxPrice?: number;
+  discounts?: string[];
+}
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, PaginationComponent],
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss',
 })
 export class ProductComponent implements OnInit {
-  filteredProducts$: Observable<Product[]>;
-  private productsSubject = new BehaviorSubject<Product[]>([]);
+  private readonly PAGE_SIZE = 20;
+  currentPage = signal(1);
+  loading = signal(false);
+  thumbnailDefault = `${API_URL_UPLOADS}/products/detail.png`;
+  filterValues: FilterState = {};
+  searchQuery = '';
+  sortDirection: 'ASC' | 'DESC' = 'ASC';
+  sortColumn = 'id';
 
-  private favorites: Set<number> = new Set();
 
-  constructor(private productService: ProductService, private router: Router) {
-    this.filteredProducts$ = this.productsSubject.asObservable();
-  }
+  readonly totalPages = computed(
+    () => this.productService.getCurrentProductPageSignal()()?.totalPages ?? 0
+  );
+  readonly totalElements = computed(
+    () =>
+      this.productService.getCurrentProductPageSignal()()?.totalElements ?? 0
+  );
+  readonly products = computed(() =>
+    this.mapProductData(this.productService.getCurrentProductPageSignal()())
+  );
 
-  searchTerm: string = '';
-  selectedColor: string = '';
-  selectedBrand: string = '';
-  minPrice: number | null = null;
-  maxPrice: number | null = null;
-  selectedCategory: string = '';
-  selectedSizes: number[] = [];
-  selectedDiscounts: number[] = [];
-  sortOrder: 'asc' | 'desc' = 'asc';
-
-  itemsPerPage: number = 12;
-  totalItems: number = 0;
-
-  showSizeFilter: boolean = false;
-
-  brands: string[] = ['Adidas', 'Nike', 'Puma', 'Reebok', 'New Balance'];
-  colors: string[] = ['Red', 'Blue', 'Green', 'Yellow', 'Black', 'White'];
-  categories: string[] = ['Shoes', 'Clothing', 'Accessories'];
-  sizes: number[] = [10, 20, 30, 40, 50];
-  discounts: number[] = [10, 20, 30, 40, 50];
-
-  ngOnInit() {
-    this.loadProducts();
-  }
-
-  totalPages: number = 0;
-  loadProducts() {
-    const filters: FilterCriteria = {
-      searchTerm: this.searchTerm,
-      color: this.selectedColor,
-      brand: this.selectedBrand,
-      category: this.selectedCategory,
-      sizes: this.selectedSizes,
-      discounts: this.selectedDiscounts,
-      minPrice: this.minPrice,
-      maxPrice: this.maxPrice,
-      sortOrder: this.sortOrder,
-      page: this.currentPage,
-      itemsPerPage: this.itemsPerPage,
-    };
-
-    this.productService.getProducts(filters).subscribe(
-      (response: ProductResponse) => {
-        this.productsSubject.next(response.products);
-        this.totalItems = response.totalItems;
-        this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-        console.log(this.productsSubject.value);
-        console.log(this.totalItems);
-        console.log(this.totalPages);
+  constructor(private readonly productService: ProductService) {
+    effect(
+      () => {
+        this.loadPageData(this.currentPage());
       },
-      (error: Error) => {
-        console.error('Error fetching products:', error);
-      }
+      { allowSignalWrites: true }
     );
-  }
-  prevPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.loadProducts();
-    }
+    this.filterValues = this.productService.filterValues;
   }
 
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.loadProducts();
-    }
+  ngOnInit(): void {
+    this.loadPageData(1);
   }
 
-  onSearchChange() {
-    this.currentPage = 1;
-    this.loadProducts();
+  handlePageChange(page: number): void {
+    this.currentPage.set(page);
   }
 
-  applyFilters() {
-    this.currentPage = 1;
-    this.loadProducts();
+  handleSort(column: string, direction: 'ASC' | 'DESC'): void {
+    this.sortColumn = column;
+    this.sortDirection = direction;
+    this.loadPageData(this.currentPage());
   }
 
-  clearSearch() {
-    this.searchTerm = '';
-    this.onSearchChange();
+  handleSearch(event: Event): void {
+    this.searchQuery = (event.target as HTMLInputElement).value;
+    this.resetAndLoad();
   }
 
-  clearFilters() {
-    this.selectedColor = '';
-    this.selectedBrand = '';
-    this.selectedCategory = '';
-    this.selectedSizes = [];
-    this.selectedDiscounts = [];
-    this.minPrice = null;
-    this.maxPrice = null;
-    this.sortOrder = 'asc';
-    this.applyFilters();
+  private resetAndLoad(): void {
+    this.currentPage.set(1);
+    this.loadPageData(1);
   }
 
-  clearAll() {
-    this.clearSearch();
-    this.clearFilters();
+  private loadPageData(page: number): void {
+    const request = this.buildSearchRequest(page);
+
+    this.loading.set(true);
+    this.productService.getProductsPageShowForCustomer(request).subscribe({
+      next: () => this.loading.set(false),
+      complete: () => this.loading.set(false),
+    });
   }
 
-  toggleSizeFilter() {
-    this.showSizeFilter = !this.showSizeFilter;
+  private buildSearchRequest(page: number): ListSearchRequest {
+    return {
+      searchRequest: this.buildAttributeSearchRequests(),
+      globalOperator: GlobalOperator.AND,
+      pageDTO: {
+        pageNo: page - 1,
+        pageSize: this.PAGE_SIZE,
+        sort: this.sortDirection,
+        sortByColumn: this.sortColumn,
+      },
+    };
   }
 
-  onSizeChange(event: Event) {
-    const target = event.target as HTMLInputElement;
-    const value = Number(target.value);
-    if (target.checked) {
-      this.selectedSizes.push(value);
-    } else {
-      this.selectedSizes = this.selectedSizes.filter((size) => size !== value);
-    }
-    this.applyFilters();
-  }
+  private buildAttributeSearchRequests(): AttributeSearchRequest[] {
+    const requests: AttributeSearchRequest[] = [];
 
-  onDiscountChange(event: Event) {
-    const target = event.target as HTMLInputElement;
-    const value = parseInt(target.value);
-    if (target.checked) {
-      this.selectedDiscounts.push(value);
-    } else {
-      this.selectedDiscounts = this.selectedDiscounts.filter(
-        (discount) => discount !== value
+    if (this.searchQuery?.trim()) {
+      requests.push(
+        this.createSearchRequest('name', this.searchQuery, Operation.LIKE)
       );
     }
-    this.applyFilters();
+
+    // Add more filter requests based on filterValues
+    if (this.filterValues.category) {
+      requests.push(
+        this.createSearchRequest(
+          'categoryName',
+          this.filterValues.category,
+          Operation.EQUAL
+        )
+      );
+    }
+
+    if (this.filterValues.brand) {
+      requests.push(
+        this.createSearchRequest(
+          'brandName',
+          this.filterValues.brand,
+          Operation.EQUAL
+        )
+      );
+    }
+
+    return requests;
   }
 
-  isFavorite(productId: number): boolean {
-    return this.favorites.has(productId);
+  private createSearchRequest(
+    column: string,
+    value: any,
+    operation: Operation,
+    joinTable?: string
+  ): AttributeSearchRequest {
+    return {
+      column,
+      value,
+      operation,
+      ...(joinTable && { joinTable }),
+    };
+  }
+
+  private mapProductData(data: any): ProductShowForUser[] {
+    return (
+      data?.ItemsManagementPage.map((product: any) => ({
+        ...product,
+        price: product.price || '0',
+        discountPercent: product.discountPercent || null,
+        colors: product.colors || [],
+        thumbnail: `${API_URL_UPLOADS}/product-images/${
+          product.thumbnail || 'no-photo'
+        }`,
+      })) ?? []
+    );
+  }
+
+  // UI Event Handlers
+  viewDetails(id: number): void {
+    console.log('View details for product:', id);
+  }
+
+  addToCart(id: number): void {
+    console.log('Add to cart product:', id);
+  }
+
+  isFavorite(productId: number) {
+    // return this.favorites.has(productId);
   }
 
   toggleFavorite(productId: number): void {
-    if (this.favorites.has(productId)) {
-      this.favorites.delete(productId);
-    } else {
-      this.favorites.add(productId);
-    }
+    // if (this.favorites.has(productId)) {
+    //   this.favorites.delete(productId);
+    // } else {
+    //   this.favorites.add(productId);
+    // }
   }
-
-  viewDetails(productId: number): void {
-    console.log(`View details for product ${productId}`);
-    this.router.navigate(['product/viewDetail/', productId]);
-  }
-
-  addToCart(productId: number): void {
-    // Implement add to cart logic here
-    console.log(`Add product ${productId} to cart`);
-  }
-
-  //change page
-
-  showAddProduct = false;
-  showFilter = false;
-  loading = signal(false);
-  searchQuery = '';
-  currentPage = 1;
-  pageSize = 7;
-  sortDirection: 'ASC' | 'DESC' = 'ASC';
-  sortColumn = 'username';
-  filterActive: boolean | null = null;
-  filterRole: string | null = null;
-
-  // loadProducts() {
-  //   const searchRequest: ListSearchRequest = {
-  //     searchRequest: this.buildSearchRequest(),
-  //     globalOperator: GlobalOperator.AND,
-  //     pageDTO: {
-  //       pageNo: this.currentPage - 1,
-  //       pageSize: this.pageSize,
-  //       sort: this.sortDirection,
-  //       sortByColumn: this.sortColumn,
-  //     },
-  //   };
-
-  //   this.loading.set(true);
-  //   this.productService.getProductsPage(searchRequest).subscribe({
-  //     next: () => {
-  //       this.loading.set(false);
-  //     },
-  //     error: (error) => {
-  //       this.loading.set(false);
-  //       console.error('Error loading users:', error);
-  //     },
-  //   });
-  // }
-
-  // buildSearchRequest(): AttributeSearchRequest[] {
-  //   const requests: AttributeSearchRequest[] = [];
-
-  //   if (this.searchQuery) {
-  //     requests.push({
-  //       column: 'username',
-  //       value: this.searchQuery,
-  //       operation: Operation.LIKE,
-  //     });
-  //   }
-
-  //   if (this.filterActive !== null) {
-  //     requests.push({
-  //       column: 'active',
-  //       value: this.filterActive.toString(),
-  //       operation: Operation.EQUAL,
-  //     });
-  //   }
-
-  //   if (this.filterRole) {
-  //     requests.push({
-  //       column: 'id',
-  //       value: this.filterRole,
-  //       operation: Operation.JOIN,
-  //       joinTable: 'role',
-  //     });
-  //   }
-
-  //   return requests;
-  // }
-
-  // changePage(page: number) {
-  //   this.currentPage = page;
-  //   this.loadProducts();
-  // }
-
-  // toggleSortDirection() {
-  //   this.sortDirection = this.sortDirection === 'ASC' ? 'DESC' : 'ASC';
-  //   this.loadProducts();
-  // }
-
-  // totalPages = computed(() => {
-  //   console.log(this.productService.getCurrentProductSignal()()?.totalPages ?? 0);
-  //   return this.productService.getCurrentProductSignal()()?.totalPages ?? 0;
-  // });
-
-  // getPageNumbers(): number[] {
-  //   const total = this.totalPages();
-  //   const current = this.currentPage;
-
-  //   let start = Math.max(1, current - 2);
-  //   let end = Math.min(total, start + 4);
-
-  //   if (end === total) {
-  //     start = Math.max(1, end - 4);
-  //   }
-
-  //   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-  // }
-
-  // prevPage() {
-  //   if (this.currentPage > 1) {
-  //     this.changePage(this.currentPage - 1);
-  //   }
-  // }
-
-  // nextPage() {
-  //   if (this.currentPage < this.totalPages()) {
-  //     this.changePage(this.currentPage + 1);
-  //   }
-  // }
-
-  // // Kiểm tra xem có disable nút Previous không
-  // canGoPrev(): boolean {
-  //   return this.currentPage > 1;
-  // }
-
-  // // Kiểm tra xem có disable nút Next không
-  // canGoNext(): boolean {
-  //   return this.currentPage < this.totalPages();
-  // }
 }

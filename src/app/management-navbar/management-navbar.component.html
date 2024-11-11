@@ -22,7 +22,15 @@
         </ul>
     </div>
 </nav> -->
-<nav class="management-navbar">
+<nav class="management-navbar" [class.close-menu]="!show()">
+    <div class="menu">
+        @if (!show()) {
+            <i class='bx bx-menu' (click)="showNav()"></i>
+        }
+        @else {
+            <i class='bx bx-x' (click)="closeNav()"></i>
+        }
+    </div>
     <div class="navbar-brand">
         <img src="logo-transparent-white.png" alt="Logo" class="logo">
         <span class="brand-name">DESKBOARD</span>
