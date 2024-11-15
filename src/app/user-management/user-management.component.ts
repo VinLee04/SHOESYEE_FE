@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   effect,
+  inject,
   signal,
   ViewChild,
 } from '@angular/core';
@@ -20,6 +21,8 @@ import { ManagementTableComponent } from '../common/management-table/management-
 import { PaginationComponent } from '../common/pagination/pagination.component';
 import { UserManagementAddEditComponent } from './user-management-add-edit/user-management-add-edit.component';
 import { UserManagementFilterValues } from '../interface/filterMangementTable';
+import { FilterService } from '../home-product-page-customer/home-product-page-customer-filter/home-product-page-customer-fiter.service';
+import { NavService } from '../management-navbar/nav.service';
 
 
 @Component({
@@ -48,6 +51,8 @@ export class UserManagementComponent {
     statusDisplay: 'active',
     roleDisplay: 'role',
   };
+
+  navService = inject(NavService);
 
   readonly currentPage = signal(1);
   readonly loading = signal(false);
@@ -117,13 +122,21 @@ export class UserManagementComponent {
       .subscribe(() => this.loadPageData(this.currentPage()));
   }
 
-  handleAdd():void{
+  close = inject(FilterService);
+  handleAdd(): void {
+    this.navService.navSignal.set(false);
     this.isEditMode = false;
     this.editModeData = null;
     this.showAddUser = true;
   }
 
+  handleFilter(): void{
+    this.navService.navSignal.set(false);
+    this.showFilter = true;
+  }
+
   handleEdit(user: any): void {
+    this.navService.navSignal.set(false);
     this.isEditMode = true;
     this.editModeData = user;
     this.showAddUser = true;
@@ -209,12 +222,18 @@ export class UserManagementComponent {
     return true;
   }
 
-  private createSearchRequest(column: string, value: any, operation: Operation, joinTable?: string): AttributeSearchRequest {
-    return {column, value, operation, ...(joinTable && { joinTable }),
-    };
+  private createSearchRequest(
+    column: string,
+    value: any,
+    operation: Operation,
+    joinTable?: string
+  ): AttributeSearchRequest {
+    return { column, value, operation, ...(joinTable && { joinTable }) };
   }
 
-  private normalizeFilterValues(values: Partial<UserManagementFilterValues>): UserManagementFilterValues {
+  private normalizeFilterValues(
+    values: Partial<UserManagementFilterValues>
+  ): UserManagementFilterValues {
     return {
       ...values,
       gender: this.parseBoolean(values.gender),

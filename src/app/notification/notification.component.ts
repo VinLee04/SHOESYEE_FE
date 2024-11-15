@@ -31,7 +31,7 @@ import { CommonModule } from '@angular/common';
       position: fixed;
       top: 20px;
       right: 20px;
-      z-index: 1000;
+      z-index: 9999999999;
       max-width: 350px;
     }
 

@@ -16,13 +16,19 @@ import { CartComponent } from './header/cart/cart.component';
 import { ProductTessssComponent } from './product-tessss/product-tessss.component';
 import { ProductManagementComponent } from './product-management/product-management.component';
 import { ProductManagementAddEditComponent } from './product-management/product-management-add-edit/product-management-add-edit.component';
+import { NavService } from './management-navbar/nav.service';
+import { TestpaymentComponent } from './testpayment/testpayment.component';
+import { TestGHNComponent } from './test-ghn/test-ghn.component';
+import { OrderPaymentComponent } from './order-payment/order-payment.component';
+import { CheckoutComponent } from './checkout/checkout.component';
+import { HomeCartPageCustomerCheckoutComponent } from './home-cart-page-customer/home-cart-page-customer-checkout/home-cart-page-customer-checkout.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, HeaderComponent, HomeComponent, FooterComponent, ManagementNavbarComponent , NotificationComponent,
     AccessManagementComponent, ResetPasswordComponent, HomeProductPageCustomerComponent, HomeProductDetailPageCustomerMainComponent, CartComponent
-    ,ProductManagementAddEditComponent, ProductManagementComponent
+    ,ProductManagementAddEditComponent, ProductManagementComponent, TestpaymentComponent, TestGHNComponent, OrderPaymentComponent, HomeCartPageCustomerCheckoutComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -30,5 +36,6 @@ import { ProductManagementAddEditComponent } from './product-management/product-
 export class AppComponent {
   title = 'SHOESYEE-WEB-PROJECT';
   auth = inject(AuthService);
+  nav = inject(NavService);
   show = true;
 }

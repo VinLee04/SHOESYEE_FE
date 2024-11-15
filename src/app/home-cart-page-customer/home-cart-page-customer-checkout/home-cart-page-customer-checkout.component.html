@@ -1,39 +1,40 @@
 <!-- checkout.component.html -->
+<section class="checkout-section" #modal (click)="onBackdropClick($event)">
 <div class="checkout-container">
   <div class="checkout-header">
     <h1>Checkout</h1>
     <div class="checkout-steps">
       <div class="step" [class.active]="currentStep === 1">
         <div class="step-number" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">1</div>
-        <div class="step-label" [class.active]="currentStep === 1">Shipping</div>
+        <div class="step-label" [class.active]="currentStep === 1">Customer Info</div>
       </div>
       <div class="step" [class.active]="currentStep === 2">
         <div class="step-number" [class.active]="currentStep === 2" [class.completed]="currentStep > 2">2</div>
-        <div class="step-label" [class.active]="currentStep === 2">Payment</div>
+        <div class="step-label" [class.active]="currentStep === 2">Shipping</div>
       </div>
       <div class="step" [class.active]="currentStep === 3">
         <div class="step-number" [class.active]="currentStep === 3">3</div>
-        <div class="step-label" [class.active]="currentStep === 3">Confirmation</div>
+        <div class="step-label" [class.active]="currentStep === 3">Payment</div>
       </div>
     </div>
   </div>
 
   <div class="checkout-content">
     <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" class="checkout-form">
-      <!-- Step 1: Shipping Information -->
-      <div class="form-section" *ngIf="currentStep === 1" formGroupName="shippingInfo">
-        <h2>Shipping Information</h2>
+      <!-- Step 1: Customer Information -->
+      <div class="form-section" *ngIf="currentStep === 1" formGroupName="customerInfo">
+        <h2>Customer Information</h2>
         <div class="form-group">
-          <label for="address">Delivery Address</label>
+          <label for="customerName">Full Name</label>
           <input 
-            id="address"
+            id="customerName"
             type="text"
-            formControlName="address"
-            placeholder="Enter your delivery address"
+            formControlName="customerName"
+            placeholder="Enter your full name"
           >
-          <div class="error-message" *ngIf="checkoutForm.get('shippingInfo.address')?.errors?.['required'] && 
-                                          checkoutForm.get('shippingInfo.address')?.touched">
-            Address is required
+          <div class="error-message" *ngIf="getFormControl('customerInfo', 'customerName')?.errors?.['required'] && 
+                                          getFormControl('customerInfo', 'customerName')?.touched">
+            Full name is required
           </div>
         </div>
 
@@ -45,45 +46,237 @@
             formControlName="phone"
             placeholder="Enter your phone number"
           >
-          <div class="error-message" *ngIf="checkoutForm.get('shippingInfo.phone')?.errors?.['required'] && 
-                                          checkoutForm.get('shippingInfo.phone')?.touched">
+          <div class="error-message" *ngIf="getFormControl('customerInfo', 'phone')?.errors?.['required'] && 
+                                          getFormControl('customerInfo', 'phone')?.touched">
             Phone number is required
           </div>
-          <div class="error-message" *ngIf="checkoutForm.get('shippingInfo.phone')?.errors?.['pattern'] && 
-                                          checkoutForm.get('shippingInfo.phone')?.touched">
+          <div class="error-message" *ngIf="getFormControl('customerInfo', 'phone')?.errors?.['pattern'] && 
+                                          getFormControl('customerInfo', 'phone')?.touched">
             Please enter a valid 10-digit phone number
           </div>
         </div>
 
         <div class="form-group">
-          <label for="note">Order Notes (Optional)</label>
-          <textarea 
-            id="note"
-            formControlName="note"
-            rows="3"
-            placeholder="Any special instructions for delivery?"
-          ></textarea>
-        </div>
-      </div>
-
-      <!-- Step 2: Payment Method -->
-      <div class="form-section" *ngIf="currentStep === 2" formGroupName="paymentInfo">
-        <h2>Payment Method</h2>
-        <div class="payment-methods">
-          <div 
-            *ngFor="let method of paymentMethods"
-            class="payment-method"
-            [class.selected]="checkoutForm.get('paymentInfo.paymentMethodId')?.value === method.id"
-            (click)="checkoutForm.get('paymentInfo.paymentMethodId')?.setValue(method.id)"
+          <label for="email">Email</label>
+          <input 
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="Enter your email address"
           >
-            <div class="method-name">{{ method.name }}</div>
-            <div class="method-description">{{ method.description }}</div>
+          <div class="error-message" *ngIf="getFormControl('customerInfo', 'email')?.errors?.['required'] && 
+                                          getFormControl('customerInfo', 'email')?.touched">
+            Email is required
+          </div>
+          <div class="error-message" *ngIf="getFormControl('customerInfo', 'email')?.errors?.['email'] && 
+                                          getFormControl('customerInfo', 'email')?.touched">
+            Please enter a valid email address
           </div>
         </div>
-        <div class="error-message" *ngIf="checkoutForm.get('paymentInfo.paymentMethodId')?.errors?.['required'] && 
-                                        checkoutForm.get('paymentInfo.paymentMethodId')?.touched">
-          Please select a payment method
+      </div>
+
+      <!-- Step 2: Shipping Information -->
+      <div class="form-section" *ngIf="currentStep === 2" formGroupName="shippingInfo">
+  <h2>Shipping Information</h2>
+  
+  <div class="shipping-grid">
+    <!-- Column 1 -->
+    <div class="shipping-column">
+      <div class="form-group">
+        <label for="provinceId" [class.disabled]="false">Province</label>
+        <select 
+          id="provinceId" 
+          formControlName="provinceId"
+          [class.disabled]="false"
+        >
+          <option value="">Select Province</option>
+          <option *ngFor="let province of provinces" [value]="province.ProvinceID">
+            {{province.ProvinceName}}
+          </option>
+        </select>
+        <div class="error-message" *ngIf="getFormControl('shippingInfo', 'provinceId')?.errors?.['required'] && 
+                                      getFormControl('shippingInfo', 'provinceId')?.touched">
+          Province is required
         </div>
       </div>
 
-      <!-- Step 3: Confirmation -->
+      <div class="form-group">
+        <label for="districtId" [class.disabled]="!getFormControl('shippingInfo', 'provinceId')?.value">District</label>
+        <select 
+          id="districtId" 
+          formControlName="districtId" 
+          [disabled]="!getFormControl('shippingInfo', 'provinceId')?.value"
+          [class.disabled]="!getFormControl('shippingInfo', 'provinceId')?.value"
+        >
+          <option value="">Select District</option>
+          <option *ngFor="let district of districts" [value]="district.DistrictID">
+            {{district.DistrictName}}
+          </option>
+        </select>
+        <div class="error-message" *ngIf="getFormControl('shippingInfo', 'districtId')?.errors?.['required'] && 
+                                      getFormControl('shippingInfo', 'districtId')?.touched">
+          District is required
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 2 -->
+    <div class="shipping-column">
+      <div class="form-group">
+        <label for="wardCode" [class.disabled]="!getFormControl('shippingInfo', 'districtId')?.value">Ward</label>
+        <select 
+          id="wardCode" 
+          formControlName="wardCode" 
+          [disabled]="!getFormControl('shippingInfo', 'districtId')?.value"
+          [class.disabled]="!getFormControl('shippingInfo', 'districtId')?.value"
+        >
+          <option value="">Select Ward</option>
+          <option *ngFor="let ward of wards" [value]="ward.WardCode">
+            {{ward.WardName}}
+          </option>
+        </select>
+        <div class="error-message" *ngIf="getFormControl('shippingInfo', 'wardCode')?.errors?.['required'] && 
+                                      getFormControl('shippingInfo', 'wardCode')?.touched">
+          Ward is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="serviceTypeId" [class.disabled]="!getFormControl('shippingInfo', 'wardCode')?.value">Delivery Service</label>
+        <select 
+          id="serviceTypeId" 
+          formControlName="serviceTypeId" 
+          [disabled]="!getFormControl('shippingInfo', 'wardCode')?.value"
+          [class.disabled]="!getFormControl('shippingInfo', 'wardCode')?.value"
+        >
+          <option value="">Select Service Type</option>
+          <option *ngFor="let service of serviceTypes" [value]="service.service_type_id">
+            {{service.short_name}}
+          </option>
+        </select>
+        <div class="error-message" *ngIf="getFormControl('shippingInfo', 'serviceTypeId')?.errors?.['required'] && 
+                                      getFormControl('shippingInfo', 'serviceTypeId')?.touched">
+          Delivery service is required
+        </div>
+      </div>
+    </div>
+
+    <!-- Full width fields -->
+    <div class="shipping-full-width">
+      <div class="form-group">
+        <label for="address">Detailed Address</label>
+        <textarea 
+          id="address"
+          formControlName="address"
+          placeholder="Enter your detailed address"
+          rows="3"
+        ></textarea>
+        <div class="error-message" *ngIf="getFormControl('shippingInfo', 'address')?.errors?.['required'] && 
+                                      getFormControl('shippingInfo', 'address')?.touched">
+          Address is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="note">Delivery Notes (Optional)</label>
+        <textarea 
+          id="note"
+          formControlName="note"
+          placeholder="Add any special delivery instructions"
+          rows="2"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+      <!-- Step 3: Payment Information -->
+      <div class="form-section" *ngIf="currentStep === 3" formGroupName="paymentInfo">
+        <h2>Payment Method</h2>
+        
+        <div class="payment-methods">
+          <div *ngFor="let method of paymentMethods" class="payment-method-item">
+            <input
+              type="radio"
+              [id]="'payment-' + method.id"
+              [value]="method.id"
+              formControlName="paymentMethodId"
+              class="payment-radio"
+            >
+            <label [for]="'payment-' + method.id" class="payment-label">
+              <img [src]="method.type.toLowerCase() + '.png'" [alt]="method.name" class="payment-icon">
+              <div class="payment-details">
+                <h3>{{method.name}}</h3>
+                <p>{{method.description}}</p>
+              </div>
+            </label>
+          </div>
+          <div class="error-message" *ngIf="getFormControl('paymentInfo', 'paymentMethodId')?.errors?.['required'] && 
+                                          getFormControl('paymentInfo', 'paymentMethodId')?.touched">
+            Please select a payment method
+          </div>
+        </div>
+
+        <!-- Order Summary -->
+        <!-- order-summary.component.html -->
+<div class="order-summary">
+  <h2 class="order-summary__title">Order Summary</h2>
+  
+  <div class="order-summary__content">
+    <div class="summary-row">
+      <span class="summary-row__label">Subtotal</span>
+      <span class="summary-row__value">{{orderSummary.subtotal | number:'1.0-0'}} ₫</span>
+    </div>
+    
+    <div class="summary-row">
+      <span class="summary-row__label">Shipping Fee</span>
+      <span class="summary-row__value">{{orderSummary.shipping | number:'1.0-0'}} ₫</span>
+    </div>
+    <!-- <div class="summary-row">
+       <span class="summary-row__label">Tax (10%)</span>
+      <span class="summary-row__value">{{orderSummary.tax | number:'1.0-0'}} ₫</span>
+    </div> -->
+
+    <div class="divider"></div>
+    <div class="summary-row summary-row--total">
+      <span class="summary-row__label">Total</span>
+      <span class="summary-row__value">{{orderSummary.total | number:'1.0-0'}} ₫</span>
+    </div>
+  </div>
+</div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="form-navigation">
+        <button 
+          type="button" 
+          class="btn btn-secondary" 
+          (click)="previousStep()"
+          *ngIf="currentStep > 1"
+        >
+          Previous
+        </button>
+        
+        <button 
+          type="button" 
+          class="btn btn-primary" 
+          (click)="nextStep()"
+          *ngIf="currentStep < totalSteps"
+        >
+          Next
+        </button>
+
+        <button 
+          type="submit" 
+          class="btn btn-success" 
+          *ngIf="currentStep === totalSteps"
+          [disabled]="loading"
+        >
+          <span *ngIf="loading" class="spinner"></span>
+          Place Order
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+</section>

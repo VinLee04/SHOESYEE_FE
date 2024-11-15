@@ -78,9 +78,13 @@ export class HomeProductDetailPageCustomerMainComponent implements OnInit {
   selectColor(color: ColorOptions): void {
     this.selectedColorOption = color;
     this.selectedSizeOption = undefined;
-    this.selectedImage =
-      `${API_URL_UPLOADS}/product-images/${color.image}` ||
-      `${API_URL_UPLOADS}/product-images/default.png`;
+    if(color.image != null){
+      console.log("object");
+      this.selectedImage = `${API_URL_UPLOADS}/product-images/default.png`;
+    }else{
+      console.log("222object");
+    this.selectedImage = this.imgHasNotUploadedYetThumbnail;
+    }
     this.auth.scrollToTop();
   }
 

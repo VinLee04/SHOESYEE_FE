@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/shoesyee-web-project",
+            "outputPath": "dist/loi",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -44,16 +44,16 @@
           },
           "configurations": {
             "production": {
-              "budgets": [
+               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "1MB",
-                  "maximumError": "1.2MB"
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6KB",
-                  "maximumError": "8KB"
+                  "maximumWarning": "25kb",
+                  "maximumError": "50kb"
                 }
               ]
               ,

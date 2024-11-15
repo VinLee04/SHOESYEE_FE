@@ -7,13 +7,17 @@
 }
     @else {
     <section class="management-section">
-        <app-management-navbar [(show)]="show"></app-management-navbar>
-        <div class="router" [class.full-width]="!show">
+        <app-management-navbar></app-management-navbar>
+        <div class="router" [class.full-width]="!nav.navSignal()">
             <router-outlet></router-outlet>
         </div>
     </section>
     }
 <app-notification></app-notification>
+<!-- <app-home-cart-page-customer-checkout /> -->
+<!-- <app-testpayment></app-testpayment> -->
+<!-- <app-test-ghn></app-test-ghn> -->
+<!-- <app-order-payment></app-order-payment> -->
 
 <!-- 
 <section class="maganement-section">

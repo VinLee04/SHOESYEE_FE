@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import {  FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AccessManagementService } from '../../access-management/access-management.service';
+import { NavService } from '../../management-navbar/nav.service';
 
 @Component({
   selector: 'app-user-management-filter',
@@ -52,7 +53,10 @@ export class UserManagementFilterComponent {
     }
   }
 
+  navService = inject(NavService);
+
   close() {
+    this.navService.navSignal.set(true);
     this.closeFilterChange.emit(false);
   }
 

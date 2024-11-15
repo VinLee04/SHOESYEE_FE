@@ -1,0 +1,164 @@
+<!-- order-payment.component.html -->
+<div class="order-payment-container">
+  <h2>Order Details & Payment</h2>
+  
+  <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+    <div class="form-grid">
+      <!-- Customer Information -->
+      <div class="form-group">
+        <label for="customerName">Customer Name</label>
+        <input 
+          id="customerName"
+          type="text"
+          formControlName="customerName"
+          placeholder="Enter customer name"
+        >
+        <div 
+          class="error-message" 
+          *ngIf="getFormControl('customerName')?.touched && getFormControl('customerName')?.invalid"
+        >
+          Customer name is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input 
+          id="phone"
+          type="tel"
+          formControlName="phone"
+          placeholder="Enter phone number"
+        >
+        <div 
+          class="error-message" 
+          *ngIf="getFormControl('phone')?.touched && getFormControl('phone')?.invalid"
+        >
+          Please enter a valid phone number
+        </div>
+      </div>
+
+      <!-- Shipping Information -->
+      <div class="form-group">
+        <label for="provinceId">Province</label>
+        <select id="provinceId" formControlName="provinceId">
+          <option value="">Select Province</option>
+          <option *ngFor="let province of provinces" [value]="province.ProvinceID">
+            {{province.ProvinceName}}
+          </option>
+        </select>
+        <div 
+          class="error-message" 
+          *ngIf="getFormControl('provinceId')?.touched && getFormControl('provinceId')?.invalid"
+        >
+          Please select a province
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="districtId">District</label>
+        <select id="districtId" formControlName="districtId" [disabled]="!getFormControl('provinceId')?.value">
+          <option value="">Select District</option>
+          <option *ngFor="let district of districts" [value]="district.DistrictID">
+            {{district.DistrictName}}
+          </option>
+        </select>
+        <div 
+          class="error-message" 
+          *ngIf="getFormControl('districtId')?.touched && getFormControl('districtId')?.invalid"
+        >
+          Please select a district
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="wardCode">Ward</label>
+        <select id="wardCode" formControlName="wardCode" [disabled]="!getFormControl('districtId')?.value">
+          <option value="">Select Ward</option>
+          <option *ngFor="let ward of wards" [value]="ward.WardCode">
+            {{ward.WardName}}
+          </option>
+        </select>
+        <div 
+          class="error-message" 
+          *ngIf="getFormControl('wardCode')?.touched && getFormControl('wardCode')?.invalid"
+        >
+          Please select a ward
+        </div>
+      </div>
+
+      <div class="form-group">
+  <label for="serviceTypeId">Delivery Service <span class="transport-name">{{getTransportName()}}</span></label>
+  <!-- <div class="transport-name">{{getTransportName()}}</div> -->
+  <select id="serviceTypeId" formControlName="serviceTypeId" [disabled]="!getFormControl('districtId')?.value">
+    <option value="">Select Service Type</option>
+    <option *ngFor="let service of serviceTypes" [value]="service.service_id">
+      {{service.short_name}}
+    </option>
+  </select>
+  <div 
+    class="error-message" 
+    *ngIf="getFormControl('serviceTypeId')?.touched && getFormControl('serviceTypeId')?.invalid"
+  >
+    Please select a service type
+  </div>
+</div>
+
+      <div class="form-group full-width">
+        <label for="shipAddress">Shipping Address</label>
+        <textarea 
+          id="shipAddress"
+          formControlName="shipAddress"
+          rows="3"
+          placeholder="Enter detailed shipping address"
+        ></textarea>
+        <div 
+          class="error-message" 
+          *ngIf="getFormControl('shipAddress')?.touched && getFormControl('shipAddress')?.invalid"
+        >
+          Shipping address is required
+        </div>
+      </div>
+
+      <!-- Payment Method -->
+      <div class="form-group full-width">
+        <label>Payment Method</label>
+        <div class="payment-methods">
+          <div 
+            *ngFor="let method of paymentMethods"
+            class="payment-method"
+            [class.selected]="getFormControl('paymentMethodId')?.value === method.id"
+            (click)="getFormControl('paymentMethodId')?.setValue(method.id)"
+          >
+            <img [src]="method.type.toLowerCase() + '.png'" [alt]="method.name">
+            <div class="method-name">{{method.name}}</div>
+          </div>
+        </div>
+        <div 
+          class="error-message" 
+          *ngIf="getFormControl('paymentMethodId')?.touched && getFormControl('paymentMethodId')?.invalid"
+        >
+          Please select a payment method
+        </div>
+      </div>
+
+      <!-- Additional Notes -->
+      <div class="form-group full-width">
+        <label for="note">Additional Notes</label>
+        <textarea 
+          id="note"
+          formControlName="note"
+          rows="2"
+          placeholder="Enter any additional notes"
+        ></textarea>
+      </div>
+    </div>
+
+    <button 
+      type="submit" 
+      class="submit-btn"
+      [disabled]="orderForm.invalid"
+    >
+      Proceed to Payment
+    </button>
+  </form>
+</div>

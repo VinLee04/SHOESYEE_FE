@@ -1,7 +1,7 @@
     <div class="product-detail-container" *ngIf="productDetail">
       <div class="product-images">
         <div class="main-image">
-          <img [src]="selectedImage || imgHasNotUploadedYetThumbnail" [alt]="productDetail.productInfo.name">
+          <img [src]="selectedImage" [alt]="productDetail.productInfo.name">
         </div>
         <div class="thumbnail-list">
           <img 

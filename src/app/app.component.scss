@@ -6,11 +6,12 @@
     width     : 100vw;
     overflow-x: hidden;
     position  : relative;
+    margin: unset;
 
     .router {
         margin-left: $with-management-navbar;
         width      : calc(100vw - #{$with-management-navbar});
-        min-height : 100vh;
+        max-height : 100vh;
         transition : margin-left .5s ease, width .5s ease;
 
         &.full-width {

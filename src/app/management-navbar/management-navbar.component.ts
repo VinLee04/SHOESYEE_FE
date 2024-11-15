@@ -2,6 +2,7 @@ import { Component, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../common/service/auth.service';
+import { NavService } from './nav.service';
 
 @Component({
   selector: 'app-management-navbar',
@@ -13,17 +14,10 @@ import { AuthService } from '../common/service/auth.service';
 export class ManagementNavbarComponent {
   auth = inject(AuthService);
   userName: string = 'Your Name';
-  // show = input<boolean>();
-  // showChange = output<boolean>();
-  show = input<boolean>();
-  showChange = output<boolean>();
+  nav = inject(NavService);
 
-  closeNav() {
-    this.showChange.emit(false);
-  }
-
-  showNav() {
-    this.showChange.emit(true);
+  toggleNav(){
+    this.nav.navSignal.set(!this.nav.navSignal())
   }
 
   managementItems: { name: string; icon: string }[] = [

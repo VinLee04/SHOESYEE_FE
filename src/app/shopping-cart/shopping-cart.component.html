@@ -139,12 +139,6 @@
       }
 
       @if (showCheckout) {
-        <!-- <app-home-cart-page-customer-checkout 
-          [orderDetails]="cartService.orderDetails"
-          [totalAmount]="cartSummary.total"
-          (checkoutComplete)="onCheckoutComplete()"
-          (checkoutCancel)="onCheckoutCancel()">
-        </app-home-cart-page-customer-checkout> -->
-        <app-home-cart-page-customer-checkout />
+        <app-home-cart-page-customer-checkout [(close)]="showCheckout"/>
       }
     </div>

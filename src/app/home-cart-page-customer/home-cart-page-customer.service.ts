@@ -104,8 +104,6 @@ export class HomeCartPageCustomerService extends BaseService {
     this.initializeCart();
   }
 
-
-
   private initializeCart(): void {
     if (this.authService.isCustomerLoggedIn()) {
       this.fetchServerCart().subscribe();

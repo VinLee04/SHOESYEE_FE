@@ -28,6 +28,7 @@ import { CustomerFeaturesComponent } from './customer-features/customer-features
 import { CustomerFeatureNavComponent } from './customer-features/customer-feature-nav/customer-feature-nav.component';
 import { CustomerFeatureWishlistComponent } from './customer-features/customer-feature-wishlist/customer-feature-wishlist.component';
 import { CustomerFeatureOrderComponent } from './customer-features/customer-feature-order/customer-feature-order.component';
+import { OrderPaymentComponent } from './order-payment/order-payment.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -35,6 +36,7 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: '', component: HomeComponent },
   { path: 'forgot-password', component: ResetPasswordComponent },
+  { path: 'check', component: OrderPaymentComponent },
   {
     path: 'product',
     children: [

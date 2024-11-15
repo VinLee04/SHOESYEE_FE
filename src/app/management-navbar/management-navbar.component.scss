@@ -1,7 +1,10 @@
 @import '../../../src/manage-variables';
+
 .close-menu {
-     left: -$with-management-navbar;
-}.management-navbar {
+    left: -$with-management-navbar;
+}
+
+.management-navbar {
     position        : fixed;
     left            : 0;
     top             : 0;
@@ -23,12 +26,14 @@
     .menu {
         right           : -2rem;
         background-color: $sidebar-bg;
-        border          : 5px solid $background-color;
-        box-shadow      : 0 0 1px transparent, 0 0 4px gray inset, 0 2px 5px rgba(128, 128, 128, 0.815) inset;
+        box-shadow      : 0 0 3px transparent, 2px 2px 2px rgb(166, 173, 180) inset, -4px -3px 5px rgba(151, 151, 151, 0.815) inset;
         color           : $sidebar-text;
-        padding         : 4px 8px;
-        padding-top     : 7px;
-        border-radius   : 30%;
+        width           : 3.4rem;
+        display         : flex;
+        justify-content : center;
+        align-items     : center;
+        aspect-ratio    : 1;
+        border-radius   : 40%;
         font-size       : 2rem;
         position        : absolute;
         cursor          : pointer;
@@ -42,11 +47,11 @@
         }
     }
 
-    .show{
-        &:hover {
-            right: -3.5rem;
-        }
-    }
+    // .show{
+    //     &:hover {
+    //         right: -3.5rem;
+    //     }
+    // }
 
     .navbar-brand {
         display      : flex;
@@ -68,16 +73,17 @@
 
     /* Navbar Menu */
     .navbar-menu {
-        flex-grow : 1;
-        overflow-y: auto;
-        height    : calc(100vh - #{$spacing-lg} - #{$spacing-md});
-        width     : 100%;
-        position  : relative;
+        flex-grow    : 1;
+        overflow-y   : auto;
+        height       : calc(100vh - #{$spacing-lg} - #{$spacing-md});
+        width        : 100%;
+        position     : relative;
         border-bottom: 1px solid $navbar-bottom-border;
-        
+
         &::-webkit-scrollbar {
             display: none;
         }
+
         scrollbar-width: none;
 
         .menu-items {
@@ -107,6 +113,7 @@
 
     .navbar-footer {
         padding-top: 2px;
+
         a {
             text-align     : center;
             font-size      : $font-size-small;
@@ -125,5 +132,115 @@
                 color           : $alert-danger-text;
             }
         }
+    }
+}
+
+/* From Uiverse.io by 3bdel3ziz-T */
+.burger {
+    background-color: $sidebar-bg;
+    right           : -2rem;
+    position        : absolute;
+    width           : 50px;
+    aspect-ratio    : 1;
+    display         : flex;
+    flex-direction  : column;
+    align-items     : center;
+    justify-content : center;
+    user-select     : none;
+    cursor          : pointer;
+    transition      : 300ms;
+    border-radius   : 10px;
+
+    &.show {
+        &:hover {
+            right: -3.3rem;
+        }
+    }
+}
+
+.burger input[type="checkbox"] {
+    appearance: none;
+    transition: 300ms;
+}
+
+.burger::before,
+.burger::after {
+    content         : "";
+    transition      : 300ms;
+    transform-origin: center center;
+}
+
+.burger::before {
+    transform: translateY(8px);
+}
+
+.burger::after {
+    transform: translateY(-8px);
+}
+
+.burger .line,
+.burger::before,
+.burger::after {
+    width           : 30px;
+    height          : 2.4px;
+    display         : block;
+    background-color: white;
+    border-radius   : 5px;
+    position        : absolute;
+}
+
+.burger .line:checked {
+    width           : 0;
+    transition-delay: 100ms;
+}
+
+.burger:has(.line:checked)::before {
+    animation: animation1 400ms ease-out 0s 1 both;
+}
+
+.burger:has(.line:checked)::after {
+    animation: animation2 400ms ease-out 0s 1 both;
+}
+
+.burger:hover {
+    background   : #aeaeae;
+    border-radius: 40%;
+}
+
+.burger:hover .line,
+.burger:hover::before,
+.burger:hover::after {
+    background: #e8e8e8;
+}
+
+.burger:active {
+    scale: 0.95;
+}
+
+@keyframes animation1 {
+    0% {
+        transform: translateY(8px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    100% {
+        transform: translateY(0px) rotate(45deg);
+    }
+}
+
+@keyframes animation2 {
+    0% {
+        transform: translateY(-8px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    100% {
+        transform: translateY(0px) rotate(-45deg);
     }
 }

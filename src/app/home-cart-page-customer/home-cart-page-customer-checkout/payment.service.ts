@@ -1,45 +1,55 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environment';
+import { API_URL_ORDERS, API_URL_VNPAY, environment } from '../../../environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { BaseService } from '../../common/service/base.service';
+import { NotificationService } from '../../notification/notification.service';
+import { ApiResponse, DataResponse } from '../../interface/ApiResponse';
 
-interface PaymentMethod {
+
+export interface PaymentMethod {
   id: number;
   name: string;
+  type: string;
   description: string;
   isActive: boolean;
 }
 
-interface Payment {
-  id?: number;
-  orderId: number;
-  paymentMethodId: number;
-  amount: number;
-  paymentDate?: Date;
-  transactionId?: string;
-  status: 'PENDING' | 'COMPLETED' | 'FAILED' | 'REFUNDED';
-  note?: string;
+export interface CheckoutRequest {
+  userId: string;
+  totalAmount: number;
+  note: string | null;
+  paymentMethodId: number | null;
+  districtId: number | null;
+  serviceTypeId: number | null;
+  transportName: string | null;
+  customerName: string | null;
+  phone: string | null;
+  wardCode: string | null;
+  shipAddress: string | null;
 }
-@Injectable({
-  providedIn: 'root'
-})
-export class PaymentService {
-private apiUrl = environment.connectCoreUri;
 
-  constructor(private http: HttpClient) {}
+@Injectable({
+  providedIn: 'root',
+})
+export class PaymentService extends BaseService {
+  private apiUrl = environment.connectCoreUri;
+
+  constructor(private http: HttpClient, notificationService: NotificationService) {
+    super(notificationService);
+  }
 
   getPaymentMethods(): Observable<PaymentMethod[]> {
     return this.http.get<PaymentMethod[]>(`${this.apiUrl}/payment-methods`);
   }
 
-  createPayment(payment: Payment): Observable<Payment> {
-    return this.http.post<Payment>(`${this.apiUrl}/payments`, payment);
+  createPayment(orderId: number): Observable<ApiResponse> {
+    return this.http.get<ApiResponse>(`${API_URL_VNPAY}/${orderId}`);
   }
 
-  updatePaymentStatus(paymentId: number, status: Payment['status'], transactionId?: string): Observable<Payment> {
-    return this.http.patch<Payment>(`${this.apiUrl}/payments/${paymentId}`, {
-      status,
-      transactionId
-    });
+  placeOrder(orderId: number, orderData: CheckoutRequest): Observable<DataResponse<any>> {
+    return this.http.put<ApiResponse>(`${API_URL_ORDERS}/${orderId}/checkout`, orderData).pipe(
+      map((response) => this.handleResponse(response))
+    );
   }
 }

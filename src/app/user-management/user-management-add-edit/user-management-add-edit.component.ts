@@ -6,6 +6,7 @@ import { Role } from '../../interface/Access';
 import { UserService } from '../user.service';
 import { AccessManagementService } from '../../access-management/access-management.service';
 import { API_URL_UPLOADS } from '../../../environment';
+import { NavService } from '../../management-navbar/nav.service';
 
 @Component({
   selector: 'app-user-management-add-edit',
@@ -314,7 +315,10 @@ export class UserManagementAddEditComponent implements OnInit {
     this.showChange.emit(false);
   }
 
+  navService = inject(NavService);
+
   close(): void {
+    this.navService.navSignal.set(true);
     this.showChange.emit(false);
   }
 

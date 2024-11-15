@@ -12,6 +12,9 @@ export const environment = {
   production: false,
   successCode: 1000,
   connectCoreUri: 'http://localhost:8080/shoesyee',
+  ghnApiUrl: 'https://online-gateway.ghn.vn/shiip/public-api',
+  ghnToken: 'fc290f72-a11d-11ef-a89d-dab02cbaab48',
+  ghnShopId: 5452971,
 };
 
 export const CUSTOMER_URL_HOME = `/home`;
@@ -19,6 +22,7 @@ export const STAFF_URL_HOME = `/management/users`;
 
 export const API_URL_UPLOADS = `${environment.connectCoreUri}/uploads`;
 export const API_URL_USERS = `${environment.connectCoreUri}/users`;
+export const API_URL_VNPAY = `${environment.connectCoreUri}/vnpay-payment`;
 export const API_URL_PASSWORD = `${environment.connectCoreUri}/password`;
 export const API_URL_ROLES = `${environment.connectCoreUri}/roles`;
 export const API_URL_PERMISSIONS = `${environment.connectCoreUri}/permissions`;
