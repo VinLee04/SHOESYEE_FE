@@ -197,7 +197,10 @@ export class ProductManagementComponent implements OnInit {
           brand: product.brandName,
           category: product.categoryName,
         },
-        discountPercent: product.discountPercent ? `${product.discountPercent}%` : "NOT IN DISCOUNT",
+        status: product.status ? 'Active' : 'InActive',
+        discountPercent: product.discountPercent
+          ? `${product.price * (1 - product.discountPercent / 100)} (${product.discountPercent}%)`
+          : 'NOT IN DISCOUNT',
       })) ?? []
     );
   }

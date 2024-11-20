@@ -1,114 +1,213 @@
-<section>
-    <table class="table-list">
-        <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>Order Date</th>
-                <th>Shipped Date</th>
-                <th>Unique Details</th>
-                <th>Total Details</th>
-                <th>Total Amount</th>
-                <th>Payment Method</th>
-                <th>Transaction ID</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>12-20-2024</td>
-                <td>3</td>
-                <td>6</td>
-                <td>10</td>
-                <td>4101</td>
-                <td>In Cash</td>
-                <td>j0r329j320h912</td>
-                
-                <td class="buttons">
-                    @if (status=="CONFIRMED" || status=="PROCESSING" || status=="WAITING") {
-                        <button class="btn edit">Edit</button>
-                    }
-                    @if (status=="WAITING") {
-                        <button class="btn delete">Cancel</button>
-                    }
-                    <button class="btn detail">Detail</button></td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>12-20-2024</td>
-                <td>3</td>
-                <td>6</td>
-                <td>10</td>
-                <td>4202</td>
-                <td>In Cash</td>
-                <td>j0r329j320h912</td>
-                
-                <td class="buttons">
-                    @if (status=="CONFIRMED" || status=="PROCESSING" || status=="WAITING") {
-                        <button class="btn edit">Edit</button>
-                    }
-                    @if (status=="WAITING") {
-                        <button class="btn delete">Cancel</button>
-                    }
-                    <button class="btn detail">Detail</button></td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>12-20-2024</td>
-                <td>3</td>
-                <td>6</td>
-                <td>10</td>
-                <td>4303</td>
-                <td>In Cash</td>
-                <td>j0r329j320h912</td>
-                
-                <td class="buttons">
-                    @if (status=="CONFIRMED" || status=="PROCESSING" || status=="WAITING") {
-                        <button class="btn edit">Edit</button>
-                    }
-                    @if (status=="WAITING") {
-                        <button class="btn delete">Cancel</button>
-                    }
-                    <button class="btn detail">Detail</button></td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>12-20-2024</td>
-                <td>3</td>
-                <td>6</td>
-                <td>10</td>
-                <td>4404</td>
-                <td>In Cash</td>
-                <td>j0r329j320h912</td>
-                
-                <td class="buttons">
-                    @if (status=="CONFIRMED" || status=="PROCESSING" || status=="WAITING") {
-                        <button class="btn edit">Edit</button>
-                    }
-                    @if (status=="WAITING") {
-                        <button class="btn delete">Cancel</button>
-                    }
-                    <button class="btn detail">Detail</button></td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>12-20-2024</td>
-                <td>3</td>
-                <td>6</td>
-                <td>10</td>
-                <td>4505</td>
-                <td>In Cash</td>
-                <td>j0r329j320h912</td>
-                
-                <td class="buttons">
-                    @if (status=="CONFIRMED" || status=="PROCESSING" || status=="WAITING") {
-                        <button class="btn edit">Edit</button>
-                    }
-                    @if (status=="WAITING") {
-                        <button class="btn delete">Cancel</button>
-                    }
-                    <button class="btn detail">Detail</button></td>
-            </tr>
-        </tbody>
-    </table>
-</section>
+<!-- // customer-feature-order-list.component.html -->
+<div class="order-list-container">
+  <div class="view-controls">
+    <button class="btn" [class.active]="viewMode() === 'compact'" (click)="setViewMode('compact')">
+      <i class='bx bx-list-ul'></i> Xem gọn
+    </button>
+    <button class="btn" [class.active]="viewMode() === 'detailed'" (click)="setViewMode('detailed')">
+      <i class='bx bxs-grid'></i> Xem chi tiết
+    </button>
+  </div>
+
+  <div class="orders">
+    @if (viewMode() === 'compact') {
+      @for (order of orders(); track order?.orderId; let i = $index) {
+        <div class="order-card">
+          <div class="order-header" (click)="toggleOrderDetails(i)">
+            <div class="order-info">
+              <h3>Đơn hàng của {{getSafeValue(order?.customerName, 'Khách hàng')}}</h3>
+                 <span
+                  class="order-status"
+                  [ngClass]="{
+                    'order-status--waiting_for_confirmation': order?.status === 'WAITING_FOR_CONFIRMATION',
+                    'order-status--confirmed': order?.status === 'CONFIRMED',
+                    'order-status--processing': order?.status === 'PROCESSING',
+                    'order-status--shipping': order?.status === 'SHIPPING',
+                    'order-status--out_for_delivery': order?.status === 'OUT_FOR_DELIVERY',
+                    'order-status--delivered': order?.status === 'DELIVERED',
+                    'order-status--completed': order?.status === 'COMPLETED',
+                    'order-status--canceled': order?.status === 'CANCELED',
+                    'order-status--returned': order?.status === 'RETURNED',
+                    'order-status--refunded': order?.status === 'REFUNDED',
+                    'order-status--failed': order?.status === 'FAILED',
+                  }"
+                  [ngStyle]="{ color: getStatusColor(order?.status) }"
+                >
+                  {{ getStatusText(order?.status) }}
+                </span>
+              
+              <div class="status-controls">
+                @if (showEditAddress(order?.status)) {
+                  <button class="edit-address-btn" (click)="editAddress($event, order)">
+                    <i class='bx bx-edit'></i>
+                    Sửa địa chỉ
+                  </button>
+                }
+                @if (order?.status === 'WAITING_FOR_CONFIRMATION') {
+                  <button class="cancel-btn" (click)="cancelOrder($event, order)">
+                    Hủy đơn
+                  </button>
+                }
+              </div>
+            </div>
+            
+            <div class="order-summary">
+              <p>Tổng tiền: {{formatCurrency(order?.totalAmount)}}</p>
+              <p>Ngày đặt: {{getFormattedDate(order?.orderDate)}}</p>
+            </div>
+            <i style="padding-left: 20px;" class="bx" [class.bxs-chevron-down]="!isOrderExpanded(i)" [class.bxs-chevron-up]="isOrderExpanded(i)"></i>
+          </div>
+
+          @if (isOrderExpanded(i)) {
+            <div class="order-details">
+              <div class="customer-info">
+                <p><strong>Khách hàng:</strong> {{getSafeValue(order?.customerName, 'Không có thông tin')}}</p>
+                <p><strong>Số điện thoại:</strong> {{getSafeValue(order?.phone, 'Không có thông tin')}}</p>
+                <p><strong>Đơn vị vận chuyển:</strong> {{getSafeValue(order?.transportName, 'Chưa có')}}</p>
+                <p><strong>Ghi chú:</strong> {{getSafeValue(order?.note, 'Không có ghi chú')}}</p>
+              </div>
+              
+              <div class="product-grid">
+                @for (detail of order?.orderDetails || []; track detail?.orderDetailId) {
+                  <div class="product-item" [class.inactive]="!detail?.isProductDetailActive">
+                    <button class="detail-btn" (click)="viewDetailInfo($event, order, detail)">
+                      Chi tiết
+                    </button>
+                    <div class="product-image">
+                      <img [src]="getImage(detail.image)" 
+                           [alt]="getSafeValue(detail?.productDetailName, 'Sản phẩm')">
+                    </div>
+                    <div class="product-details">
+                      <h4>{{getSafeValue(detail?.productDetailName, 'Sản phẩm không xác định')}}</h4>
+                      <div class="product-specs">
+                        <span class="color">
+                          <span class="color-dot" [style.background-color]="getSafeValue(detail?.color, '#ccc')"></span>
+                          {{getSafeValue(detail?.color, 'Không có màu')}}
+                        </span>
+                        <span class="size">Size {{getSafeValue(detail?.size, -1)}}</span>
+                        <span class="quantity">SL: {{getSafeValue(detail?.quantity, 0)}}</span>
+                      </div>
+                      <div class="price-info">
+                        <div class="price-detail">
+                          <span class="price" [class.line-through]="detail.discountPercent > 0">{{formatCurrency(detail?.price)}}</span>
+                            @if (detail.discountPercent > 0) {
+                              <span class="discount">-{{detail.discountPercent}}%</span> <i class='bx bxs-chevron-right' ></i>
+                            }
+                            <span class="price" *ngIf="detail.discountPercent > 0"> {{formatCurrency(detail.price * (1 - detail.discountPercent / 100))}}</span>
+                        </div>
+                        <span class="final-price">{{formatCurrency(detail?.totalPrice)}}</span>
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+    } @else {
+      <div class="detailed-order-card">
+        <div class="order-main-info">
+          <div class="product-grid">
+            @for (order of orders(); track order) {
+              @for (detail of order.orderDetails; track detail.orderDetailId) {
+                <div class="product-item" [class.inactive]="!detail.isProductDetailActive">
+                  <button class="detail-btn" (click)="viewDetailInfo($event, order, detail)">
+                    Chi tiết
+                  </button>
+                  <div class="product-image">
+                    <img [src]="getImage(detail.image)" [alt]="detail.productDetailName">
+                  </div>
+                  <div class="product-details">
+                    <h4>{{detail.productDetailName}}</h4>
+                    <div class="product-specs">
+                      <span class="color">
+                        <span class="color-dot" [style.background-color]="detail.color"></span>
+                        {{detail.color}}
+                      </span>
+                      <span class="size">Size {{detail.size}}</span>
+                      <span class="quantity">SL: {{detail.quantity}}</span>
+                    </div>
+                     <div class="price-info">
+                        <div class="price-detail">
+                          <span class="price" [class.line-through]="detail.discountPercent > 0">{{formatCurrency(detail?.price)}}</span>
+                            @if (detail.discountPercent > 0) {
+                              <span class="discount">-{{detail.discountPercent}}%</span> <i class='bx bxs-chevron-right' ></i>
+                            }
+                            <span class="price" *ngIf="detail.discountPercent > 0"> {{formatCurrency(detail.price * (1 - detail.discountPercent / 100))}}</span>
+                        </div>
+                        <span class="final-price">{{formatCurrency(detail?.totalPrice)}}</span>
+                      </div>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="detail-modal" *ngIf="getSelectedDetail()" (click)="closeDetailModal($event)">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Chi tiết đơn hàng</h2>
+      <button class="close-btn" (click)="closeDetailModal($event)">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="order-info">
+        <h3>Thông tin đơn hàng</h3>
+        <p><strong>Mã đơn hàng:</strong> {{ getSelectedDetail()?.order?.orderId || 'Không có thông tin' }}</p>
+        <p><strong>Khách hàng:</strong> {{ getSelectedDetail()?.order?.customerName || 'Không có thông tin' }}</p>
+        <p><strong>Số điện thoại:</strong> {{ getSelectedDetail()?.order?.phone || 'Không có thông tin' }}</p>
+        <p><strong>Địa chỉ giao hàng:</strong> {{ getSelectedDetail()?.order?.shipAddress || 'Không có thông tin' }}</p>
+        <p><strong>Ngày đặt:</strong> {{ getFormattedDate(getSelectedDetail()?.order?.orderDate) || 'Không có thông tin' }}</p>
+        <p><strong>Ngày giao hàng:</strong> {{ getFormattedDate(getSelectedDetail()?.order?.shippedDate) || 'Chưa giao hàng' }}</p>
+        <p><strong>Trạng thái:</strong>
+          <span class="status-badge" [ngClass]="getStatusClass(getSelectedDetail()?.order?.status)">
+            {{ getStatusText(getSelectedDetail()?.order?.status) }}
+          </span>
+        </p>
+        <p><strong>Phương thức thanh toán:</strong> {{ getPaymentMethod(getSelectedDetail()?.order?.paymentMethodId) || 'Không có thông tin' }}</p>
+        <!-- <p><strong>Trạng thái thanh toán:</strong> {{ getSelectedDetail()?.order?.paymentStatus || 'Không có thông tin' }}</p> -->
+        <p><strong>Tổng tiền:</strong> {{ formatCurrency(getSelectedDetail()?.order?.totalAmount) || 'Không có thông tin' }}</p>
+        <p><strong>Ghi chú:</strong> {{ getSelectedDetail()?.order?.note || 'Không có ghi chú' }}</p>
+      </div>
+
+      <div class="product-info">
+        <h3>Thông tin sản phẩm</h3>
+        <div class="info-item">
+          <p class="label">Tên sản phẩm</p>
+          <p class="value">{{ getSelectedDetail()?.detail?.productDetailName || 'Không có thông tin' }}</p>
+        </div>
+        <div class="info-item">
+          <p class="label">Màu sắc</p>
+          <p class="value">{{ getSelectedDetail()?.detail?.color || 'Không có thông tin' }}</p>
+        </div>
+        <div class="info-item">
+          <p class="label">Kích thước</p>
+          <p class="value">Size {{ getSelectedDetail()?.detail?.size || 'Không có thông tin' }}</p>
+        </div>
+        <div class="info-item">
+          <p class="label">Số lượng</p>
+          <p class="value">{{ getSelectedDetail()?.detail?.quantity || 0 }}</p>
+        </div>
+        <div class="info-item">
+          <p class="label">Giá</p>
+          <p class="value">{{ formatCurrency(getSelectedDetail()?.detail?.price) }}</p>
+        </div>
+        <div class="info-item">
+          <p class="label">Tổng tiền</p>
+          <p class="value">{{ formatCurrency(getSelectedDetail()?.detail?.totalPrice) }}</p>
+        </div>
+      </div>
+
+      <!-- <button class="view-order-btn" (click)="viewOrder(getSelectedDetail()?.order)">
+        <i class='bx bx-detail'></i>
+        Xem đơn hàng
+      </button> -->
+    </div>
+  </div>
+</div>

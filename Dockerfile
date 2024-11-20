@@ -1,29 +1,22 @@
-# Build stage
-FROM node:18.20.4 as build
+FROM node:18.20.4
 
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Cài đặt Angular CLI toàn cầu (để sử dụng ng serve)
+RUN npm install -g @angular/cli
+
+# Copy package.json và package-lock.json vào container
 COPY package*.json ./
 
-# Install dependencies
+# Cài đặt các dependencies
 RUN npm install
 
-# Copy source code
+# Copy mã nguồn từ máy chủ vào container (từ volume)
 COPY . .
 
-# Build application
-RUN npm run build
+# Expose cổng mà Angular sẽ chạy
+EXPOSE 80  
 
-# Production stage
-FROM nginx:alpine
-
-# Copy built assets from build stage
-COPY --from=build /app/dist/loi/browser/ /usr/share/nginx/html/
-
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Expose port 80
-EXPOSE 80
+# Lệnh mặc định để chạy ứng dụng Angular
+CMD ["npm", "start", "--", "--port", "80"]

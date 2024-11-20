@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { ImageUploadComponent } from '../../common/image-upload/image-upload.component';
 import { Product, ProductManagementAddEditService } from './product-management-add-edit.service';
 import { Router, RouterModule } from '@angular/router';
+import { Brand, Category, Color, Discount } from '../../interface/permanent';
+import { brands, categories, colors, discounts } from '../../common/service/mock-data';
 
 interface SizeDetail {
   size: string;
@@ -48,8 +50,11 @@ interface CreateProductRequest {
 })
 export class ProductManagementAddEditComponent implements OnInit {
   productForm!: FormGroup;
-  colors: any[] = [];
-  discounts: any[] = [];
+  brands: Brand[] = brands;
+  categories: Category[] = categories;
+  colors: Color[] = colors;
+  discounts: Discount[] = discounts;
+
   thumbnailFile?: File;
   colorImages: { [key: number]: File } = {};
   editingColorIndex: number | null = null;
@@ -103,8 +108,8 @@ export class ProductManagementAddEditComponent implements OnInit {
   }
 
   private loadInitialData() {
-    this.loadColors();
-    this.loadDiscounts();
+    // this.loadColors();
+    // this.loadDiscounts();
   }
 
   // Color Management
@@ -239,10 +244,16 @@ export class ProductManagementAddEditComponent implements OnInit {
     this.thumbnailFile = undefined;
   }
 
+  // getColorLabel(colorForm: AbstractControl): string {
+  //   const colorId = colorForm.get('colorId')?.value;
+  //   const colorName = this.colors.find((c) => c.id === colorId)?.name;
+  //   return `Image for ${colorName || 'color'}`;
+  // }
+
   getColorLabel(colorForm: AbstractControl): string {
     const colorId = colorForm.get('colorId')?.value;
-    const colorName = this.colors.find((c) => c.id === colorId)?.name;
-    return `Image for ${colorName || 'color'}`;
+    const color = this.colors.find((c) => c.id === Number(colorId));
+    return `Image for ${color?.name || 'color'}`;
   }
 
   onColorImageSelected(file: File, colorIndex: number) {
@@ -348,11 +359,11 @@ export class ProductManagementAddEditComponent implements OnInit {
       name: this.productForm.get('name')?.value,
       brandId: this.productForm.get('brandId')?.value,
       categoryId: this.productForm.get('categoryId')?.value,
+      discountId: this.productForm.get('discountId')?.value,
       basicPrice: this.productForm.get('basicPrice')?.value,
       price: this.productForm.get('price')?.value,
       description: this.productForm.get('description')?.value,
       isActive: this.productForm.get('isActive')?.value,
-      discountId: this.productForm.get('discountId')?.value,
       stock: this.productForm.get('stock')?.value,
       productColors: [],
     };

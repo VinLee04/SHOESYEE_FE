@@ -3,7 +3,7 @@
         <h2 class="title">LOGIN</h2>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <div class="input__group">
-                <input type="text" formControlName="username" placeholder="Username">
+                <input type="text" formControlName="username" placeholder="Username" autofocus>
             </div>
             <div class="input__group">
                 <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Password">

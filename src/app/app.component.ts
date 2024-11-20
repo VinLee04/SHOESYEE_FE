@@ -22,13 +22,14 @@ import { TestGHNComponent } from './test-ghn/test-ghn.component';
 import { OrderPaymentComponent } from './order-payment/order-payment.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { HomeCartPageCustomerCheckoutComponent } from './home-cart-page-customer/home-cart-page-customer-checkout/home-cart-page-customer-checkout.component';
+import { OrderManagementComponent } from './order-management/order-management.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, HeaderComponent, HomeComponent, FooterComponent, ManagementNavbarComponent , NotificationComponent,
     AccessManagementComponent, ResetPasswordComponent, HomeProductPageCustomerComponent, HomeProductDetailPageCustomerMainComponent, CartComponent
-    ,ProductManagementAddEditComponent, ProductManagementComponent, TestpaymentComponent, TestGHNComponent, OrderPaymentComponent, HomeCartPageCustomerCheckoutComponent
+    ,ProductManagementAddEditComponent, ProductManagementComponent, TestpaymentComponent, TestGHNComponent, OrderPaymentComponent, HomeCartPageCustomerCheckoutComponent, OrderManagementComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

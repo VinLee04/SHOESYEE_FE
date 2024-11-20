@@ -1,0 +1,23 @@
+<div class="checkout-status-wrapper" *ngIf="showCheckoutStatus">
+  <div class="checkout-status-overlay" @fadeSlideInOut>
+    <div class="checkout-status-container" [ngClass]="statusClass">
+      <button class="close-button" (click)="closeStatus()">
+        <i class='bx bx-x'></i>
+      </button>
+      <div class="status-icon">
+        {{statusIcon}}
+      </div>
+      <div class="status-content">
+        <h2>{{getStatusMessage()}}</h2>
+        <div class="order-details">
+          <p>Order ID: <strong>{{vnpayReturn.orderId}}</strong></p>
+          <p>Order Status: <strong>{{vnpayReturn.orderStatus}}</strong></p>
+          <p>Payment Status: <strong>{{vnpayReturn.paymentStatus}}</strong></p>
+        </div>
+        <div class="message">
+          {{vnpayReturn.message}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

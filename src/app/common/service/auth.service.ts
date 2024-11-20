@@ -31,7 +31,7 @@ export class AuthService extends BaseService {
 
   isCustomerLoggedIn = computed(() => {
     const currentUser = this.currentUserSignal();
-    return !!currentUser && currentUser.role.id === 'CUSTOMER';
+    return !!currentUser && currentUser.role?.id === 'CUSTOMER';
   });
 
   private loadingSignal = signal<boolean>(false);
@@ -258,7 +258,7 @@ export class AuthService extends BaseService {
   }
 
   hasRole(roleName: string): boolean {
-    return this.currentUser?.role.id === roleName || false;
+    return this.currentUser?.role?.id === roleName || false;
   }
 
   updateUserInfo(userId: string, formData: FormData): Observable<ApiResponse> {

@@ -1,0 +1,65 @@
+.search-section {
+    width        : 90%;
+    padding-top  : 2rem;
+    margin-inline: auto;
+
+    input {
+        font-family  : 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        width        : 100%;
+        border-radius: 5px;
+        /* Giữ border-radius mềm mại */
+        padding      : 0.4rem 1.5rem;
+        /* Giữ không gian padding vừa phải */
+        font-size    : 1.1rem;
+        border       : 2px solid #ffb3e6;
+        /* Màu sắc tươi sáng cho border */
+        outline      : none;
+        position     : relative;
+        transition   : all 0.3s ease;
+        /* Hiệu ứng mượt mà */
+
+        /* Màu nền và font chữ dễ thương khi focus */
+        &:focus {
+            outline   : 3px solid #ff66b2;
+            /* Màu sắc tươi sáng khi focus */
+            background: linear-gradient(135deg, #ffb3e6, #ff66b2);
+            /* Gradient màu tươi sáng */
+            color     : #ffffff;
+            /* Thay đổi màu chữ */
+        }
+
+        /* Hiệu ứng icon bên trong */
+        &::before {
+            content    : "\f002";
+            /* Mã Unicode cho biểu tượng tìm kiếm */
+            font-family: "Font Awesome 5 Free";
+            /* Sử dụng Font Awesome */
+            font-weight: 900;
+            /* Đảm bảo icon rõ nét */
+            position   : absolute;
+            top        : 50%;
+            left       : 15px;
+            /* Đặt icon gần bên trái */
+            transform  : translateY(-50%);
+            font-size  : 1.2rem;
+            color      : #ff66b2;
+            /* Màu của icon */
+            transition : all 0.2s ease;
+        }
+
+        /* Hiệu ứng tăng kích thước input khi hover */
+        &:hover {
+            transform   : scale(1.01);
+            /* Tăng kích thước nhẹ */
+            border-color: #ff66b2;
+        }
+
+        /* Hiệu ứng placeholder */
+        &::placeholder {
+            color     : #ffb3e6;
+            font-style: italic;
+            opacity   : 0.8;
+            /* Giảm độ sáng của placeholder */
+        }
+    }
+}

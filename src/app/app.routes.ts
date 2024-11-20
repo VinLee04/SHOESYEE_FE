@@ -29,6 +29,7 @@ import { CustomerFeatureNavComponent } from './customer-features/customer-featur
 import { CustomerFeatureWishlistComponent } from './customer-features/customer-feature-wishlist/customer-feature-wishlist.component';
 import { CustomerFeatureOrderComponent } from './customer-features/customer-feature-order/customer-feature-order.component';
 import { OrderPaymentComponent } from './order-payment/order-payment.component';
+import { OrderManagementComponent } from './order-management/order-management.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -54,11 +55,6 @@ export const routes: Routes = [
       {
         path: 'profile',
         component: UserProfileComponent,
-        outlet: 'nav',
-      },
-      {
-        path: 'order',
-        component: CustomerFeatureOrderComponent,
         outlet: 'nav',
       },
       {
@@ -108,7 +104,7 @@ export const routes: Routes = [
         ],
       },
       { path: 'users', component: UserManagementComponent },
-      { path: 'orders', component: TableComponent },
+      { path: 'orders', component: OrderManagementComponent },
       { path: 'filter', component: UserManagementFilterComponent },
       { path: 'authorization', component: AccessManagementComponent },
     ],

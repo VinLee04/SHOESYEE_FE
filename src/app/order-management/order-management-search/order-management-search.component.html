@@ -1,0 +1,11 @@
+   <section class="search-section">
+      <input
+        type="text"
+        #searchInput
+        [ngModel]="searchValue"
+        (ngModelChange)="updateSearchValue($event)"
+        (keyup.enter)="handleSearch()"
+        placeholder="Enter your customer's name"
+        class="search-input"
+      >
+    </section>

@@ -110,9 +110,12 @@ header {
   }
   }
 
-  .user {
+  .user, .user__unLogin{
     position: relative;
-    z-index: 110;
+    z-index : 110;
+  }
+
+  .user {
 
     .user__img {
       cursor: pointer;

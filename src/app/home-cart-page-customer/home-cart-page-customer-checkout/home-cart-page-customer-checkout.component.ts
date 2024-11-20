@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, input, OnInit, output, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, input, numberAttribute, OnInit, output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HomeCartPageCustomerService } from '../home-cart-page-customer.service';
 import { CheckoutRequest, PaymentMethod, PaymentService } from './payment.service';
@@ -423,23 +423,14 @@ export class HomeCartPageCustomerCheckoutComponent implements OnInit {
     }
   }
 
-  // private getServiceName(serviceTypeId: number): string | null {
-  //   const service = this.serviceTypes.find(
-  //     (s) => s.service_type_id === serviceTypeId
-  //   );
-  //   return service ? service.short_name : null;
-  // }
-
   get orderSummary() {
     const subtotal = this.cartService.totalAmount();
-    const shipping = 30000; // Fixed shipping fee
+    const shipping = 'Free Ship'; // Fixed shipping fee
     // const tax = subtotal * 0.1;
     return {
       subtotal,
       shipping,
-      // tax,
-      // total: subtotal + shipping + tax,
-      total: subtotal + shipping,
+      total: subtotal ,
     };
   }
 

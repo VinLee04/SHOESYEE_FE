@@ -1,5 +1,5 @@
 import { computed, effect, Inject, inject, Injectable, Injector, PLATFORM_ID, signal } from '@angular/core';
-import { API_URL_ORDERS, environment } from '../../environment';
+import { API_URL_ORDERS, API_URL_UPLOADS, environment } from '../../environment';
 import { AuthService } from '../common/service/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
@@ -141,7 +141,7 @@ export class HomeCartPageCustomerService extends BaseService {
               price: response.result.price,
               discountPercent: response.result.discountPercent,
               color: response.result.color,
-              image: response.result.image,
+              image: response.result.image ? `${API_URL_UPLOADS}/product-images/${response.result.image}` : `${API_URL_UPLOADS}/product-image/default.png`,
               isProductDetailActive: response.result.isProductDetailActive,
               totalPrice:
                 response.result.price *

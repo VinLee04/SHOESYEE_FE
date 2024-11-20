@@ -1,0 +1,3 @@
+<app-order-management-search (searchTermChange)="handleSearch($event)"></app-order-management-search>
+<app-order-management-list [orders]="ordersData()"></app-order-management-list>
+<app-pagination [currentPage]="currentPage()" [totalPages]="totalPages()" (pageChange)="handlePageChange($event)"></app-pagination>

@@ -3,9 +3,10 @@ import { Component, computed, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CheckoutComponent } from '../checkout/checkout.component';
 import { HomeCartPageCustomerService } from '../home-cart-page-customer/home-cart-page-customer.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HomeCartPageCustomerCheckoutComponent } from '../home-cart-page-customer/home-cart-page-customer-checkout/home-cart-page-customer-checkout.component';
 import { API_URL_UPLOADS } from '../../environment';
+import { ShoppingCartCheckoutStatusComponent } from './shopping-cart-checkout-status/shopping-cart-checkout-status.component';
 
 
 export interface CartItem {
@@ -21,10 +22,17 @@ export interface CartItem {
 
 interface CartSummary {
   subtotal: number;
-  shipping: number;
-  tax: number;
+  shipping: number | string;
   discount: number;
   total: number;
+}
+
+export interface VNPAYReturn {
+  code: string | null;
+  message: string | null;
+  orderId: string | null;
+  paymentStatus: string | null;
+  orderStatus: string | null;
 }
 
 
@@ -36,6 +44,7 @@ interface CartSummary {
     FormsModule,
     CheckoutComponent,
     HomeCartPageCustomerCheckoutComponent,
+    ShoppingCartCheckoutStatusComponent,
   ],
   templateUrl: './shopping-cart.component.html',
   styleUrl: './shopping-cart.component.scss',
@@ -45,20 +54,64 @@ export class ShoppingCartComponent {
   protected showCheckout = false;
   showSummary = false;
   private router = inject(Router);
-  imageDefault = `${API_URL_UPLOADS}/products/default.png`;
+
+  vnpayReturn: VNPAYReturn = {
+    code: null,
+    message: null,
+    orderId: null,
+    paymentStatus: null,
+    orderStatus: null,
+  };
+
+  code: string | null = null;
+  message: string | null = null;
+  orderId: string | null = null;
+  paymentStatus: string | null = null;
+  orderStatus: string | null = null;
 
   protected cartSummary: CartSummary = {
     subtotal: 0,
-    shipping: 30000, // Fixed shipping cost
-    tax: 0,
     discount: 0,
+    shipping: "Free Ship",
     total: 0,
   };
+
+  showCheckoutStatus: boolean = false;
+  constructor(private route: ActivatedRoute) {
+    this.getCheckoutByCard();
+  }
+
+  getImage(img: string){
+    return img ? `${API_URL_UPLOADS}/product-images/${img}` : `${API_URL_UPLOADS}/product-images/default.png`
+  }
+
+  getCheckoutByCard() {
+    const code = this.route.snapshot.queryParamMap.get('code');
+    if (code) {
+      this.vnpayReturn = {
+        code: code,
+        message: this.route.snapshot.queryParamMap.get('message'),
+        orderId: this.route.snapshot.queryParamMap.get('orderId'),
+        orderStatus: this.route.snapshot.queryParamMap.get('orderStatus'),
+        paymentStatus: this.route.snapshot.queryParamMap.get('paymentStatus'),
+      };
+      this.showCheckoutStatus = true;
+    }
+  }
 
   ngOnInit() {
     setTimeout(() => {
       this.updateCartSummary();
     }, 100);
+  }
+
+  handleCloseCheckoutStatus() {
+    this.showCheckoutStatus = false;
+     this.router.navigate([], {
+       relativeTo: this.route,
+       queryParams: {},
+       queryParamsHandling: null,
+     });
   }
 
   protected updateQuantity(
@@ -91,11 +144,11 @@ export class ShoppingCartComponent {
 
   protected removeItem(productDetailColorsId: number): void {
     // if (confirm('Are you sure you want to remove this item from your cart?')) {
-      this.cartService.removeFromCart(productDetailColorsId).subscribe({
-        next: () => {
-          this.updateCartSummary();
-        },
-      });
+    this.cartService.removeFromCart(productDetailColorsId).subscribe({
+      next: () => {
+        this.updateCartSummary();
+      },
+    });
     // }
   }
 
@@ -113,15 +166,13 @@ export class ShoppingCartComponent {
 
   private updateCartSummary(): void {
     const subtotal = this.calculateSubtotal();
-    const tax = subtotal * 0.1; // 10% tax
 
     this.cartSummary = {
       subtotal,
       shipping: this.cartSummary.shipping,
-      tax,
       discount: 0, // You can implement discount logic here
       total:
-        subtotal + this.cartSummary.shipping + tax - this.cartSummary.discount,
+        subtotal + this.cartSummary.discount,
     };
   }
 
@@ -154,8 +205,4 @@ export class ShoppingCartComponent {
     this.showCheckout = false;
   }
 
-  protected onImageError(event: Event): void {
-    const img = event.target as HTMLImageElement;
-    img.src = 'assets/images/placeholder-product.png';
-  }
 }

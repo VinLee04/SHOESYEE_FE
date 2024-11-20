@@ -36,9 +36,11 @@
       
       <div class="form-group">
         <label>Discount</label>
-        <select formControlName="discountId" [class.error-block] = "false">
+        <select formControlName="discountId" [class.error-block]="false">
           <option value="">Select Discount</option>
-          <option value="2">20%</option>
+          <option *ngFor="let discount of discounts" [value]="discount.id">
+            {{discount.isPercent}}% Off - {{discount.comment}}
+          </option>
         </select>
         <!-- <select formControlName="discountId">
           <option value="">Select Discount</option>
@@ -50,10 +52,11 @@
 
       <div class="form-group">
         <label>Brand</label>
-        <select formControlName="brandId" [class.error-block] = "productForm.get('brandId')?.touched && productForm.get('brandId')?.errors?.['required']">
+        <select formControlName="brandId" [class.error-block]="productForm.get('brandId')?.touched && productForm.get('brandId')?.errors?.['required']">
           <option value="">Select Brand</option>
-          <option value="1">Nike</option>
-          <!-- Add brand options -->
+          <option *ngFor="let brand of brands" [value]="brand.id">
+            {{brand.name}}
+          </option>
         </select>
         <div class="error" *ngIf="productForm.get('brandId')?.touched && productForm.get('brandId')?.errors?.['required']">
           Brand is required
@@ -62,10 +65,11 @@
       
       <div class="form-group">
         <label>Category</label>
-        <select formControlName="categoryId" [class.error-block] = "productForm.get('categoryId')?.touched && productForm.get('categoryId')?.errors?.['required']">
+       <select formControlName="categoryId" [class.error-block]="productForm.get('categoryId')?.touched && productForm.get('categoryId')?.errors?.['required']">
           <option value="">Select Category</option>
-          <option value="1">Sneaker</option>
-          <!-- Add category options -->
+          <option *ngFor="let category of categories" [value]="category.id">
+            {{category.name}}
+          </option>
         </select>
         <div class="error" *ngIf="productForm.get('categoryId')?.touched && productForm.get('categoryId')?.errors?.['required']">
           Category is required
@@ -125,11 +129,11 @@
         <div class="form-grid">
           <div class="form-group">
             <label>Color</label>
-            <select formControlName="colorId">
+           <select formControlName="colorId">
               <option value="">Select Color</option>
-              <option value="1">white</option>
-              <option value="2">black</option>
-              <option value="3">brown</option>
+              <option *ngFor="let color of colors" [value]="color.id">
+                {{color.name}}
+              </option>
             </select>
             <div class="error" *ngIf="colorForm.get('colorId')?.touched && colorForm.get('colorId')?.errors?.['required']">
               Color is required

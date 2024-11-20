@@ -1,0 +1,148 @@
+<div class="order-management">
+  <!-- Navigation tabs -->
+  <!-- <div class="status-nav">
+    <button 
+      *ngFor="let status of statuses; trackBy: trackByStatus"
+      (click)="changeStatus(status)"
+      [class.active]="selectedStatus() === status">
+      {{status}}
+    </button>
+  </div> -->
+
+  <!-- Orders grid -->
+  <div class="orders-grid">
+    <div *ngFor="let order of mappedOrders(); trackBy: trackByOrderId"
+         class="order-card"
+         [class]="getStatusClass(order.status)"
+         (click)="selectOrder(order)">
+      <div class="card-header">
+        <div class="user-info">
+          <span class="items-count">{{order.totalItems}}</span>
+          <div [class]="'status-badge ' + getStatusClass(order.status)">
+            {{order.status}}
+          </div>
+        </div>
+        <div class="status-badges">
+          <div class="username">{{order.user?.username}}</div>
+          <div [class]="'payment-badge ' + 'payment-' + order.paymentMethodId">
+            {{order.paymentMethodId === 1 ? 'Tiền mặt' : 'VNPAY'}}
+          </div>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="info-item">
+          <p><strong>Ngày đặt:</strong> {{ getFormattedDate(order.orderDate)  }}</p>
+        </div>
+        <div class="info-item">SĐT: {{order.phone}}</div>
+        <div class="total-amount">{{order.formattedTotal}}</div>
+        <div class="action-buttons" [class.padding]="order.status === 'WAITING_FOR_CONFIRMATION'" style="display: flex; gap: 20px; margin-top: 10px; float:right">
+          <button 
+            class="btn-accept" 
+            *ngIf="order.status === 'WAITING_FOR_CONFIRMATION'"
+            (click)="handleOrderAction(order, 'accept', $event)">
+            Xác nhận
+          </button>
+          <button 
+            class="btn-cancel"
+            *ngIf="order.status === 'WAITING_FOR_CONFIRMATION'"
+            (click)="handleOrderAction(order, 'cancel', $event)">
+            Hủy
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div *ngIf="showDetailModal()" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Chi tiết đơn hàng</h2>
+        <button class="close-button" (click)="closeModal()">&times;</button>
+      </div>
+
+      <div class="order-details">
+        <!-- Order Information -->
+        <div class="section">
+          <h3>Thông tin đơn hàng</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Tài khoản:</span>
+              {{selectedOrder()?.user?.username}}
+            </div>
+            <div class="info-item">
+              <span class="label">Khách hàng:</span>
+              {{selectedOrder()?.customerName}}
+            </div>
+            <div class="info-item">
+              <span class="label">SĐT:</span>
+              {{selectedOrder()?.phone}}
+            </div>
+            <div class="info-item">
+              <span class="label">Địa chỉ:</span>
+              {{selectedOrder()?.shipAddress}}
+            </div>
+            <div class="info-item">
+              <span class="label">Ngày đặt:</span>
+              {{selectedOrder()?.orderDate | dateFormat}}
+            </div>
+            <div class="info-item">
+              <span class="label">Thanh toán:</span>
+              {{selectedOrder()?.paymentMethodId === 1 ? 'Tiền mặt' : 'VNPAY'}}
+            </div>
+            <div class="info-item">
+              <span class="label">Trạng thái:</span>
+              <span [class]="'status-badge ' + getStatusClass(selectedOrder()?.status || '')">
+                {{selectedOrder()?.status}}
+              </span>
+            </div>
+          </div>
+          <div class="note-section">
+            <span class="label">Ghi chú:</span>
+            <p>{{selectedOrder()?.note}}</p>
+          </div>
+        </div>
+
+        <!-- Order Details -->
+        <div class="section">
+          <h3>Chi tiết sản phẩm</h3>
+          <div class="products-list">
+            <div *ngFor="let detail of getOrderDetails(); trackBy: trackByDetailId" 
+                 class="product-item">
+              <img [src]="detail.image" [alt]="detail.productDetailName">
+              <div class="product-info">
+                <h4>{{detail.productDetailName}}</h4>
+                <div class="details">
+                  <div>Màu: {{detail.color}} | Size: {{detail.size}} | SL: {{detail.quantity}}</div>
+                  <div class="price-details">
+                    <div>Đơn giá: {{formatCurrency(detail.price)}}</div>
+                    <div>Giảm giá: {{detail.discountPercent}}%</div>
+                    <div>Thành tiền: {{formatCurrency(detail.totalPrice)}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Total and Actions -->
+        <div class="modal-footer">
+          <div class="total-section">
+            <span class="total-label">Tổng cộng:</span>
+            <span class="total-amount">
+              {{selectedOrder()?.totalAmount ? formatCurrency(selectedOrder()!.totalAmount) : ''}}
+            </span>
+          </div>
+          <div class="action-buttons" *ngIf="selectedOrder()?.status === 'WAITING_FOR_CONFIRMATION'">
+            <button class="btn-accept" (click)="handleOrderAction(selectedOrder()!, 'accept', $event)">
+              Xác nhận
+            </button>
+            <button class="btn-cancel" (click)="handleOrderAction(selectedOrder()!, 'cancel', $event)">
+              Hủy
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

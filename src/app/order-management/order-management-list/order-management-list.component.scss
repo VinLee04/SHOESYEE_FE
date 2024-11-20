@@ -1,0 +1,583 @@
+@import '../../../manage-variables';
+// order-management.component.scss
+.order-management {
+    padding: 2rem;
+    width: 95%;
+    margin-inline: auto;
+
+    // Navigation styles
+    .status-nav {
+        display      : flex;
+        gap          : 1rem;
+        margin-bottom: 2rem;
+        flex-wrap    : wrap;
+
+        button {
+            padding      : 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight  : 500;
+            transition   : all 0.3s ease;
+            background   : #f3f4f6;
+
+            &:hover {
+                background: #e5e7eb;
+            }
+
+            &.active {
+                background: #2563eb;
+                color     : white;
+            }
+        }
+    }
+
+    // Orders grid styles
+    .orders-grid {
+        display              : grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap                  : 1.5rem;
+
+        .order-card {
+            background   : white;
+            border-radius: 12px;
+            padding      : 1.5rem;
+            box-shadow   : 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition   : all 0.3s ease;
+            cursor       : pointer;
+
+            &:hover {
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            }
+
+            // Status-specific background colors
+            &.status-pending {
+                background: linear-gradient(to right bottom, #fff5e6, white);
+            }
+
+            &.status-processing {
+                background: linear-gradient(to right bottom, #e6f3ff, white);
+            }
+
+            // Styles cho các status khác - để dùng trong tương lai
+            &.status-confirmed {
+                background: linear-gradient(to right bottom, #ecfdf5, white);
+            }
+
+            &.status-waiting_for_confirmation {
+                background: linear-gradient(to right bottom, #fef3c7, white);
+            }
+
+            &.status-canceled {
+                background: linear-gradient(to right bottom, #fee2e2, white);
+            }
+
+            &.status-shipped {
+                background: linear-gradient(to right bottom, #ede9fe, white);
+            }
+
+            &.status-delivered {
+                background: linear-gradient(to right bottom, #d1fae5, white);
+            }
+
+            &.status-out_for_delivery {
+                background: linear-gradient(to right bottom, #ddd6fe, white);
+            }
+
+            &.status-returned {
+                background: linear-gradient(to right bottom, #fee2e2, white);
+            }
+
+            &.status-refunded {
+                background: linear-gradient(to right bottom, #fce7f3, white);
+            }
+
+            &.status-failed {
+                background: linear-gradient(to right bottom, #fdadad, white);
+            }
+
+            .card-content {
+                padding         : 20px;
+                border          : 1px solid #ddd;
+                border-radius   : 8px;
+                background-color: #fff;
+                box-shadow      : 0 4px 6px rgba(0, 0, 0, 0.1);
+                font-family     : Arial, sans-serif;
+                margin-bottom   : 20px;
+
+                .info-item {
+                    font-size    : 14px;
+                    color        : #555;
+                    margin-bottom: 8px;
+
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                }
+
+                .total-amount {
+                    font-size  : 16px;
+                    font-weight: bold;
+                    color      : #333;
+                    margin-top : 12px;
+                }
+
+                .action-buttons {
+                    display        : flex;
+                    gap            : 20px;
+                    justify-content: flex-end;
+                    background-color: #fff;
+                    border-bottom-left-radius: 5px;
+                    border-bottom-right-radius: 5px;
+                    box-shadow: inherit;
+
+                    &.padding{
+                        padding: 10px 15px;
+                    }
+
+                    .btn-accept {
+                        padding         : 8px 16px;
+                        font-size       : 14px;
+                        font-weight     : bold;
+                        color           : #fff;
+                        background-color: $sidebar-bg;
+                        color: $sidebar-text;
+                        border          : none;
+                        border-radius   : 4px;
+                        cursor          : pointer;
+                        transition      : background-color 0.3s ease;
+
+                        &:hover {
+                            background-color: $sidebar-hover;
+                        }
+                    }
+
+                    .btn-cancel {
+                        padding         : 8px 16px;
+                        font-size       : 14px;
+                        font-weight     : bold;
+                        color           : #fff;
+                        background-color: #f44336;
+                        border          : none;
+                        border-radius   : 4px;
+                        cursor          : pointer;
+                        transition      : background-color 0.3s ease;
+
+                        &:hover {
+                            background-color: #e53935;
+                        }
+                    }
+                }
+            }
+
+            .card-header {
+                display        : flex;
+                justify-content: space-between;
+                margin-bottom  : 1rem;
+                gap            : .5rem;
+                flex-direction : column;
+
+                .user-info {
+                    display        : flex;
+                    flex-direction : row;
+                    align-items    : center;
+                    justify-content: space-between;
+                    gap            : 0.75rem;
+
+                    .items-count {
+                        background     : #374151;
+                        color          : white;
+                        border-radius  : 50%;
+                        width          : 24px;
+                        height         : 24px;
+                        display        : flex;
+                        align-items    : center;
+                        justify-content: center;
+                        font-size      : 0.875rem;
+                        font-weight    : 500;
+                    }
+
+                    .username {
+                        font-weight: bold;
+                        font-size  : 1.1rem;
+                    }
+                }
+
+                .status-badges {
+                    display        : flex;
+                    flex-direction : row;
+                    justify-content: space-between;
+                    gap            : 0.5rem;
+                    align-items    : flex-end;
+                }
+            }
+
+            // Rest of the card content styles remain the same...
+        }
+    }
+
+    // Status badges
+    .status-badge {
+        padding      : 0.5rem 1rem;
+        border-radius: 20px;
+        font-size    : 0.875rem;
+        font-weight  : 500;
+
+        &.status-pending {
+            background: #fef3c7;
+            color     : #92400e;
+        }
+
+        &.status-processing {
+            background: #dbeafe;
+            color     : #1e40af;
+        }
+
+        &.status-completed {
+            background: #d1fae5;
+            color     : #065f46;
+        }
+
+        &.status-canceled {
+            background: #fee2e2;
+            color     : #991b1b;
+        }
+    }
+
+    // Payment badge styles
+    .payment-badge {
+        padding      : 0.5rem 1rem;
+        border-radius: 20px;
+        font-size    : 0.875rem;
+        font-weight  : 500;
+
+        &.payment-1 {
+            background: #e5e7eb;
+            color     : #374151;
+        }
+
+        &.payment-2 {
+            background: #e0f2fe;
+            color     : #0369a1;
+        }
+    }
+
+    // Status badges
+    .status-badge {
+        border-radius: 12px;
+        padding      : 1.5rem;
+        box-shadow   : 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition   : all 0.3s ease;
+        cursor       : pointer;
+
+        &:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        padding      : 0.5rem 1rem;
+        border-radius: 20px;
+        font-size    : 0.875rem;
+        font-weight  : 500;
+
+        &.status-pending {
+            background: #fef3c7;
+            color     : #92400e;
+        }
+
+        &.status-processing {
+            background: #dbeafe;
+            color     : #1e40af;
+        }
+
+        &.status-completed {
+            background: #d1fae5;
+            color     : #065f46;
+        }
+
+        &.status-cancelled {
+            background: #fee2e2;
+            color     : #991b1b;
+        }
+    }
+
+    // Action buttons
+    .btn-accept {
+        padding         : 0.5rem 1rem;
+        background-color: #10b981;
+        color           : white;
+        border-radius   : 6px;
+        border          : none;
+        cursor          : pointer;
+
+        &:hover {
+            background-color: #059669;
+        }
+    }
+
+    .btn-cancel {
+        padding         : 0.5rem 1rem;
+        background-color: #ef4444;
+        color           : white;
+        border-radius   : 6px;
+        border          : none;
+        cursor          : pointer;
+
+        &:hover {
+            background-color: #dc2626;
+        }
+    }
+}
+
+// Modal styles
+.modal-overlay {
+    position       : fixed;
+    inset          : 0;
+    background     : rgba(0, 0, 0, 0.5);
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+
+    .modal-content {
+        background   : white;
+        border-radius: 12px;
+        padding      : 2rem;
+        width        : 90%;
+        max-width    : 800px;
+        max-height   : 90vh;
+        overflow-y   : auto;
+
+        .modal-header {
+            display        : flex;
+            justify-content: space-between;
+            align-items    : center;
+            margin-bottom  : 1.5rem;
+
+            h2 {
+                font-size  : 1.5rem;
+                font-weight: bold;
+            }
+
+            .close-button {
+                background: none;
+                border    : none;
+                font-size : 1.5rem;
+                cursor    : pointer;
+                color     : #6b7280;
+
+                &:hover {
+                    color: #1f2937;
+                }
+            }
+        }
+
+        .order-details {
+            .section {
+                margin-bottom : 2rem;
+                padding-bottom: 1rem;
+                border-bottom : 1px solid #e5e7eb;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+
+                h3 {
+                    font-weight  : 600;
+                    margin-bottom: 1rem;
+                }
+
+                .info-grid {
+                    display              : grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap                  : 1rem;
+
+                    .info-item {
+                        .label {
+                            color       : #6b7280;
+                            margin-right: 0.5rem;
+                            font-weight : 500;
+                        }
+                    }
+                }
+
+                .note-section {
+                    margin-top   : 1rem;
+                    padding      : 1rem;
+                    background   : #f9fafb;
+                    border-radius: 8px;
+
+                    .label {
+                        color      : #6b7280;
+                        font-weight: 500;
+                    }
+
+                    p {
+                        margin-top: 0.5rem;
+                        color     : #374151;
+                    }
+                }
+            }
+
+            .products-list {
+                .product-item {
+                    display      : flex;
+                    gap          : 1rem;
+                    padding      : 1rem;
+                    background   : #f9fafb;
+                    border-radius: 8px;
+                    margin-bottom: 1rem;
+
+                    img {
+                        width        : 100px;
+                        height       : 100px;
+                        object-fit   : cover;
+                        border-radius: 4px;
+                    }
+
+                    .product-info {
+                        flex: 1;
+
+                        h4 {
+                            font-weight  : 500;
+                            margin-bottom: 0.5rem;
+                            color        : #1f2937;
+                        }
+
+                        .details {
+                            .price-details {
+                                margin-top : 0.5rem;
+                                padding-top: 0.5rem;
+                                border-top : 1px dashed #e5e7eb;
+
+                                div {
+                                    margin-bottom: 0.25rem;
+                                    color        : #6b7280;
+                                    font-size    : 0.875rem;
+
+                                    &:last-child {
+                                        color      : #1f2937;
+                                        font-weight: 500;
+                                        font-size  : 1rem;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .modal-footer {
+            display        : flex;
+            justify-content: space-between;
+            align-items    : center;
+            margin-top     : 2rem;
+            padding-top    : 1rem;
+            border-top     : 2px solid #e5e7eb;
+
+            .total-section {
+                .total-label {
+                    font-weight: 600;
+                    color      : #4b5563;
+                    font-size  : 1.1rem;
+                }
+
+                .total-amount {
+                    margin-left: 1rem;
+                    font-size  : 1.5rem;
+                    font-weight: bold;
+                    color      : #1f2937;
+                }
+            }
+
+            .action-buttons {
+                display: flex;
+                gap    : 1rem;
+
+                button {
+                    padding    : 0.75rem 1.5rem;
+                    font-weight: 500;
+                    transition : all 0.2s ease;
+
+                    &:hover {
+                        transform: translateY(-1px);
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .order-management {
+        padding: 1rem;
+
+        .orders-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .modal-content {
+            padding: 1rem;
+
+            .order-details {
+                .info-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .modal-footer {
+                    flex-direction: column;
+                    gap           : 1rem;
+
+                    .action-buttons {
+                        width: 100%;
+
+                        button {
+                            flex: 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Additional status variations
+.status-badge {
+    &.status-waiting_for_confirmation {
+        background: #fef3c7;
+        color     : #92400e;
+    }
+
+    &.status-confirmed {
+        background: #dbeafe;
+        color     : #1e40af;
+    }
+
+    &.status-shipped {
+        background: #e0e7ff;
+        color     : #3730a3;
+    }
+
+    &.status-out_for_delivery {
+        background: #ddd6fe;
+        color     : #5b21b6;
+    }
+
+    &.status-delivered {
+        background: #d1fae5;
+        color     : #065f46;
+    }
+
+    &.status-returned {
+        background: #fee2e2;
+        color     : #991b1b;
+    }
+
+    &.status-refunded {
+        background: #fce7f3;
+        color     : #9d174d;
+    }
+
+    &.status-failed {
+        background: #fee2e2;
+        color     : #991b1b;
+    }
+}

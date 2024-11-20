@@ -1,76 +1,541 @@
-@import '../../../../variables';
+// Variables
+$colors: (primary: #007bff,
+    danger: #ff4d4f,
+    success: #155724,
+    warning: #856404,
+    border: #eee,
+    shadow: rgba(0, 0, 0, 0.08),
+    text-dark: #333,
+    text-muted: #666,
+    background-light: #f8f9fa);
 
-section{
-    margin-block: 2rem !important;
-    margin: auto;
+// Breakpoints
+$breakpoints: (mobile: 768px,
+    tablet: 992px,
+    desktop: 1200px);
 
-    .table-list{
-        width: 100%;
-        border: 2px solid $border-color;
-        padding: .5rem .2rem 1rem;
-        border-radius: 5px;
-        box-shadow: -2px 4px 2px rgb(205, 248, 205);
-        border-spacing: 0;
-        
-        th,td{
-            text-wrap: nowrap;
-        }
+// Spacing
+$spacing: (xs: 4px,
+    sm: 8px,
+    md: 16px,
+    lg: 24px,
+    xl: 32px);
 
-        thead{
-            th{
-                font-family: monospace;
-                font-size: .9rem;
-                padding: .5rem 0 1rem;
-                border-bottom: 2px solid $border-color;
-                border-right: 1px solid $border-color;
-                border-radius: 5px;
-                box-shadow: 2px 4px 2px rgb(205, 248, 205);
+// Mixins
+@mixin flex($direction: row, $justify: flex-start, $align: center, $gap: 0) {
+    display        : flex;
+    flex-direction : $direction;
+    justify-content: $justify;
+    align-items    : $align;
+
+    @if $gap>0 {
+        gap: $gap;
+    }
+}
+
+@mixin card-base {
+    background   : white;
+    border-radius: 12px;
+    box-shadow   : 0 2px 8px map-get($colors, shadow);
+    overflow     : hidden;
+    transition   : transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform : translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+}
+
+@mixin status-badge($bg-color, $text-color) {
+    padding      : map-get($spacing, xs) map-get($spacing, sm);
+    border-radius: 4px;
+    font-size    : 0.875rem;
+    font-weight  : 500;
+    background   : rgba($bg-color, 0.15);
+    color        : $text-color;
+    display      : inline-block;
+}
+
+// Main Container
+.order-list-container {
+    padding    : map-get($spacing, md);
+    max-width  : map-get($breakpoints, desktop);
+    margin     : 0 auto;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+    // View Controls
+    .view-controls {
+        @include flex(row, flex-end, center, map-get($spacing, sm));
+        margin-bottom: map-get($spacing, md);
+
+        .btn {
+            @include flex(row, center, center, map-get($spacing, xs));
+            padding      : map-get($spacing, sm) map-get($spacing, md);
+            border       : 1px solid rgba(221, 221, 221, 0.5);
+            border-radius: 6px;
+            background   : white;
+            color        : map-get($colors, text-dark);
+            cursor       : pointer;
+            transition   : all 0.2s ease;
+            font-weight  : 500;
+
+            i {
+                font-size: 1.25rem;
+            }
+
+            &:hover {
+                background: rgba(map-get($colors, primary), 0.05);
+            }
+
+            &.active {
+                background  : map-get($colors, primary);
+                color       : white;
+                border-color: map-get($colors, primary);
             }
         }
+    }
 
-        tbody{
-            border:unset;
-            tr{
-                &:nth-child(1){
-                    td{
-                        padding-top: 1rem;
+    // Orders Container
+    .orders {
+        @include flex(column, flex-start, stretch, map-get($spacing, lg));
+    }
+
+    // Order Card
+    .order-card {
+        @include card-base;
+
+        .order-header {
+            @include flex(row, space-between, center);
+            padding   : map-get($spacing, md) map-get($spacing, lg);
+            cursor    : pointer;
+            transition: background-color 0.2s ease;
+
+            &:hover {
+                background: map-get($colors, background-light);
+            }
+
+            .order-info {
+                @include flex(row, flex-start, center, map-get($spacing, md));
+                flex: 1;
+
+                p{
+                    font-size: .3rem;
+                }
+
+                h3 {
+                    margin     : 0;
+                    font-size  : 1.1rem;
+                    color      : map-get($colors, text-dark);
+                    font-weight: 600;
+                }
+            }
+
+            .status-controls {
+                @include flex(row, flex-start, center, map-get($spacing, sm));
+                margin-left: map-get($spacing, md);
+
+                button {
+                    padding      : map-get($spacing, xs) map-get($spacing, sm);
+                    border-radius: 6px;
+                    font-size    : 0.875rem;
+                    border       : none;
+                    cursor       : pointer;
+                    transition   : all 0.2s ease;
+                    font-weight  : 500;
+
+                    &.edit-address-btn {
+                        @include flex(row, center, center, map-get($spacing, xs));
+                        background: #f0f0f0;
+                        color     : map-get($colors, text-dark);
+
+                        &:hover {
+                            background: darken(#f0f0f0, 5%);
+                        }
+
+                        i {
+                            font-size: 14px;
+                        }
+                    }
+
+                    &.cancel-btn {
+                        background: map-get($colors, danger);
+                        color     : white;
+
+                        &:hover {
+                            background: lighten(map-get($colors, danger), 5%);
+                        }
                     }
                 }
-                &:nth-child(odd) {
-                    background-color: rgba(205, 248, 205, 0.121);
-                }
+            }
+        }
 
-                &:hover{
-                    background-color: rgba(205, 248, 205, 0.121);
+        .order-details {
+            padding   : map-get($spacing, lg);
+            background: map-get($colors, background-light);
+            border-top: 1px solid map-get($colors, border);
+
+            .customer-info {
+                @include flex(row, space-between, center);
+                margin-bottom: map-get($spacing, lg);
+
+                p {
+                    margin: map-get($spacing, xs) 0;
+                    color : map-get($colors, text-muted);
+
+                    strong {
+                        color       : map-get($colors, text-dark);
+                        margin-right: map-get($spacing, xs);
+                    }
                 }
             }
-            td{
-                padding: .5rem;
+        }
+    }
+
+    // Product Grid
+    .product-grid {
+        display              : grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap                  : map-get($spacing, md);
+    }
+
+    // Product Item
+    .product-item {
+        @include card-base;
+        position: relative;
+
+        &.inactive {
+            opacity       : 0.6;
+            pointer-events: none;
+        }
+
+        .detail-btn {
+            position     : absolute;
+            top          : map-get($spacing, sm);
+            right        : map-get($spacing, sm);
+            z-index      : 1;
+            padding      : map-get($spacing, xs) map-get($spacing, sm);
+            background   : rgba(white, 0.9);
+            border       : 1px solid map-get($colors, border);
+            border-radius: 4px;
+            cursor       : pointer;
+            transition   : all 0.2s ease;
+
+            &:hover {
+                background: white;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        .product-image {
+            width     : 100%;
+            height    : 200px;
+            overflow  : hidden;
+            background: #f5f5f5;
+
+            img {
+                width     : 100%;
+                height    : 100%;
+                object-fit: cover;
+                transition: transform 0.3s ease;
+
+                &:hover {
+                    transform: scale(1.05);
+                }
+            }
+        }
+
+        .product-details {
+            padding: map-get($spacing, md);
+
+            h4 {
+                margin     : 0 0 map-get($spacing, sm);
+                font-size  : 1rem;
+                color      : map-get($colors, text-dark);
+                font-weight: 600;
+            }
+
+            .product-specs {
+                @include flex(row, flex-start, center, map-get($spacing, sm));
+                margin-bottom: map-get($spacing, sm);
+                font-size    : 0.875rem;
+                color        : map-get($colors, text-muted);
+
+                .color {
+                    @include flex(row, flex-start, center, map-get($spacing, xs));
+
+                    &-dot {
+                        width        : 12px;
+                        height       : 12px;
+                        border-radius: 50%;
+                        border       : 1px solid map-get($colors, border);
+                    }
+                }
+            }
+
+            .price-info {
+                @include flex(column, flex-start, left, map-get($spacing, xs));
+
+                .price-detail{
+                    @include flex(row, flex-start, center, map-get($spacing, xs));
+                }
+
+                .price {
+                    color          : map-get($colors, text-muted);
+                    font-size      : 0.875rem;
+
+                    &.line-through{
+                        text-decoration: line-through;
+                    }
+                }
+
+                .final-price {
+                    font-weight: 600;
+                    color      : map-get($colors, text-dark);
+                }
+
+                .discount {
+                    background   : rgba(map-get($colors, danger), 0.1);
+                    color        : map-get($colors, danger);
+                    padding      : 2px map-get($spacing, xs);
+                    border-radius: 4px;
+                    font-size    : 0.75rem;
+                    font-weight  : 500;
+                }
+            }
+        }
+    }
+
+    // Status Badges
+    .status-badge {
+        &.success {
+            @include status-badge(map-get($colors, success), map-get($colors, success));
+        }
+
+        &.warning {
+            @include status-badge(map-get($colors, warning), map-get($colors, warning));
+        }
+
+        &.danger {
+            @include status-badge(map-get($colors, danger), map-get($colors, danger));
+        }
+
+        &.primary {
+            @include status-badge(map-get($colors, primary), map-get($colors, primary));
+        }
+    }
+}
+
+// Detail Modal
+
+// Order Status Variables
+$order-statuses: (
+  pending: (background: #f0f5ff, color: #2f54eb, border: #adc6ff),
+  waiting_for_confirmation: (background: #fff7e6, color: #d46b08, border: #ffd591),
+  confirmed: (background: #e6f7ff, color: #1890ff, border: #91d5ff),
+  processing: (background: #e6fffb, color: #13c2c2, border: #87e8de),
+  shipped: (background: #f9f0ff, color: #722ed1, border: #d3adf7),
+  out_for_delivery: (background: #f4ffb8, color: #9e7c0a, border: #d3f261),
+  delivered: (background: #f6ffed, color: #389e0d, border: #b7eb8f),
+  canceled: (background: #fff1f0, color: #f5222d, border: #ffa39e),
+  returned: (background: #fff2e8, color: #fa541c, border: #ffbb96),
+  refunded: (background: #e6fffb, color: #08979c, border: #87e8de),
+  failed: (background: #fff1f0, color: #cf1322, border: #ffa39e)
+);
+
+@mixin order-status-style($status) {
+  background: map-get(map-get($order-statuses, $status), background);
+  color: map-get(map-get($order-statuses, $status), color);
+  border: 1px solid map-get(map-get($order-statuses, $status), border);
+}
+
+$icon-map: (pending: "⌛",
+    waiting_for_confirmation: "⌛",
+    confirmed: "✓",
+    processing: "🔄",
+    shipped: "📦",
+    out_for_delivery: "🚚",
+    delivered: "✓✓",
+    canceled: "✕",
+    returned: "↩",
+    refunded: "💵",
+    failed: "⚠",
+);
+
+.order-status {
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 6px 12px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  // Generate styles dynamically for each status
+  @each $key,
+    $value in $order-statuses {
+        &--#{$key} {
+            @include order-status-style($key);
+
+            &::before {
+                content: map-get($icon-map, $key);
+            }
+        }
+    }
+
+    &:hover {
+        filter: brightness(0.95);
+    }
+}
+
+
+// Usage in HTML:
+// <span class="order-status order-status--waiting">Chờ xác nhận</span>
+// <span class="order-status order-status--confirmed">Đã xác nhận</span>
+// <span class="order-status order-status--shipping">Đang giao hàng</span>
+// <span class="order-status order-status--completed">Đã hoàn thành</span>
+// <span class="order-status order-status--cancelled">Đã hủy</span>
+// <span class="order-status order-status--returned">Đã hoàn trả</span>
+
+.detail-modal {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    position       : fixed;
+    inset          : 0;
+    background     : rgba(0, 0, 0, 0.5);
+    z-index        : 1000;
+    backdrop-filter: blur(4px);
+
+    .modal-content {
+        display         : flex;
+        flex-direction  : column;
+        padding         : map-get($spacing, lg);
+        width           : 90%;
+        max-width       : 800px;
+        max-height      : 90vh;
+        overflow-y      : auto;
+        border-radius   : 8px;
+        background-color: white;
+
+        .modal-header {
+            display        : flex;
+            justify-content: space-between;
+            align-items    : center;
+            margin-bottom  : map-get($spacing, md);
+            padding-bottom : map-get($spacing, md);
+            border-bottom  : 1px solid map-get($colors, border);
+
+            h2 {
+                margin     : 0;
+                font-size  : 1.2rem;
+                font-weight: 600;
+                color      : map-get($colors, text-dark);
+            }
+
+            .close-btn {
+                background: none;
+                border    : none;
+                font-size : 1.1rem;
+                cursor    : pointer;
+                padding   : map-get($spacing, xs);
+                color     : map-get($colors, text-muted);
+                transition: all 0.2s ease;
+
+                &:hover {
+                    color    : map-get($colors, text-dark);
+                    transform: scale(1.1);
+                }
+            }
+        }
+
+        .modal-body {
+            display              : grid;
+            grid-template-columns: 1fr; // Một cột cho layout đơn giản
+            gap                  : map-get($spacing, md); // Khoảng cách giữa các phần tử
+
+            .order-info,
+            .product-info {
+                background   : map-get($colors, light-gray); // Nền cho thông tin
+                padding      : map-get($spacing, md);
+                border-radius: 4px;
+
+                p{
+                    font-size: .8rem;
+                    line-height: 1.25rem;
+                }
+                h3 {
+                    margin-top   : 0;
+                    margin-bottom: map-get($spacing, sm);
+                    font-size    : 1rem;
+                    color        : map-get($colors, text-dark);
+                }
+
+                .info-item {
+                    display        : flex;
+                    justify-content: space-between;
+                    margin-bottom  : map-get($spacing, sm);
+
+                    .label {
+                        font-weight: 600;
+                        color      : map-get($colors, text-muted);
+                    }
+
+                    .value {
+                        font-size : .8rem;
+                        color     : map-get($colors, text-dark);
+                        text-align: right; // Căn phải cho giá trị
+                    }
+                }
+            }
+
+            .view-order-btn {
+                display         : flex;
+                align-items     : center;
+                justify-content : center;
+                gap             : 8px;
+                background-color: map-get($colors, primary);
+                color           : #fff;
+                font-size       : 1rem;
+                font-weight     : 600;
+                border          : none;
+                border-radius   : 4px;
+                padding         : map-get($spacing, sm) map-get($spacing, md);
+                cursor          : pointer;
+                transition      : all 0.3s ease;
+
+                i {
+                    font-size: 1.2rem;
+                }
+
+                &:hover {
+                    background-color: darken(map-get($colors, primary), 10%);
+                    transform       : scale(1.05);
+                }
+
+                &:active {
+                    transform: scale(0.95);
+                }
             }
         }
     }
 }
-.buttons{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    .btn{
-        margin: 0 .2rem;
 
-         &:hover {
-            transform : translateY(-2px);
-            box-shadow: 0 0 2px blanchedalmond;
+// Responsive Styles
+@media (max-width: map-get($breakpoints, tablet)) {
+    .detail-modal {
+        .modal-content {
+            width  : 100%;
+            padding: map-get($spacing, md);
         }
+    }
+}
 
-        &.detail {
-            color: rgb(3, 214, 144);
-            background-color: rgba(144, 252, 216, 0.292);
-        }
-
-        &.detail:hover {
-            color: rgb(162, 255, 224);
-            background-color: rgb(87, 203, 164);
+@media (max-width: map-get($breakpoints, mobile)) {
+    .detail-modal {
+        .modal-content {
+            width  : 100%;
+            padding: map-get($spacing, sm);
         }
     }
 }

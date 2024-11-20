@@ -13,11 +13,11 @@ export interface User {
 export interface UserInfo {
   id: string;
   username: string;
-  email: string;
-  role: { id: string; description: string };
-  birthdate: any;
-  phone: string;
-  image: string;
+  email?: string;
+  role?: { id: string; description: string };
+  birthdate?: any;
+  phone?: string;
+  image?: string;
   address?: string;
   gender?: string;
   totalOrder?: string;
