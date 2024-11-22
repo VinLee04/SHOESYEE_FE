@@ -57,3 +57,12 @@ export enum OrderStatusRequest {
   CANCELED = 'CANCELED',  
   RETURNED = 'RETURNED',  
 }
+
+export interface OrderStatistics {
+  totalRevenue: number;
+  totalOrders: number;
+  canceledOrders: number;
+  deliveredOrders: number;
+  failedOrders: number;
+  pendingOrders: number;
+}

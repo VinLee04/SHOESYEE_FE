@@ -1,0 +1,79 @@
+<!-- order-statistics.component.html -->
+<div class="statistics-container">
+  <div class="header">
+    <h2>Order Statistics Dashboard</h2>
+    <div class="date-filters">
+      <form [formGroup]="filterForm">
+        <mat-form-field appearance="outline">
+          <mat-label>Start Date</mat-label>
+          <input matInput [matDatepicker]="startPicker" formControlName="startDate">
+          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>End Date</mat-label>
+          <input matInput [matDatepicker]="endPicker" formControlName="endDate">
+          <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="fetchStatistics()">
+          Update Statistics
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="statistics-content" *ngIf="statistics">
+    <div class="stats-cards">
+      <div class="stat-card revenue">
+        <div class="icon">
+          <i class="fas fa-dollar-sign"></i>
+        </div>
+        <div class="details">
+          <h3>Total Revenue</h3>
+          <p>{{ statistics.totalRevenue | currency:'VND':'symbol':'1.0-0' }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card orders">
+        <div class="icon">
+          <i class="fas fa-shopping-cart"></i>
+        </div>
+        <div class="details">
+          <h3>Total Orders</h3>
+          <p>{{ statistics.totalOrders }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card delivered">
+        <div class="icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="details">
+          <h3>Delivered Orders</h3>
+          <p>{{ statistics.deliveredOrders }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card pending">
+        <div class="icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="details">
+          <h3>Pending Orders</h3>
+          <p>{{ statistics.pendingOrders }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <canvas id="orderChart"></canvas>
+    </div>
+  </div>
+
+  <div class="loading-spinner" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+  </div>
+</div>
