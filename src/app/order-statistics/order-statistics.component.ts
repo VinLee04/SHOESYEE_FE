@@ -1,107 +1,121 @@
-// import { Component } from '@angular/core';
-// import { FormGroup } from '@angular/forms';
-// import { OrderStatistics } from '../interface/Order';
+import { Component, OnInit } from '@angular/core';
+import { OrderStatisticsService } from './order-statistics.service';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Chart, registerables } from 'chart.js';
 
-// @Component({
-//   selector: 'app-order-statistics',
-//   standalone: true,
-//   imports: [],
-//   templateUrl: './order-statistics.component.html',
-//   styleUrl: './order-statistics.component.scss',
-// })
-// export class OrderStatisticsComponent {
-//   filterForm: FormGroup;
-//   statistics?: OrderStatistics;
-//   isLoading = false;
-//   chart?: Chart;
+@Component({
+  selector: 'app-order-statistics',
+  standalone: true,
+  imports: [FormsModule, CommonModule],
+  templateUrl: './order-statistics.component.html',
+  styleUrl: './order-statistics.component.scss',
+})
+export class OrderStatisticsComponent implements OnInit {
+  orderStats: any = {};
+  startDate!: string; // Input yêu cầu chuỗi yyyy-MM-dd
+  endDate!: string;
+  orderChart!: Chart;
 
-//   constructor(
-//     private fb: FormBuilder,
-//     private statisticsService: OrderStatisticsService
-//   ) {
-//     this.filterForm = this.fb.group({
-//       startDate: [null],
-//       endDate: [null],
-//     });
-//   }
+  constructor(private orderService: OrderStatisticsService) {
+    Chart.register(...registerables);
+  }
 
-//   ngOnInit() {
-//     // Set default date range (current month)
-//     const today = new Date();
-//     const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-//     const lastDayOfMonth = new Date(
-//       today.getFullYear(),
-//       today.getMonth() + 1,
-//       0
-//     );
+  ngOnInit() {
+    this.loadInitialData();
+  }
 
-//     this.filterForm.patchValue({
-//       startDate: firstDayOfMonth,
-//       endDate: lastDayOfMonth,
-//     });
+  loadInitialData() {
+    this.orderService.getFirstOrderDate().subscribe((firstOrderResponse) => {
+      const [year, month, day, hour, minute] = firstOrderResponse.result;
+      const firstOrderDate = new Date(year, month - 1, day, hour, minute);
+      this.startDate = this.formatDateForInput(firstOrderDate);
+      this.endDate = this.formatDateForInput(new Date());
 
-//     this.fetchStatistics();
-//   }
+      // Fetch the order statistics
+      this.fetchOrderStatistics();
+    });
+  }
 
-//   fetchStatistics() {
-//     const startDate = this.filterForm.get('startDate')?.value;
-//     const endDate = this.filterForm.get('endDate')?.value;
+  fetchOrderStatistics() {
+    const formattedStartDate = this.formatLocalDateTime(
+      this.parseDateFromInput(this.startDate)
+    );
+    const formattedEndDate = this.formatLocalDateTime(
+      this.parseDateFromInput(this.endDate)
+    );
 
-//     if (!startDate || !endDate) return;
+    this.orderService
+      .getOrderStatistics(formattedStartDate, formattedEndDate)
+      .subscribe((statsResponse) => {
+        this.orderStats = statsResponse.result;
+        this.createOrderChart();
+      });
+  }
 
-//     this.isLoading = true;
+  applyFilter() {
+    // Chuyển đổi giá trị từ input thành kiểu Date để xử lý
+    const startDate = this.parseDateFromInput(this.startDate);
+    const endDate = this.parseDateFromInput(this.endDate);
 
-//     const start = new Date(startDate);
-//     start.setHours(0, 0, 0, 0);
+    this.startDate = this.formatDateForInput(startDate);
+    this.endDate = this.formatDateForInput(endDate);
 
-//     const end = new Date(endDate);
-//     end.setHours(23, 59, 59, 999);
+    this.fetchOrderStatistics();
+  }
 
-//     this.statisticsService.getOrderStatistics(start, end).subscribe({
-//       next: (response) => {
-//         this.statistics = response.result;
-//         this.updateChart();
-//         this.isLoading = false;
-//       },
-//       error: (error) => {
-//         console.error('Error fetching statistics:', error);
-//         this.isLoading = false;
-//       },
-//     });
-//   }
+  formatLocalDateTime(date: Date): string {
+    return date.toISOString().slice(0, 19);
+  }
 
-//   updateChart() {
-//     if (!this.statistics) return;
+  formatDateForInput(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 
-//     if (this.chart) {
-//       this.chart.destroy();
-//     }
+  parseDateFromInput(dateString: string): Date {
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day); // Lưu ý: tháng trong Date bắt đầu từ 0
+  }
 
-//     const ctx = document.getElementById('orderChart') as HTMLCanvasElement;
-//     this.chart = new Chart(ctx, {
-//       type: 'doughnut',
-//       data: {
-//         labels: ['Delivered', 'Canceled', 'Failed', 'Pending'],
-//         datasets: [
-//           {
-//             data: [
-//               this.statistics.deliveredOrders,
-//               this.statistics.canceledOrders,
-//               this.statistics.failedOrders,
-//               this.statistics.pendingOrders,
-//             ],
-//             backgroundColor: ['#4CAF50', '#f44336', '#9C27B0', '#FFC107'],
-//           },
-//         ],
-//       },
-//       options: {
-//         responsive: true,
-//         plugins: {
-//           legend: {
-//             position: 'right',
-//           },
-//         },
-//       },
-//     });
-//   }
-// }
+  createOrderChart() {
+    const ctx = document.getElementById('orderChart') as HTMLCanvasElement;
+    this.orderChart?.destroy();
+
+    this.orderChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Total Orders', 'Delivered', 'Pending', 'Canceled', 'Failed'],
+        datasets: [
+          {
+            label: 'Order Statistics',
+            data: [
+              this.orderStats.totalOrders,
+              this.orderStats.deliveredOrders,
+              this.orderStats.pendingOrders,
+              this.orderStats.canceledOrders,
+              this.orderStats.failedOrders,
+            ],
+            backgroundColor: [
+              'rgba(75, 192, 192, 0.6)',
+              'rgba(54, 162, 235, 0.6)',
+              'rgba(255, 206, 86, 0.6)',
+              'rgba(255, 99, 132, 0.6)',
+              'rgba(153, 102, 255, 0.6)',
+            ],
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+  }
+}

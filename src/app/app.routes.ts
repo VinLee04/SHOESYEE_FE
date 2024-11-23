@@ -30,6 +30,7 @@ import { CustomerFeatureWishlistComponent } from './customer-features/customer-f
 import { CustomerFeatureOrderComponent } from './customer-features/customer-feature-order/customer-feature-order.component';
 import { OrderPaymentComponent } from './order-payment/order-payment.component';
 import { OrderManagementComponent } from './order-management/order-management.component';
+import { OrderStatisticsComponent } from './order-statistics/order-statistics.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -58,7 +59,7 @@ export const routes: Routes = [
         outlet: 'nav',
       },
       {
-        path: 'order/:status', 
+        path: 'order/:status',
         component: CustomerFeatureOrderComponent,
         outlet: 'nav',
       },
@@ -107,6 +108,7 @@ export const routes: Routes = [
       { path: 'orders', component: OrderManagementComponent },
       { path: 'filter', component: UserManagementFilterComponent },
       { path: 'authorization', component: AccessManagementComponent },
+      { path: 'order-statistic', component: OrderStatisticsComponent },
     ],
   },
 

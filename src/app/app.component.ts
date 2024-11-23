@@ -23,6 +23,7 @@ import { OrderPaymentComponent } from './order-payment/order-payment.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { HomeCartPageCustomerCheckoutComponent } from './home-cart-page-customer/home-cart-page-customer-checkout/home-cart-page-customer-checkout.component';
 import { OrderManagementComponent } from './order-management/order-management.component';
+import { OrderStatisticsComponent } from './order-statistics/order-statistics.component';
 
 @Component({
   selector: 'app-root',
@@ -30,6 +31,7 @@ import { OrderManagementComponent } from './order-management/order-management.co
   imports: [RouterOutlet, HeaderComponent, HomeComponent, FooterComponent, ManagementNavbarComponent , NotificationComponent,
     AccessManagementComponent, ResetPasswordComponent, HomeProductPageCustomerComponent, HomeProductDetailPageCustomerMainComponent, CartComponent
     ,ProductManagementAddEditComponent, ProductManagementComponent, TestpaymentComponent, TestGHNComponent, OrderPaymentComponent, HomeCartPageCustomerCheckoutComponent, OrderManagementComponent
+    ,OrderStatisticsComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

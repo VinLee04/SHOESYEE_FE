@@ -29,7 +29,7 @@ export class ManagementNavbarComponent {
     { name: 'Users', icon: 'bx bx-user' }, // người dùng
     { name: 'Promotions', icon: 'bx bx-gift' }, // khuyến mãi
     //test
-    { name: 'Test 1', icon: 'bx bx-package' }, // đơn hàng
+    { name: 'Order Statistic', icon: 'bx bx-package' }, // đơn hàng
     { name: 'Test 2', icon: 'bx bx-shopping-bag' }, // sản phẩm
     { name: 'Test 3', icon: 'bx bx-clipboard' }, // nhãn hàng
     { name: 'Test 4', icon: 'bx bx-category' }, // thể loại
