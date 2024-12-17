@@ -16,8 +16,8 @@ export class ManagementNavbarComponent {
   userName: string = 'Your Name';
   nav = inject(NavService);
 
-  toggleNav(){
-    this.nav.navSignal.set(!this.nav.navSignal())
+  toggleNav() {
+    this.nav.navSignal.set(!this.nav.navSignal());
   }
 
   managementItems: { name: string; icon: string }[] = [
@@ -30,7 +30,7 @@ export class ManagementNavbarComponent {
     { name: 'Promotions', icon: 'bx bx-gift' }, // khuyến mãi
     //test
     { name: 'Order Statistic', icon: 'bx bx-package' }, // đơn hàng
-    { name: 'Test 2', icon: 'bx bx-shopping-bag' }, // sản phẩm
+    { name: 'Reviews', icon: 'bx bx-shopping-bag' }, // sản phẩm
     { name: 'Test 3', icon: 'bx bx-clipboard' }, // nhãn hàng
     { name: 'Test 4', icon: 'bx bx-category' }, // thể loại
     { name: 'Test 5', icon: 'bx bx-user' }, // người dùng

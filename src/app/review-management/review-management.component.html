@@ -1,0 +1,70 @@
+<div class="review-management-container">
+  <div class="statistics-charts">
+    <div class="chart-card">
+      <h3>Review Rating Distribution</h3>
+      <canvas #reviewDistributionChart></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Reviews Over Time</h3>
+      <canvas #reviewByTimeChart></canvas>
+    </div>
+  </div>
+
+  <div class="chart-container">
+    <canvas #ratingChart></canvas>
+  </div>
+
+  <div class="reviews-table">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>User</th>
+          <th>Rating</th>
+          <th>Review Text</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let review of reviews">
+          <td>{{ review.id }}</td>
+          <td>{{ review.userName }}</td>
+          <td>
+            <div class="star-rating">
+              <span *ngFor="let star of [1,2,3,4,5]">
+                {{ review.rating >= star ? '⭐' : '☆' }}
+              </span>
+            </div>
+          </td>
+          <td>{{ review.reviewText }}</td>
+          <td>{{ review.reviewDate | date:'dd-MM-yyyy | HH:ss' }}</td>
+          <td>
+            <button (click)="deleteReview(review.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <button (click)="previousPage()" [disabled]="currentPage === 0">Previous</button>
+    
+    <div class="page-input">
+      <input 
+        type="number" 
+        [(ngModel)]="pageInput" 
+        (change)="goToPage()"
+        min="1" 
+        [max]="totalPages"
+      >
+      <span>/ {{ totalPages }} pages</span>
+    </div>
+    
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages - 1">Next</button>
+  </div>
+
+  <div class="page-info">
+    Total Reviews: {{ totalReviews }}
+  </div>
+</div>

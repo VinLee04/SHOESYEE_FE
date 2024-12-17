@@ -1,20 +1,61 @@
-<!-- product-detail.component.html -->
 <div class="product-detail-container">
     <!-- Navigation tabs -->
-    <nav class="tabs">
+    <!-- <nav class="tabs">
         <button [class.active]="activeTab === 'details'" (click)="activeTab = 'details'">Details</button>
         <button [class.active]="activeTab === 'reviews'" (click)="activeTab = 'reviews'">Reviews</button>
         <button [class.active]="activeTab === 'discussion'" (click)="activeTab = 'discussion'">Discussion</button>
-    </nav>
+    </nav> -->
 
     <!-- Main content -->
     <div class="content-wrapper">
         <!-- Left side - Product details -->
         <div class="main-content">
             <div class="review-list">
+                <!-- Create Review Section -->
+                <div class="create-review">
+                    <h3>Write a Review</h3>
+                    <div class="star-rating">
+                        <span 
+                            *ngFor="let star of [1,2,3,4,5]" 
+                            (click)="selectRating(star)"
+                            [class.active]="newReview.rating >= star"
+                            class="star-icon"
+                        >
+                            {{ newReview.rating >= star ? '⭐' : '☆' }}
+                        </span>
+                    </div>
+                    <textarea 
+                        [(ngModel)]="newReview.reviewText" 
+                        placeholder="Write your review here..."
+                        rows="4"
+                    ></textarea>
+                    <button 
+                        class="submit-review-btn" 
+                        (click)="createReview()"
+                        [disabled]="!newReview.rating || !newReview.reviewText.trim()"
+                    >
+                        Submit Review
+                    </button>
+                </div>
+                <div class="rating-summary">
+                    <div class="average-rating">
+                        <span class="rating">{{ product.averageRating.toFixed(1) }}</span>
+                    </div>
+                    <div class="rating-breakdown">
+                        <div *ngFor="let rating of [5,4,3,2,1]" class="rating-bar">
+                            <span class="stars">{{ rating }}</span>
+                            <div class="bar-container">
+                                <div class="bar" [style.width.%]="getRatingPercentage(product.ratingBreakdown[rating])">
+                                </div>
+                            </div>
+                            <span class="count">{{ product.ratingBreakdown[rating] }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
                 <!-- Sort dropdown -->
                 <div class="sort-control">
-                    <select [(ngModel)]="sortBy">
+                    <select [(ngModel)]="sortBy" (ngModelChange)="fetchProductReviews(product.id)">
                         <option value="newest">Newest</option>
                         <option value="highest">Highest Rated</option>
                         <option value="lowest">Lowest Rated</option>
@@ -22,30 +63,37 @@
                 </div>
 
                 <!-- Reviews -->
-                <div *ngFor="let review of product.reviews" class="review-item">
+                <div *ngFor="let review of reviews" class="review-item">
                     <div class="reviewer-info">
-                        <img [src]="review.userImage" [alt]="review.userName" class="avatar">
+                        <img [src]="getUserImageUrl(review.userImage)" [alt]="review.userName" class="avatar">
                         <div class="reviewer-details">
                             <span class="name">{{ review.userName }}</span>
-                            <span class="date">{{ review.date | date }}</span>
+                            <span class="date">{{ review.reviewDate | date:'mediumDate' }}</span>
                         </div>
                     </div>
                     <div class="review-content">
                         <div class="stars">
-                            <span *ngFor="let star of [1,2,3,4,5]">
-                                ⭐
+                            <span *ngFor="let star of renderStars(review.rating)">
+                                {{ star }}
                             </span>
                         </div>
-                        <p class="review-text">{{ review.text }}</p>
+                        <p class="review-text">{{ review.reviewText }}</p>
+                        <div class="variant-info">
+                            <span>Size: {{ review.size }}</span>
+                            <span>Color: {{ review.color }}</span>
+                        </div>
                     </div>
-                    
                 </div>
-            </div>
+
+                <!-- No reviews message -->
+                <div *ngIf="reviews.length === 0" class="no-reviews">
+                    No reviews yet. Be the first to review this product!
+                </div>
         </div>
 
         <!-- Right side - Rating summary -->
         <div class="sidebar">
-            <div class="rating-summary">
+            <!-- <div class="rating-summary">
                 <div class="average-rating">
                     <span class="rating">{{ product.averageRating.toFixed(1) }}</span>
                 </div>
@@ -59,15 +107,15 @@
                         <span class="count">{{ product.ratingBreakdown[rating] }}</span>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Popular brands section -->
-            <div class="popular-brands">
+            <!-- <div class="popular-brands">
                 <h3>Popular brands with discounts over 25%</h3>
                 <ul>
                     <li *ngFor="let brand of popularBrands">{{ brand }}</li>
                 </ul>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

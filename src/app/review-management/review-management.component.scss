@@ -1,0 +1,202 @@
+.review-management-container {
+    max-width       : 1400px;
+    margin          : 0 auto;
+    padding         : 2rem;
+    background-color: #f4f6f9;
+    border-radius   : 12px;
+    box-shadow      : 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    .statistics-charts {
+        display              : grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap                  : 1rem;
+        margin-bottom        : 2rem;
+
+        .chart-card {
+            background-color: white;
+            border-radius   : 10px;
+            padding         : 1rem;
+            box-shadow      : 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition      : transform 0.3s ease;
+
+            &:hover {
+                transform: translateY(-5px);
+            }
+
+            h3 {
+                text-align   : center;
+                margin-bottom: 1rem;
+                color        : #333;
+                font-weight  : 600;
+            }
+        }
+    }
+
+    .filters {
+        background-color: white;
+        border-radius   : 8px;
+        padding         : 1rem;
+        margin-bottom   : 1.5rem;
+        box-shadow      : 0 2px 5px rgba(0, 0, 0, 0.05);
+        display         : flex;
+        flex-wrap       : wrap;
+        gap             : 1rem;
+        align-items     : center;
+
+        .filter-section {
+            display    : flex;
+            align-items: center;
+            gap        : 0.5rem;
+
+            label {
+                color      : #555;
+                font-weight: 500;
+            }
+
+            input,
+            select {
+                padding      : 0.5rem;
+                border       : 1px solid #ddd;
+                border-radius: 4px;
+                transition   : border-color 0.3s ease;
+
+                &:focus {
+                    outline     : none;
+                    border-color: #4a90e2;
+                }
+            }
+        }
+
+        .filter-actions {
+            display: flex;
+            gap    : 0.5rem;
+
+            button {
+                padding      : 0.5rem 1rem;
+                border       : none;
+                border-radius: 4px;
+                cursor       : pointer;
+                transition   : background-color 0.3s ease;
+
+                &:first-child {
+                    background-color: #4a90e2;
+                    color           : white;
+
+                    &:hover {
+                        background-color: #357abd;
+                    }
+                }
+
+                &:last-child {
+                    background-color: #f0f0f0;
+                    color           : #333;
+
+                    &:hover {
+                        background-color: #e0e0e0;
+                    }
+                }
+            }
+        }
+    }
+
+    .reviews-table {
+        background-color: white;
+        border-radius   : 8px;
+        box-shadow      : 0 2px 5px rgba(0, 0, 0, 0.05);
+        overflow-x      : auto;
+
+        table {
+            width          : 100%;
+            border-collapse: collapse;
+
+            thead {
+                background-color: #f9fafb;
+
+                th {
+                    padding      : 1rem;
+                    text-align   : left;
+                    color        : #555;
+                    font-weight  : 600;
+                    border-bottom: 2px solid #e0e0e0;
+                }
+            }
+
+            tbody {
+                tr {
+                    transition: background-color 0.3s ease;
+
+                    &:hover {
+                        background-color: #f5f5f5;
+                    }
+
+                    td {
+                        padding      : 1rem;
+                        border-bottom: 1px solid #eaeaea;
+                    }
+
+                    .star-rating {
+                        color      : #ffc107;
+                        display    : flex;
+                        align-items: center;
+                        gap        : 0.25rem;
+                    }
+                }
+            }
+        }
+    }
+
+    .pagination {
+        display         : flex;
+        justify-content : center;
+        align-items     : center;
+        gap             : 1rem;
+        margin-top      : 1.5rem;
+        padding         : 1rem;
+        background-color: white;
+        border-radius   : 8px;
+        box-shadow      : 0 2px 5px rgba(0, 0, 0, 0.05);
+
+        button {
+            display         : flex;
+            align-items     : center;
+            gap             : 0.5rem;
+            padding         : 0.5rem 1rem;
+            background-color: #4a90e2;
+            color           : white;
+            border          : none;
+            border-radius   : 4px;
+            cursor          : pointer;
+            transition      : background-color 0.3s ease;
+
+            &:disabled {
+                background-color: #c0c0c0;
+                cursor          : not-allowed;
+            }
+
+            &:hover:not(:disabled) {
+                background-color: #357abd;
+            }
+        }
+
+        .page-input {
+            display    : flex;
+            align-items: center;
+            gap        : 0.5rem;
+
+            input {
+                width        : 4rem;
+                padding      : 0.5rem;
+                text-align   : center;
+                border       : 1px solid #ddd;
+                border-radius: 4px;
+            }
+        }
+    }
+
+    .page-info {
+        text-align : center;
+        margin-top : 1rem;
+        color      : #666;
+        font-weight: 500;
+    }
+}

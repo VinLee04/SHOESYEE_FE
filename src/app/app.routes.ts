@@ -31,6 +31,7 @@ import { CustomerFeatureOrderComponent } from './customer-features/customer-feat
 import { OrderPaymentComponent } from './order-payment/order-payment.component';
 import { OrderManagementComponent } from './order-management/order-management.component';
 import { OrderStatisticsComponent } from './order-statistics/order-statistics.component';
+import { ReviewManagementComponent } from './review-management/review-management.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -109,6 +110,7 @@ export const routes: Routes = [
       { path: 'filter', component: UserManagementFilterComponent },
       { path: 'authorization', component: AccessManagementComponent },
       { path: 'order-statistic', component: OrderStatisticsComponent },
+      { path: 'reviews', component: ReviewManagementComponent },
     ],
   },
 

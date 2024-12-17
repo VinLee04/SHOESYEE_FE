@@ -1,31 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-interface ProductDetail {
-  id: number;
-  name: string;
-  price: number;
-  mainImage: string;
-  images: string[];
-  sizes: string[];
-  description: string;
-  reviewCount: number;
-  averageRating: number;
-  reviews: Review[];
-  isFavorite: boolean;
-  ratingBreakdown: { [key: number]: number };
-}
-
-interface Review {
-  id: number;
-  userName: string;
-  userImage: string;
-  date: Date;
-  rating: number;
-  text: string;
-  likes: number;
-  comments: number;
-}
+import { CreateReviewRequest, GetProductReviewForOneProduct, HomeProductDetailPageCustomerReviewDetailService } from './home-product-detail-page-customer-review-detail.service';
+import { API_URL_UPLOADS } from '../../../environment';
+import { AuthService } from '../../common/service/auth.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home-product-detail-page-customer-review-detail',
@@ -35,133 +14,174 @@ interface Review {
     './home-product-detail-page-customer-review-detail.component.html',
   styleUrl: './home-product-detail-page-customer-review-detail.component.scss',
 })
-export class HomeProductDetailPageCustomerReviewDetailComponent {
-  product!: ProductDetail;
-  selectedSize!: string;
-  activeTab: 'details' | 'reviews' | 'discussion' = 'details';
-  newReview: Review = this.getEmptyReview();
-  shippingCost: number = 0;
-  popularBrands: string[] = ['Nike', 'Adidas', 'Puma', 'New Balance'];
-  sortBy: string = 'newest';
+export class HomeProductDetailPageCustomerReviewDetailComponent
+  implements OnInit
+{
+  // Tab management
+  activeTab: 'details' | 'reviews' | 'discussion' = 'reviews';
+
+  // Reviews data
+  reviews: GetProductReviewForOneProduct[] = [];
+  sortBy: 'newest' | 'highest' | 'lowest' = 'newest';
+
+  // New review creation
+  newReview = {
+    productDetailId: 0,
+    rating: 0,
+    reviewText: '',
+  };
+
+  // Product data (simulated - in real app, this would come from a product service)
+  product = {
+    id: 1,
+    averageRating: 0,
+    ratingBreakdown: {
+      '1': 0,
+      '2': 0,
+      '3': 0,
+      '4': 0,
+      '5': 0,
+    } as Record<string, number>,
+  };
+
+  // Popular brands (can be fetched from a service in a real app)
+  popularBrands: string[] = [
+    'Nike',
+    'Adidas',
+    'Puma',
+    'Under Armour',
+    'Reebok',
+  ];
+
+  constructor(
+    private productReviewService: HomeProductDetailPageCustomerReviewDetailService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.product = {
-      id: 1,
-      name: 'Shoes Reebok Zig Kinetica 3',
-      price: 199.0,
-      mainImage: 'shoes/shoesTest.png',
-      images: [
-        'shoes/shoesTest.png',
-        'shoes/shoesTest.png',
-        'shoes/shoesTest.png',
-      ],
-      sizes: ['40.5', '41', '42', '43', '43.5', '44', '44.5', '45', '46'],
-      description: 'Excellent running shoes with sharp turns on the foot.',
-      reviewCount: 43,
-      averageRating: 4.8,
-      reviews: [
-        {
-          id: 1,
-          userName: 'Helen M.',
-          userImage: 'ourteam/loi.png',
-          date: new Date('2024-10-15'),
-          rating: 5,
-          text: 'Excellent running shoes. It turns very sharply on the foot.',
-          likes: 42,
-          comments: 0,
-        },
-        {
-          id: 2,
-          userName: 'Vĩnh Lợi',
-          userImage: 'ourteam/loi.png',
-          date: new Date('2024-10-12'),
-          rating: 4,
-          text: 'Good shoes',
-          likes: 36,
-          comments: 2,
-        },
-      ],
-      isFavorite: false,
-      ratingBreakdown: {
-        5: 28,
-        4: 9,
-        3: 4,
-        2: 1,
-        1: 1,
-      },
-    };
-    this.calculateShippingCost();
-  }
-
-  private getEmptyReview(): Review {
-    return {
-      id: 0,
-      userName: '',
-      userImage: '',
-      date: new Date(),
-      rating: 5,
-      text: '',
-      likes: 0,
-      comments: 0,
-    };
-  }
-
-  selectSize(size: string) {
-    this.selectedSize = size;
-  }
-
-  addToCart() {
-    if (!this.selectedSize) {
-      alert('Please select a size before adding to cart.');
-      return;
-    }
-  }
-
-  toggleFavorite() {
-    this.product.isFavorite = !this.product.isFavorite;
-  }
-
-  submitReview() {
-    if (!this.newReview.userName || !this.newReview.text) {
-      alert('Please fill in all fields.');
-      return;
-    }
-    this.newReview.id = this.product.reviews.length + 1;
-    this.newReview.date = new Date();
-    this.product.reviews.unshift({ ...this.newReview });
-    this.updateRatingBreakdown(this.newReview.rating);
-    this.resetNewReview();
-  }
-
-  private updateRatingBreakdown(rating: number) {
-    this.product.ratingBreakdown[rating]++;
-    this.product.reviewCount++;
-    this.recalculateAverageRating();
-  }
-
-  private recalculateAverageRating() {
-    let totalScore = 0;
-    let totalReviews = 0;
-    Object.entries(this.product.ratingBreakdown).forEach(([rating, count]) => {
-      totalScore += Number(rating) * count;
-      totalReviews += count;
+    // Fetch reviews for a specific product (replace with actual product ID)
+    this.route.paramMap.subscribe((params) => {
+      this.product.id = Number(params.get('id'));
     });
-    this.product.averageRating = totalScore / totalReviews;
+    this.fetchProductReviews(this.product.id);
   }
 
-  private resetNewReview() {
-    this.newReview = this.getEmptyReview();
+  // Process user image URL
+  getUserImageUrl(userImage: string | null): string {
+    if (!userImage) {
+      return `${API_URL_UPLOADS}/avatars/default.png`;
+    }
+    return `${API_URL_UPLOADS}/${userImage}`;
   }
 
-  private calculateShippingCost() {
-    this.shippingCost = this.product.price > 150 ? 0 : 10;
+  // Fetch reviews for a specific product
+  fetchProductReviews(productId: number) {
+    this.productReviewService.getReviewsByProductId(productId).subscribe({
+      next: (reviews) => {
+        this.reviews = this.sortReviews(reviews);
+        this.calculateRatingBreakdown(reviews);
+      },
+      error: (error) => {
+        console.error('Error fetching reviews', error);
+      },
+    });
   }
 
-  getMaxRatingCount(): number {
-    return Math.max(...Object.values(this.product.ratingBreakdown));
+  // Sort reviews based on selected criteria
+  sortReviews(
+    reviews: GetProductReviewForOneProduct[]
+  ): GetProductReviewForOneProduct[] {
+    switch (this.sortBy) {
+      case 'newest':
+        return reviews.sort(
+          (a, b) =>
+            new Date(b.reviewDate).getTime() - new Date(a.reviewDate).getTime()
+        );
+      case 'highest':
+        return reviews.sort((a, b) => b.rating - a.rating);
+      case 'lowest':
+        return reviews.sort((a, b) => a.rating - b.rating);
+      default:
+        return reviews;
+    }
   }
 
+  // Calculate rating breakdown and average
+  calculateRatingBreakdown(reviews: GetProductReviewForOneProduct[]) {
+    // Reset rating breakdown
+    this.product.ratingBreakdown = {
+      '1': 0,
+      '2': 0,
+      '3': 0,
+      '4': 0,
+      '5': 0,
+    };
+
+    // Calculate breakdown
+    reviews.forEach((review) => {
+      const roundedRating = Math.round(review.rating).toString();
+      this.product.ratingBreakdown[roundedRating]++;
+    });
+
+    // Calculate average rating
+    this.product.averageRating =
+      reviews.length > 0
+        ? reviews.reduce((sum, review) => sum + review.rating, 0) /
+          reviews.length
+        : 0;
+  }
+
+  // Helper method to get rating percentage for breakdown bars
   getRatingPercentage(count: number): number {
-    return (count / this.getMaxRatingCount()) * 100;
+    const totalReviews = this.reviews.length;
+    return totalReviews > 0 ? (count / totalReviews) * 100 : 0;
+  }
+
+  // Method to render star rating
+  renderStars(rating: number): string[] {
+    return Array(5)
+      .fill(0)
+      .map((_, index) => (index < Math.round(rating) ? '⭐' : '☆'));
+  }
+
+  selectRating(rating: number) {
+    // If the same star is clicked again, reset the rating
+    this.newReview.rating = this.newReview.rating === rating ? 0 : rating;
+  }
+  auth = inject(AuthService);
+
+  // Create a new review
+  createReview() {
+    // Validate review
+    if (this.newReview.rating === 0 || !this.newReview.reviewText.trim()) {
+      alert('Please provide a rating and review text');
+      return;
+    }
+
+    // Prepare review request (you'll need to get user ID from authentication)
+    const reviewRequest: CreateReviewRequest = {
+      productDetailId: this.product.id, // Assuming product detail ID is the same as product ID for simplicity
+      userId: this.auth.getUserId()!, // Replace with actual user ID from authentication
+      reviewText: this.newReview.reviewText,
+      rating: this.newReview.rating,
+    };
+
+    // Call service to create review
+    this.productReviewService.createReview(reviewRequest).subscribe({
+      next: () => {
+        // Refresh reviews after successful creation
+        this.fetchProductReviews(this.product.id);
+        // Reset new review form
+        this.newReview = {
+          productDetailId: 0,
+          rating: 0,
+          reviewText: '',
+        };
+      },
+      error: (error) => {
+        console.error('Error creating review', error);
+        alert('Failed to submit review');
+      },
+    });
   }
 }
