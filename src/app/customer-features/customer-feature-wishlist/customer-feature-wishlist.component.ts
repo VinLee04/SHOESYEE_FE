@@ -1,19 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomerFeatureWishlistService, WishlistItem } from './customer-feature-wishlist.service';
 import { CommonModule } from '@angular/common';
-import { HomeCartPageCustomerService } from '../../home-cart-page-customer/home-cart-page-customer.service';
-interface Product {
-  id: number;
-  thumbnail: string;
-  name: string;
-  colors: string[];
-  brandName: string;
-  categoryName: string;
-  price: number;
-  discountId?: number;
-  quantityInCart: number;
-  hasBeenPurchased: boolean;
-}
+import { CustomerFeatureWishlistService, WishlistItem } from './customer-feature-wishlist.service';
+import { AuthService } from '../../common/service/auth.service';
+
 @Component({
   selector: 'app-customer-feature-wishlist',
   standalone: true,
@@ -21,14 +10,28 @@ interface Product {
   templateUrl: './customer-feature-wishlist.component.html',
   styleUrl: './customer-feature-wishlist.component.scss',
 })
-export class CustomerFeatureWishlistComponent {
+export class CustomerFeatureWishlistComponent implements OnInit{
+  constructor(private wishlistService: CustomerFeatureWishlistService, private auth: AuthService){};
   removeFromWishlist(productId: number) {
     this.wishlistItems = this.wishlistItems.filter(
       (item) => item.id !== productId
     );
   }
-  
-  wishlistItems: Product[] = [
+
+  ngOnInit(): void {
+      this.fetchData();
+  }
+
+  fetchData(){
+    const userId = this.auth.getUserId()!;
+    this.wishlistService.fetchFavoriteDate(userId).subscribe(
+      (response) => {
+        this.wishlistItems = response;
+      }
+    );
+  }
+
+  wishlistItems: WishlistItem[] = [
     {
       id: 1,
       thumbnail: 'https://picsum.photos/400/400?random=1',

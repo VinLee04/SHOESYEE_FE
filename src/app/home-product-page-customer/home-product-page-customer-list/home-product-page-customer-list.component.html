@@ -15,12 +15,15 @@
           <span *ngIf="product.discountPercent" class="discount-badge"
             >-{{ product.discountPercent }}%</span
           >
-          <i
+          @if (loggedIn()) {
+            <i
             class="heart-icon"
-            [class.active]="isFavorite(product.id)"
-            (click)="toggleFavorite(product.id)"
+            [class.active]="product.liked"
+            (click)="toggleFavorite(product)"
             >❤</i
           >
+            <!-- [class.active]="isFavorite(product.id)" -->
+          }
         </div>
         <div class="product-info">
           <p class="brand">{{ product.brandName }}</p>

@@ -20,6 +20,7 @@ type ProductFields = Pick<
   | 'name'
   | 'price'
   | 'thumbnail'
+  | 'liked'
 >;
 
 @Injectable({

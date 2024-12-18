@@ -9,7 +9,7 @@ import { ApiResponse } from '../../interface/ApiResponse';
 @Injectable({
   providedIn: 'root',
 })
-export class HomeProductPageCustomerService extends BaseService {
+export class FavoriteService extends BaseService {
   private readonly API_ENDPOINT = `${API_URL_FAVORITES}`;
   constructor(
     private readonly http: HttpClient,
@@ -18,7 +18,11 @@ export class HomeProductPageCustomerService extends BaseService {
     super(notificationService);
   }
 
-//   addToFavorite(productId: number): Observable<any>{
-//     return this.http.post<ApiResponse>
-//   }
+  addToFavorite(productId: number, userId: string): Observable<any>{
+    return this.http.post<ApiResponse>(`${this.API_ENDPOINT}`, { productId , userId });
+  }
+
+  removeFromFavorite(productId: number, userId: string): Observable<any>{
+    return this.http.delete<ApiResponse>(`${this.API_ENDPOINT}/${userId}/${productId}`);
+  }
 }

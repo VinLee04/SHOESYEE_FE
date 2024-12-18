@@ -92,6 +92,7 @@ export interface productInfo {
   brandName: string;
   categoryName: string;
   discountPercent: number | null;
+  liked: boolean;
 }
 
 export interface ColorOptions {
