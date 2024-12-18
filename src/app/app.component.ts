@@ -24,7 +24,7 @@ import { CheckoutComponent } from './checkout/checkout.component';
 import { HomeCartPageCustomerCheckoutComponent } from './home-cart-page-customer/home-cart-page-customer-checkout/home-cart-page-customer-checkout.component';
 import { OrderManagementComponent } from './order-management/order-management.component';
 import { OrderStatisticsComponent } from './order-statistics/order-statistics.component';
-import { BrandService } from './common/service/brand.service';
+import { BrandService } from './brand-management/brand.service';
 
 @Component({
   selector: 'app-root',
@@ -39,7 +39,6 @@ import { BrandService } from './common/service/brand.service';
 })
 export class AppComponent {
 
-  constructor(private brandService: BrandService) {}
   title = 'SHOESYEE-WEB-PROJECT';
   auth = inject(AuthService);
   nav = inject(NavService);

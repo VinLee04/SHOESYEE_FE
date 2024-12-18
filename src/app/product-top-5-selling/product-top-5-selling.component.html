@@ -1,0 +1,25 @@
+<div class="top-selling-container">
+  <h2 class="section-title">Top 5 Best Selling Products</h2>
+  
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Loading products...</p>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!isLoading && !error" class="product-list">
+    <div class="product-item" *ngFor="let product of topProducts; let i = index">
+      <div class="product-rank">{{ i + 1 }}</div>
+      <div class="product-details">
+        <h3 class="product-name">{{ product.productName }}</h3>
+        <div class="product-sales">
+          <span class="sales-label">Total Sold:</span>
+          <span class="sales-count">{{ product.totalSold }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

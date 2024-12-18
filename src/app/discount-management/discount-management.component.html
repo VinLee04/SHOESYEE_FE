@@ -1,0 +1,152 @@
+<!-- discount-management.component.html -->
+<div class="discount-management-container">
+  <h1>Discount Management</h1>
+
+  <!-- Filter Dropdown -->
+  <div class="filter-section">
+    <label for="filter-select">Filter Discounts:</label>
+    <select 
+      id="filter-select" 
+      [(ngModel)]="selectedFilter" 
+      (ngModelChange)="loadDiscounts()"
+    >
+      <option *ngFor="let option of filterOptions" [value]="option.value">
+        {{ option.label }}
+      </option>
+    </select>
+  </div>
+
+  <!-- Discount Form -->
+  <form [formGroup]="discountForm" (ngSubmit)="onSubmit()" class="discount-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="percent">Discount Percent (%)</label>
+        <input 
+          type="number" 
+          id="percent" 
+          formControlName="percent" 
+          placeholder="Enter discount percentage"
+          min="0" 
+          max="100"
+        >
+        <div 
+          *ngIf="discountForm.get('percent')?.invalid && discountForm.get('percent')?.touched" 
+          class="error-message"
+        >
+          Percent must be between 0 and 100
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="startDay">Start Date</label>
+        <input 
+          type="datetime-local" 
+          id="startDay" 
+          formControlName="startDay"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="endDay">End Date</label>
+        <input 
+          type="datetime-local" 
+          id="endDay" 
+          formControlName="endDay"
+        >
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="comment">Comment</label>
+        <textarea 
+          id="comment" 
+          formControlName="comment" 
+          placeholder="Optional comments about the discount"
+        ></textarea>
+      </div>
+
+      <div class="form-group checkbox-group">
+        <input 
+          type="checkbox" 
+          id="isActive" 
+          formControlName="isActive"
+        >
+        <label for="isActive">Is Active</label>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button 
+        type="submit" 
+        [disabled]="discountForm.invalid || isLoading"
+      >
+        {{ formMode === 'create' ? 'Create Discount' : 'Update Discount' }}
+      </button>
+      <button 
+        type="button" 
+        (click)="resetForm()" 
+        *ngIf="formMode === 'edit'"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+
+  <!-- Discounts List -->
+  <div class="discounts-list" *ngIf="discounts.length; else noDiscounts">
+    <div 
+      *ngFor="let discount of discounts" 
+      class="discount-card"
+      [ngClass]="{
+        'active': discount.isActive && !isExpired(discount),
+        'inactive': !discount.isActive,
+        'expired': isExpired(discount)
+      }"
+    >
+      <div class="discount-header">
+        <span class="percent">{{ discount.percent }}%</span>
+        <div class="status-badge">
+          {{ isExpired(discount) ? 'Expired' : (discount.isActive ? 'Active' : 'Inactive') }}
+        </div>
+      </div>
+      <div class="discount-details">
+        <p>
+          <strong>Start:</strong> {{ formatDate(discount.startDay) }}
+        </p>
+        <p>
+          <strong>End:</strong> {{ formatDate(discount.endDay) }}
+        </p>
+        <p *ngIf="discount.comment">
+          <strong>Comment:</strong> {{ discount.comment }}
+        </p>
+      </div>
+      <div class="discount-actions">
+        <button 
+          (click)="editDiscount(discount)"
+          class="edit-btn"
+        >
+          Edit
+        </button>
+        <button 
+          *ngIf="discount.isActive"
+          (click)="deleteDiscount(discount.id!)"
+          class="delete-btn"
+        >
+          Deactivate
+        </button>
+        <button 
+          *ngIf="!discount.isActive"
+          (click)="restoreDiscount(discount.id!)"
+          class="restore-btn"
+        >
+          Restore
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noDiscounts>
+    <p>No discounts found.</p>
+  </ng-template>
+</div>

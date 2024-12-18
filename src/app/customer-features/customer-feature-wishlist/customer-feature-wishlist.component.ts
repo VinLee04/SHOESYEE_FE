@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CustomerFeatureWishlistService, WishlistItem } from './customer-feature-wishlist.service';
+import {
+  CustomerFeatureWishlistService,
+  WishlistItem,
+} from './customer-feature-wishlist.service';
 import { AuthService } from '../../common/service/auth.service';
 
 @Component({
@@ -24,7 +27,7 @@ export class CustomerFeatureWishlistComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.fetchData();
   }
 

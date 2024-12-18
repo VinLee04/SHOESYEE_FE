@@ -12,7 +12,7 @@
             <img [src]="product.thumbnail" [alt]="product.name">
             <span *ngIf="product.quantityInCart > 0" class="cart-quantity">
               {{product.quantityInCart}}
-            </span>
+            </span> 
             <span *ngIf="product.discountId" class="discount-badge">Sale</span>
           </div>
 

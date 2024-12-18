@@ -17,19 +17,17 @@ export interface ProductReviewResponse {
 }
 
 export interface CreateReviewRequest {
-  productDetailId: number;
+  productId: number;
   userId: string;
   reviewText: string;
   rating: number;
 }
 
 export interface CreateProductReviewResponse {
-  productDetailId: number;
+  productId: number;
   userId: string;
   reviewText: string;
   rating: number;
-  reviewDate: Date;
-  verifiedPurchase: boolean;
 }
 
 export interface GetProductReviewForOneProductDetail {
@@ -62,7 +60,7 @@ export class HomeProductDetailPageCustomerReviewDetailService {
     request: CreateReviewRequest
   ): Observable<CreateProductReviewResponse> {
     return this.http.post<CreateProductReviewResponse>(
-      `${API_URL_REVIEWS}/create`,
+      `${API_URL_REVIEWS}/save`,
       request
     );
   }

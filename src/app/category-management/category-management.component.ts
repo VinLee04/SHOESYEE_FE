@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { CategoryAllData, CategoryService } from '../common/service/category.service';
+import { CategoryAllData, CategoryService } from './category.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -53,6 +53,7 @@ export class CategoryManagementComponent implements OnInit {
         id: this.selectedCategory?.id,
         name: formValue.name,
         isActive: formValue.isActive || false,
+        parentId: 1,
       };
 
       if (this.selectedCategory) {

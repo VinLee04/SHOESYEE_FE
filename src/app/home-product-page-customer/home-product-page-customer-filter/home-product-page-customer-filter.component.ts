@@ -4,8 +4,8 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { HomeProductPageCustomerService } from '../home-product-page-customer.service';
 import { FilterState } from '../home-product-page-customer.component';
 import { FilterService } from './home-product-page-customer-fiter.service';
-import { BrandAllData, BrandService } from '../../common/service/brand.service';
-import { CategoryService } from '../../common/service/category.service';
+import { BrandAllData, BrandService } from '../../brand-management/brand.service';
+import { CategoryAllData, CategoryService } from '../../category-management/category.service';
 
 @Component({
   selector: 'app-home-product-page-customer-filter',
@@ -17,21 +17,10 @@ import { CategoryService } from '../../common/service/category.service';
 export class HomeProductPageCustomerFilterComponent {
   filterForm: FormGroup;
   colors: string[] = ['Red', 'Blue', 'Green'];
-  categories: string[] = [
-    'All',
-    'Men',
-    'Women',
-    'Running',
-    'Basketball',
-    'Training',
-    'Lifestyle',
-    'Soccer',
-    'Tennis',
-    'Walking',
-    'Dance',
-  ];
+
   discounts: number[] = [10, 20, 30, 15, 25];
   brands!: BrandAllData[];
+  categories!: CategoryAllData[];
 
   closeFilter() {
     this.filterService.toggleFilter();
@@ -47,7 +36,7 @@ export class HomeProductPageCustomerFilterComponent {
     private productService: HomeProductPageCustomerService,
     private filterService: FilterService,
     private brandService: BrandService,
-    private categoryService: CategoryService,
+    private categoryService: CategoryService
   ) {
     this.filterForm = this.fb.group({
       categories: [[]],
@@ -61,7 +50,6 @@ export class HomeProductPageCustomerFilterComponent {
     this.productService.getDiscounts().subscribe((response) => {
       this.discounts = response;
     });
-
   }
 
   ngOnInit() {
@@ -100,13 +88,15 @@ export class HomeProductPageCustomerFilterComponent {
         brands: brands,
       });
 
-      this.brands = this.brandService.getBrands()();
+      this.brandService.getBrands().subscribe((response: any) => {
+        this.brands = response;
+      });
       this.categoryService
         .getCategories()
-        .subscribe((response:any) => this.categories = response.name);
+        .subscribe((response: any) => (this.categories = response));
     }
   }
-  
+
   applyFilter() {
     // Lấy giá trị hiện tại của form
     const formValues = this.filterForm.getRawValue();

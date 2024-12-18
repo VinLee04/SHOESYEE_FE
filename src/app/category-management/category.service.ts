@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit, signal } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
-import { API_URL_BRANDS, API_URL_CATEGORIES, API_URL_UPLOADS } from '../../../environment';
+import { API_URL_BRANDS, API_URL_CATEGORIES, API_URL_UPLOADS } from '../../environment';
 
 export interface CategoryAllData {
   id: number | null | undefined;

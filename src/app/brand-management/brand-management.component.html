@@ -1,0 +1,63 @@
+<!-- brand-management.component.html -->
+<div class="brand-management">
+  <h2>Brand Management</h2>
+
+  <form [formGroup]="brandForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Brand Name</label>
+      <input type="text" id="name" formControlName="name" required>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" formControlName="description"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="logo">Logo URL</label>
+      <input type="text" id="logo" formControlName="logo">
+    </div>
+
+    <div class="form-group">
+      <label for="url">URL</label>
+      <input type="text" id="url" formControlName="url">
+    </div>
+
+    <div class="form-group">
+      <label for="isActive">Is Active</label>
+      <input type="checkbox" id="isActive" formControlName="isActive">
+    </div>
+
+    <button type="submit" [disabled]="brandForm.invalid">Save</button>
+    <button type="button" (click)="resetForm()">Reset</button>
+  </form>
+
+  <table class="brand-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Logo</th>
+        <th>URL</th>
+        <th>Is Active</th>
+        <th style="width: 200px;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let brand of brands$ | async">
+        <td>{{ brand.id }}</td>
+        <td>{{ brand.name }}</td>
+        <td>{{ brand.description }}</td>
+        <td><img [src]="brand.logo" alt="{{ brand.name }} Logo" class="brand-logo"></td>
+        <td><a [href]="brand.url" target="_blank">{{ brand.url }}</a></td>
+        <td>{{ brand.isActive ? "YES" : "NO" }}</td>
+        <td>
+          <button (click)="editBrand(brand)">Edit</button>
+          <button *ngIf="brand.isActive" (click)="deleteBrand(brand.id)">Delete</button>
+          <button *ngIf="!brand.isActive" (click)="restoreBrand(brand.id)">Restore</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

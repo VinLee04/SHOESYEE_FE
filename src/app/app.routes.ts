@@ -33,6 +33,8 @@ import { OrderManagementComponent } from './order-management/order-management.co
 import { OrderStatisticsComponent } from './order-statistics/order-statistics.component';
 import { ReviewManagementComponent } from './review-management/review-management.component';
 import { CategoryManagementComponent } from './category-management/category-management.component';
+import { BrandManagementComponent } from './brand-management/brand-management.component';
+import { DiscountManagementComponent } from './discount-management/discount-management.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -112,7 +114,9 @@ export const routes: Routes = [
       { path: 'authorization', component: AccessManagementComponent },
       { path: 'order-statistic', component: OrderStatisticsComponent },
       { path: 'categories', component: CategoryManagementComponent },
-      { path: 'reviews', component: ReviewManagementComponent },
+      { path: 'brands', component: BrandManagementComponent },
+      { path: 'review-statistic', component: ReviewManagementComponent },
+      { path: 'discounts', component: DiscountManagementComponent },
     ],
   },
 

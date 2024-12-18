@@ -18,14 +18,14 @@
         <div class="dropdown-content" [class.show]="activeDropdown === 'categories'">
           @for (category of categories; track $index) {
             <div class="checkbox-item" 
-                (click)="toggleCategory(category); $event.stopPropagation()"
-                [class.selected]="isCategorySelected(category)">
+                (click)="toggleCategory(category.name); $event.stopPropagation()"
+                [class.selected]="isCategorySelected(category.name)">
               <input
                 type="checkbox"
                 [id]="'category-'+category"
-                [checked]="isCategorySelected(category)"
+                [checked]="isCategorySelected(category.name)"
                 (click)="$event.stopPropagation()">
-              <label [for]="'category-'+category">{{ category }}</label>
+              <label [for]="'category-'+category.name">{{ category.name }}</label>
             </div>
           }
         </div>

@@ -9,6 +9,7 @@ import { ProductTable } from '../interface/Product';
 import { AttributeSearchRequest, GlobalOperator, ListSearchRequest, Operation } from '../interface/PageRequest';
 import { finalize } from 'rxjs';
 import { PaginationComponent } from '../common/pagination/pagination.component';
+import { ProductTop5SellingComponent } from '../product-top-5-selling/product-top-5-selling.component';
 
 export interface ProductManagementFilterValue{
   categoryName?: string;
@@ -25,6 +26,7 @@ export interface ProductManagementFilterValue{
     ManagementTableComponent,
     RouterModule,
     PaginationComponent,
+    ProductTop5SellingComponent,
   ],
   templateUrl: './product-management.component.html',
   styleUrls: ['./product-management.component.scss'],
@@ -216,20 +218,4 @@ export class ProductManagementComponent implements OnInit {
   handlePageChange(page: number): void {
     this.currentPage.set(page);
   }
-
-  // handleSort(event: SortEvent): void {
-  //   this.sortColumn = this.COLUMN_MAP[event.column] || event.column;
-  //   this.sortDirection = event.direction;
-  //   this.loadPageData(this.currentPage());
-  // }
-
-  // handleSearch(event: Event): void {
-  //   this.searchQuery = (event.target as HTMLInputElement).value;
-  //   this.resetAndLoad();
-  // }
-
-  // handleFilterApplied(filterValues: Partial<UserManagementFilterValues>): void {
-  //   this.filterValues = this.normalizeFilterValues(filterValues);
-  //   this.resetAndLoad();
-  // }
 }

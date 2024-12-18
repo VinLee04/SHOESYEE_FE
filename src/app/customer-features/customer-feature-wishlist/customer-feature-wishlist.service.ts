@@ -1,36 +1,34 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { ApiResponse } from '../../interface/ApiResponse';
 import { API_URL_FAVORITES, API_URL_UPLOADS } from '../../../environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CustomerFeatureWishlistService {
-
   private apiUrl = API_URL_FAVORITES;
 
   constructor(private http: HttpClient) {}
 
-  fetchFavoriteDate(userId: string): Observable<WishlistItem[]>{
+  fetchFavoriteDate(userId: string): Observable<WishlistItem[]> {
     return this.http
       .get<ApiResponse>(`${this.apiUrl}/getAllFavoriteByIdUser/${userId}`)
       .pipe(
         map((response: ApiResponse) => {
-          if (response.result) {
-            const data = {
-              ...response.result,
-              image: `${API_URL_UPLOADS}/${response.result.thumbnail}`,
-            };
-            return data as WishlistItem[];
+          if (response.result && Array.isArray(response.result)) {
+            return response.result.map((item) => ({
+              ...item,
+              thumbnail: `${API_URL_UPLOADS}/product-images/${item.thumbnail}`,
+            })) as WishlistItem[];
           } else {
             return [];
           }
-        })
+        }),
+        tap((response) => console.table(response))
       );
   }
-
 }
 
 // models/wishlist-item.model.ts

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
-import { BrandAllData, BrandService } from '../common/service/brand.service';
+import { BrandAllData, BrandService } from '../brand-management/brand.service';
 
 @Component({
   selector: 'app-footer',
@@ -9,9 +9,12 @@ import { BrandAllData, BrandService } from '../common/service/brand.service';
   standalone: true,
   imports: [CommonModule],
 })
-export class FooterComponent {
+export class FooterComponent implements OnInit{
+  partners!:BrandAllData[];
   constructor(private brandService: BrandService) {}
-  get partners() {
-    return this.brandService.getBrands();
+
+  ngOnInit(): void {
+      this.brandService.getBrands().subscribe((response:any) => this.partners=response);
   }
+  
 }

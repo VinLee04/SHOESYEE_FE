@@ -111,6 +111,12 @@ export class ProductManagementService {
     return `SP${numericPart.toString().padStart(3, '0')}`;
   }
 
+  getTopBestSellingProducts(limit: number = 5): Observable<TopSellingProduct[]> {
+    return this.http.get<TopSellingProduct[]>(`${API_URL_PRODUCTS}/statistics/top-selling`, {
+      params: { limit: limit.toString() }
+    });
+  }
+
   tableColumns: tableColumns[] = [
     { key: 'id', title: 'No.', sortable: false },
     { key: 'productInfo', title: 'Product', sortable: true },
@@ -131,4 +137,10 @@ export class ProductManagementService {
   } = {
     status: true,
   };
+}
+
+export interface TopSellingProduct {
+  productId: number;
+  productName: string;
+  totalSold: number;
 }

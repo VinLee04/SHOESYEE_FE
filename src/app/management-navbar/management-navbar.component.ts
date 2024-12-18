@@ -27,12 +27,11 @@ export class ManagementNavbarComponent {
     // { name: 'Categories', icon: 'bx bx-category' }, // thể loại
     { name: 'Authorization', icon: 'bx bx-category' }, // thể loại
     { name: 'Users', icon: 'bx bx-user' }, // người dùng
-    { name: 'Promotions', icon: 'bx bx-gift' }, // khuyến mãi
     //test
     { name: 'Order Statistic', icon: 'bx bx-package' }, // đơn hàng
     { name: 'Categories', icon: 'bx bx-shopping-bag' }, // sản phẩm
-    { name: 'Test 3', icon: 'bx bx-clipboard' }, // nhãn hàng
-    { name: 'Test 4', icon: 'bx bx-category' }, // thể loại
+    { name: 'Review Statistic', icon: 'bx bx-clipboard' }, // nhãn hàng
+    { name: 'Discounts', icon: 'bx bx-discount' }, // thể loại
     { name: 'Test 5', icon: 'bx bx-user' }, // người dùng
     { name: 'Test 6', icon: 'bx bx-gift' }, // khuyến mãi
     { name: 'Test 7', icon: 'bx bx-package' }, // đơn hàng

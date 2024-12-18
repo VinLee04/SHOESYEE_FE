@@ -1,41 +1,41 @@
 <div class="product-management management">
     <h1>PRODUCT MANAGEMENT</h1>
 
+    <app-product-top-5-selling></app-product-top-5-selling>
+
     <div class="header">
         <div class="title">
             <h1>Products</h1>
             <span class="count">{{totalElements()}}</span>
         </div>
         <div class="actions">
-            <button class="btn-filter">
+            <!-- <button class="btn-filter">
                 <i class='bx bx-filter-alt'></i>
                 Filter
             </button>
             <button class="btn-share">
                 <i class='bx bx-share-alt'></i>
                 Share
-            </button>
+            </button> -->
             <a routerLink="add" class="btn">
                 <i class='bx bx-plus'></i>
                 Add Product
             </a>
-
-            
         </div>
     </div>
     
-    <div class="info-message">
+    <!-- <div class="info-message">
         <i class='bx bx-info-circle'></i>
         This datatable show all of your product
     </div>
     
     <div class="tabs">
         <button *ngFor="let tab of ['All Products', 'Live', 'Archive', 'Out of Stock', 'Low Stock']"
-            [class.isActive]="activeTab === tab">
+            [class.isActive]="activeTab === tab"> -->
             <!-- [class.active]="activeTab === tab" (click)="changeTab(tab)"> -->
-            {{tab}}
+            <!-- {{tab}}
         </button>
-    </div>
+    </div> -->
 
     <app-management-table 
       [data]="products()"

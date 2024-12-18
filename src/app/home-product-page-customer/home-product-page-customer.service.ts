@@ -69,10 +69,6 @@ export class HomeProductPageCustomerService extends BaseService {
     );
   }
 
-  getColors(): Observable<any[]> {
-    return this.http.get<any>(`${API_URL_UPLOADS}`);
-  }
-
   getDiscounts(): Observable<any[]> {
     return this.http.get<any>(`${API_URL_UPLOADS}`);
   }

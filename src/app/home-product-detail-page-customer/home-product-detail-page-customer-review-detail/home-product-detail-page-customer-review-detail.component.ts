@@ -18,7 +18,7 @@ export class HomeProductDetailPageCustomerReviewDetailComponent
   implements OnInit
 {
   // Tab management
-  activeTab: 'details' | 'reviews' | 'discussion' = 'reviews';
+  // activeTab: 'details' | 'reviews' | 'discussion' = 'reviews';
 
   // Reviews data
   reviews: GetProductReviewForOneProduct[] = [];
@@ -88,9 +88,7 @@ export class HomeProductDetailPageCustomerReviewDetailComponent
   }
 
   // Sort reviews based on selected criteria
-  sortReviews(
-    reviews: GetProductReviewForOneProduct[]
-  ): GetProductReviewForOneProduct[] {
+  sortReviews(reviews: GetProductReviewForOneProduct[]): GetProductReviewForOneProduct[] {
     switch (this.sortBy) {
       case 'newest':
         return reviews.sort(
@@ -150,17 +148,14 @@ export class HomeProductDetailPageCustomerReviewDetailComponent
   }
   auth = inject(AuthService);
 
-  // Create a new review
   createReview() {
-    // Validate review
     if (this.newReview.rating === 0 || !this.newReview.reviewText.trim()) {
       alert('Please provide a rating and review text');
       return;
     }
 
-    // Prepare review request (you'll need to get user ID from authentication)
     const reviewRequest: CreateReviewRequest = {
-      productDetailId: this.product.id, // Assuming product detail ID is the same as product ID for simplicity
+      productId: this.product.id, // Assuming product detail ID is the same as product ID for simplicity
       userId: this.auth.getUserId()!, // Replace with actual user ID from authentication
       reviewText: this.newReview.reviewText,
       rating: this.newReview.rating,
@@ -180,7 +175,7 @@ export class HomeProductDetailPageCustomerReviewDetailComponent
       },
       error: (error) => {
         console.error('Error creating review', error);
-        alert('Failed to submit review');
+        alert('No order found for this product and user.');
       },
     });
   }
