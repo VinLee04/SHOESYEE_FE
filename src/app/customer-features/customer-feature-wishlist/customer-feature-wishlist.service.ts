@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ApiResponse } from '../../interface/ApiResponse';
-import { API_URL_FAVORITES } from '../../../environment';
+import { API_URL_FAVORITES, API_URL_UPLOADS } from '../../../environment';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,11 @@ export class CustomerFeatureWishlistService {
       .pipe(
         map((response: ApiResponse) => {
           if (response.result) {
-            return response.result as WishlistItem[];
+            const data = {
+              ...response.result,
+              image: `${API_URL_UPLOADS}/${response.result.thumbnail}`,
+            };
+            return data as WishlistItem[];
           } else {
             return [];
           }

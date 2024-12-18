@@ -4,12 +4,8 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { HomeProductPageCustomerService } from '../home-product-page-customer.service';
 import { FilterState } from '../home-product-page-customer.component';
 import { FilterService } from './home-product-page-customer-fiter.service';
-interface Category {
-  id: number;
-  name: string;
-  parentId: number | null;
-  isActive: boolean;
-}
+import { BrandAllData, BrandService } from '../../common/service/brand.service';
+import { CategoryService } from '../../common/service/category.service';
 
 @Component({
   selector: 'app-home-product-page-customer-filter',
@@ -35,14 +31,7 @@ export class HomeProductPageCustomerFilterComponent {
     'Dance',
   ];
   discounts: number[] = [10, 20, 30, 15, 25];
-  brands: string[] = [
-    'Nike',
-    'Adidas',
-    'Puma',
-    'New Balance',
-    'Under Armour',
-    'Reebok',
-  ];
+  brands!: BrandAllData[];
 
   closeFilter() {
     this.filterService.toggleFilter();
@@ -56,7 +45,9 @@ export class HomeProductPageCustomerFilterComponent {
   constructor(
     private fb: FormBuilder,
     private productService: HomeProductPageCustomerService,
-    private filterService: FilterService
+    private filterService: FilterService,
+    private brandService: BrandService,
+    private categoryService: CategoryService,
   ) {
     this.filterForm = this.fb.group({
       categories: [[]],
@@ -67,22 +58,10 @@ export class HomeProductPageCustomerFilterComponent {
       brands: [],
     });
 
-    // Khởi tạo các giá trị từ service
-    this.productService.getColors().subscribe((response) => {
-      this.colors = response;
-    });
-
-    this.productService.getCategories().subscribe((response) => {
-      this.categories = response;
-    });
-
     this.productService.getDiscounts().subscribe((response) => {
       this.discounts = response;
     });
 
-    this.productService.getBrands().subscribe((response) => {
-      this.brands = response;
-    });
   }
 
   ngOnInit() {
@@ -94,11 +73,11 @@ export class HomeProductPageCustomerFilterComponent {
           : this.initialValues().categories
         : [];
 
-      const colors = this.initialValues().colors
-        ? typeof this.initialValues().colors === 'string'
-          ? this.initialValues().colors.split(',')
-          : this.initialValues().colors
-        : [];
+      // const colors = this.initialValues().colors
+      //   ? typeof this.initialValues().colors === 'string'
+      //     ? this.initialValues().colors.split(',')
+      //     : this.initialValues().colors
+      //   : [];
 
       const discounts = this.initialValues().discounts
         ? typeof this.initialValues().discounts === 'string'
@@ -114,15 +93,20 @@ export class HomeProductPageCustomerFilterComponent {
 
       this.filterForm.patchValue({
         categories: categories,
-        colors: colors,
+        // colors: colors,
         priceMin: this.initialValues().priceRange?.min || 0,
         priceMax: this.initialValues().priceRange?.max || 0,
         discounts: discounts,
         brands: brands,
       });
+
+      this.brands = this.brandService.getBrands()();
+      this.categoryService
+        .getCategories()
+        .subscribe((response:any) => this.categories = response.name);
     }
   }
-
+  
   applyFilter() {
     // Lấy giá trị hiện tại của form
     const formValues = this.filterForm.getRawValue();
@@ -206,7 +190,7 @@ export class HomeProductPageCustomerFilterComponent {
       : [...currentBrands, brand];
     this.filterForm.patchValue({ brands: newBrands });
   }
-  
+
   // Các phương thức kiểm tra selection
   isCategorySelected(category: string): boolean {
     return this.getSelectedCategories().includes(category);

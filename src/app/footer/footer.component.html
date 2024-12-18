@@ -1,8 +1,8 @@
 <div class="partners">
     <h2 class="partners-title">Our Partners</h2>
     <ul class="partner-logos">
-        <li *ngFor="let partner of partners">
-            <img [src]="partner.logo" [alt]="partner.name" class="partner-logo">
+        <li *ngFor="let partner of partners()">
+            <a [href]="partner.url"><img [src]="partner.logo" [alt]="partner.name" class="partner-logo"></a>
         </li>
     </ul>
 </div>

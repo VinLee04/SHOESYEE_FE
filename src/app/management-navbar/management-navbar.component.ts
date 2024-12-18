@@ -30,7 +30,7 @@ export class ManagementNavbarComponent {
     { name: 'Promotions', icon: 'bx bx-gift' }, // khuyến mãi
     //test
     { name: 'Order Statistic', icon: 'bx bx-package' }, // đơn hàng
-    { name: 'Reviews', icon: 'bx bx-shopping-bag' }, // sản phẩm
+    { name: 'Categories', icon: 'bx bx-shopping-bag' }, // sản phẩm
     { name: 'Test 3', icon: 'bx bx-clipboard' }, // nhãn hàng
     { name: 'Test 4', icon: 'bx bx-category' }, // thể loại
     { name: 'Test 5', icon: 'bx bx-user' }, // người dùng

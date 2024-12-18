@@ -52,14 +52,14 @@
         <div class="dropdown-content" [class.show]="activeDropdown === 'brands'">
           @for (brand of brands; track $index) {
             <div class="checkbox-item"
-                (click)="toggleBrand(brand); $event.stopPropagation()"
-                [class.selected]="isBrandSelected(brand)">
+                (click)="toggleBrand(brand.name); $event.stopPropagation()"
+                [class.selected]="isBrandSelected(brand.name)">
               <input
                 type="checkbox"
-                [id]="'brand-'+brand"
-                [checked]="isBrandSelected(brand)"
+                [id]="'brand-'+brand.name"
+                [checked]="isBrandSelected(brand.name)"
                 (click)="$event.stopPropagation()">
-              <label [for]="'brand-'+brand">{{ brand }}</label>
+              <label [for]="'brand-'+brand.name">{{ brand.name }}</label>
             </div>
           }
         </div>
@@ -75,7 +75,7 @@
     </div>
 
     <!-- Colors -->
-    <div class="filter-section">
+    <!-- <div class="filter-section">
       <div class="dropdown-container">
         <button type="button" 
                 class="dropdown-trigger"
@@ -110,7 +110,7 @@
           </div>
         }
       </div>
-    </div>
+    </div> -->
 
     <!-- Price Range -->
     <div class="filter-section">

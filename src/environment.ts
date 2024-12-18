@@ -34,3 +34,5 @@ export const API_URL_DISCOUNTS = `${environment.connectCoreUri}/discounts`;
 export const API_URL_ORDERS = `${environment.connectCoreUri}/orders`;
 export const API_URL_ORDER_DETAILS = `${environment.connectCoreUri}/orderDetails`;
 export const API_URL_FAVORITES = `${environment.connectCoreUri}/favorites`;
+export const API_URL_BRANDS = `${environment.connectCoreUri}/brands`;
+export const API_URL_CATEGORIES = `${environment.connectCoreUri}/categories`;

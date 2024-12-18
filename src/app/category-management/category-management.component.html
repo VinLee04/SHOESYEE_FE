@@ -1,0 +1,54 @@
+<!-- category-management.component.html -->
+<div class="category-management">
+  <h2>Category Management</h2>
+
+  <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Category Name</label>
+      <input type="text" id="name" formControlName="name" required>
+    </div>
+
+    <!-- <div class="form-group">
+      <label for="parentCategory">Parent Category</label>
+      <select id="parentCategory" formControlName="parentCategory">
+        <option value="">-- Select Parent Category --</option>
+        <option *ngFor="let category of categories" [value]="category.id">
+          {{ category.name }}
+        </option>
+      </select>
+    </div> -->
+
+    <div class="form-group">
+      <label for="isActive">Is Active</label>
+      <input type="checkbox" id="isActive" formControlName="isActive">
+    </div>
+
+    <button type="submit" [disabled]="categoryForm.invalid">Save</button>
+    <button type="button" (click)="resetForm()">Reset</button>
+  </form>
+
+  <table class="category-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <!-- <th>Parent Category</th> -->
+        <th>Is Active</th>
+        <th style="width: 200px;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let category of categories">
+        <td>{{ category.id }}</td>
+        <td>{{ category.name }}</td>
+        <!-- <td>{{ getParentCategoryName(category.parentId) }}</td> -->
+        <td>{{ category.isActive ? "YES" : "NO" }}</td>
+            <td>
+            <button (click)="editCategory(category)">Edit</button>
+            <button *ngIf="category.id !== null && category.id !== undefined && category.isActive" (click)="deleteCategory(category.id)">Delete</button>
+            <button *ngIf="category.id !== null && category.id !== undefined && !category.isActive" (click)="restoreCategory(category.id)">Restore</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
