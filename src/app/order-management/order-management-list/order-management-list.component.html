@@ -50,7 +50,7 @@
           </button>
           <div class="action-buttons" *ngIf="canChangeNext(order.status)">
             <button class="btn-accept" (click)="handleOrderAction(order, 'change', $event)">
-              Chuyển sang {{getStatus(order.status)}}
+              Chuyển sang {{getStatusShow(order.status)}}
             </button>
           </div>
         </div>

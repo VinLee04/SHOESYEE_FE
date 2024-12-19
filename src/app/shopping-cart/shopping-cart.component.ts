@@ -8,6 +8,7 @@ import { HomeCartPageCustomerCheckoutComponent } from '../home-cart-page-custome
 import { API_URL_UPLOADS } from '../../environment';
 import { ShoppingCartCheckoutStatusComponent } from './shopping-cart-checkout-status/shopping-cart-checkout-status.component';
 import { OrderManagementService } from '../order-management/order.service';
+import { AuthService } from '../common/service/auth.service';
 
 
 export interface CartItem {
@@ -183,7 +184,12 @@ export class ShoppingCartComponent {
     this.router.navigate(['/product']);
   }
 
+  auth = inject(AuthService);
   protected proceedToCheckout(): void {
+    if(!this.auth.isCustomerLoggedIn()){
+      alert("Please login before place order")
+      return;
+    }
     if (this.isCheckoutAvailable()) {
       this.showCheckout = true;
     } else {

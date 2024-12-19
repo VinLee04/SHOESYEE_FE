@@ -96,6 +96,15 @@ export class UserManagementAddEditComponent implements OnInit {
   }
 
   private populateForm(userData: any): void {
+     let formattedDate = '';
+     if (userData.birthdate && Array.isArray(userData.birthdate)) {
+       const [year, month, day] = userData.birthdate;
+       // Pad month and day with leading zeros if needed
+       formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day
+         .toString()
+         .padStart(2, '0')}`;
+     }
+
     if (!userData) return;
 
     this.defaultUrl = userData.image
@@ -106,7 +115,7 @@ export class UserManagementAddEditComponent implements OnInit {
       username: userData.username,
       email: userData.email,
       phone: userData.phone,
-      birthdate: userData.birthdate,
+      birthdate: formattedDate,
       salary: userData.salary,
       address: userData.address,
       gender:
@@ -119,8 +128,10 @@ export class UserManagementAddEditComponent implements OnInit {
       roleId: userData.role,
     });
 
-    console.log(userData);
+    console.log("ceck", userData.birthdate);
   }
+
+  
 
   onFileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];

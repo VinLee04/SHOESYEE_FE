@@ -426,7 +426,7 @@ export class HomeCartPageCustomerCheckoutComponent implements OnInit {
   }
 
   reloadQuantity(order: any){
-    this.orderManagementService.updateQuantityAfterOrder(order?.result.orderId);
+    this.orderManagementService.updateQuantityAfterOrder(order?.result.id).subscribe();
   }
 
   get orderSummary() {
