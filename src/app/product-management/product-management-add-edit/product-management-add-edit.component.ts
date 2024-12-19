@@ -419,7 +419,7 @@ export class ProductManagementAddEditComponent implements OnInit {
       this.productService.createProduct(formData).subscribe({
         next: (response) => {
           console.log('Product created successfully', response);
-          this.resetForm();
+          this.resetForm(); // Call resetForm after successful creation
           this.router.navigate(['/products']);
         },
         error: (error) => {
@@ -432,13 +432,37 @@ export class ProductManagementAddEditComponent implements OnInit {
   }
 
   private resetForm() {
-    this.createForm();
+    // Reset the main form with empty values
+    this.productForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      brandId: ['', Validators.required],
+      categoryId: ['', Validators.required],
+      basicPrice: [0, [Validators.required, Validators.min(0)]],
+      price: [0, [Validators.required, Validators.min(0)]],
+      description: ['', Validators.required],
+      isActive: [true],
+      discountId: [''],
+      stock: [0],
+      productColors: this.fb.array([]),
+    });
+
+    // Reset file-related data
     this.thumbnailFile = undefined;
     this.colorImages = {};
+
+    // Reset size selections
     this.selectedSizes.clear();
     this.colorSizeDetails.clear();
     this.editingColorIndex = null;
-    this.productForm.patchValue({ stock: 0 });
+
+    // Reset editing states
+    this.editingQuantity = {};
+    this.editingPrice = {};
+
+    // Re-subscribe to price changes
+    this.productForm.get('price')?.valueChanges.subscribe((value) => {
+      this.updateAllSizePrices(value);
+    });
   }
 
   getTotalQuantityForColor(colorIndex: number): number {
