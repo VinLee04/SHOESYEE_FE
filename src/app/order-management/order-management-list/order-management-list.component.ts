@@ -6,6 +6,7 @@ import { OrderManagementService } from '../order.service';
 import { OrderResponseFull, OrderStatus } from '../../interface/Order';
 import { OrderDetailResponse } from '../../interface/Cart';
 import { API_URL_UPLOADS } from '../../../environment';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-order-management-list',
@@ -22,29 +23,63 @@ export class OrderManagementListComponent {
   showDetailModal = signal<boolean>(false);
 
   handleOrderAction(
-    order: OrderResponseFull,
-    action: 'accept' | 'cancel',
-    event: Event
-  ) {
-    event.stopPropagation();
+  order: OrderResponseFull,
+  action: 'accept' | 'cancel' | 'change',
+  event: Event
+) {
+  event.stopPropagation();
 
-    const actionObs =
-      action === 'accept'
-        ? this.orderService.confirmOrder(order.orderId)
-        : this.orderService.cancelOrder(order.orderId);
-
-    actionObs.subscribe({
-      next: () => {
-        // Close modal if open
-        if (this.showDetailModal()) {
-          this.closeModal();
-        }
-      },
-      error: (error) => {
-        console.error(`Error ${action}ing order:`, error);
-      },
-    });
+  let actionObs: Observable<any>;
+  
+  switch(action) {
+    case 'accept':
+      actionObs = this.orderService.confirmOrder(order.orderId);
+      break;
+    case 'cancel':
+      actionObs = this.orderService.cancelOrder(order.orderId);
+      break;
+    case 'change':
+      alert(order.status);
+      const nextStatus = this.getStatus(order.status);
+      if (!nextStatus) {
+        console.error('Invalid status transition');
+        return;
+      }
+      actionObs = this.orderService.changeOrderStatus(order.orderId, nextStatus);
+      break;
   }
+
+  actionObs.subscribe({
+    next: () => {
+      if (this.showDetailModal()) {
+        this.closeModal();
+      }
+    },
+    error: (error) => {
+      console.error(`Error ${action}ing order:`, error);
+    },
+  });
+}
+  
+  canChangeNext(status: string): boolean {
+    return ['CONFIRMED', 'PROCESSING', 'SHIPPED', 'OUT_FOR_DELIVERY'].includes(status);
+  }
+
+  getStatus(status: string): string | undefined {
+  switch (status) {
+    case 'CONFIRMED':
+      return 'processing';
+    case 'PROCESSING':
+      return 'ship';
+    case 'SHIPPED':
+      return 'outForDilivery';
+    case 'OUT_FOR_DELIVERY':
+      return 'dilivered';
+    default:
+      console.warn('Invalid status for change:', status);
+      return undefined;
+  }
+}
 
   closeModal() {
     this.showDetailModal.set(false);
@@ -98,11 +133,6 @@ export class OrderManagementListComponent {
       image: detail.image
         ? `${API_URL_UPLOADS}/product-images/${detail.image}`
         : `${API_URL_UPLOADS}/product-images/default.png`,
-      // image:
-      //   detail.image ||
-      //   `https://picsum.photos/400/400?random=${
-      //     detail.orderDetailId || index + 1
-      //   }`,
     }));
   }
 

@@ -1,7 +1,8 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { VNPAYReturn } from '../shopping-cart.component';
 import { CommonModule } from '@angular/common';
+import { OrderManagementService } from '../../order-management/order.service';
 
 @Component({
   selector: 'app-shopping-cart-checkout-status',
@@ -38,11 +39,14 @@ export class ShoppingCartCheckoutStatusComponent {
     if (this.vnpayReturn.code === '00') {
       this.statusIcon = '✓';
       this.statusClass = 'success';
+      this.orderManagementService.updateQuantityAfterOrder(Number(this.vnpayReturn.orderId)!);
     } else {
       this.statusIcon = '✕';
       this.statusClass = 'error';
     }
   }
+
+  orderManagementService = inject(OrderManagementService);
 
   closeStatus() {
     this.close.emit();

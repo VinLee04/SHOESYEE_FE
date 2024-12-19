@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { GhnService } from '../../order-payment/ghn.service';
 import { AuthService } from '../../common/service/auth.service';
 import { ApiResponse, DataResponse } from '../../interface/ApiResponse';
+import { OrderManagementService } from '../../order-management/order.service';
 
 interface Province {
   ProvinceID: number;
@@ -75,7 +76,8 @@ export class HomeCartPageCustomerCheckoutComponent implements OnInit {
     private router: Router,
     private ghnService: GhnService,
     private paymentService: PaymentService,
-    private cartService: HomeCartPageCustomerService
+    private cartService: HomeCartPageCustomerService,
+    private orderManagementService: OrderManagementService
   ) {
     this.initializeForm();
   }
@@ -360,7 +362,6 @@ export class HomeCartPageCustomerCheckoutComponent implements OnInit {
         (p) => p.ProvinceID === Number(shippingInfo.provinceId)
       )?.ProvinceName || '';
 
-    // Lọc bỏ các phần tử rỗng và kết hợp với dấu phẩy
     return [address, ward, district, province]
       .filter((part) => part.trim())
       .join(', ');
@@ -411,6 +412,7 @@ export class HomeCartPageCustomerCheckoutComponent implements OnInit {
           } else if (paymentMethodId === 1) {
             this.cartService.clearCart();
             this.closeModal();
+            this.reloadQuantity(order.result.orderId);
           }
         }
       } catch (error) {
@@ -423,10 +425,13 @@ export class HomeCartPageCustomerCheckoutComponent implements OnInit {
     }
   }
 
+  reloadQuantity(order: any){
+    this.orderManagementService.updateQuantityAfterOrder(order?.result.orderId);
+  }
+
   get orderSummary() {
     const subtotal = this.cartService.totalAmount();
-    const shipping = 'Free Ship'; // Fixed shipping fee
-    // const tax = subtotal * 0.1;
+    const shipping = 'Free Ship'; 
     return {
       subtotal,
       shipping,

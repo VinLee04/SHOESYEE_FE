@@ -48,6 +48,11 @@
             (click)="handleOrderAction(order, 'cancel', $event)">
             Hủy
           </button>
+          <div class="action-buttons" *ngIf="canChangeNext(order.status)">
+            <button class="btn-accept" (click)="handleOrderAction(order, 'change', $event)">
+              Chuyển sang {{getStatus(order.status)}}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -139,6 +144,11 @@
             </button>
             <button class="btn-cancel" (click)="handleOrderAction(selectedOrder()!, 'cancel', $event)">
               Hủy
+            </button>
+          </div>
+          <div class="action-buttons" *ngIf="canChangeNext(selectedOrder()?.status!)">
+            <button class="btn-accept" (click)="handleOrderAction(selectedOrder()!, 'change', $event)">
+              Chuyển sang {{getStatus(selectedOrder()?.status!)}}
             </button>
           </div>
         </div>

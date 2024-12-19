@@ -6,6 +6,7 @@ import { FilterState } from '../home-product-page-customer.component';
 import { FilterService } from './home-product-page-customer-fiter.service';
 import { BrandAllData, BrandService } from '../../brand-management/brand.service';
 import { CategoryAllData, CategoryService } from '../../category-management/category.service';
+import { DiscountService } from '../../discount-management/discount.service';
 
 @Component({
   selector: 'app-home-product-page-customer-filter',
@@ -18,7 +19,7 @@ export class HomeProductPageCustomerFilterComponent {
   filterForm: FormGroup;
   colors: string[] = ['Red', 'Blue', 'Green'];
 
-  discounts: number[] = [10, 20, 30, 15, 25];
+  discounts!: number[];
   brands!: BrandAllData[];
   categories!: CategoryAllData[];
 
@@ -36,7 +37,8 @@ export class HomeProductPageCustomerFilterComponent {
     private productService: HomeProductPageCustomerService,
     private filterService: FilterService,
     private brandService: BrandService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private discountService: DiscountService
   ) {
     this.filterForm = this.fb.group({
       categories: [[]],
@@ -47,9 +49,6 @@ export class HomeProductPageCustomerFilterComponent {
       brands: [],
     });
 
-    this.productService.getDiscounts().subscribe((response) => {
-      this.discounts = response;
-    });
   }
 
   ngOnInit() {
@@ -88,12 +87,9 @@ export class HomeProductPageCustomerFilterComponent {
         brands: brands,
       });
 
-      this.brandService.getBrands().subscribe((response: any) => {
-        this.brands = response;
-      });
-      this.categoryService
-        .getCategories()
-        .subscribe((response: any) => (this.categories = response));
+      this.brandService.getBrands().subscribe((response: any) => this.brands = response);
+      this.categoryService.getCategories().subscribe((response: any) => (this.categories = response));
+      this.discountService.getLsPercents().subscribe((response: any) => (this.discounts = response));
     }
   }
 

@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HomeCartPageCustomerCheckoutComponent } from '../home-cart-page-customer/home-cart-page-customer-checkout/home-cart-page-customer-checkout.component';
 import { API_URL_UPLOADS } from '../../environment';
 import { ShoppingCartCheckoutStatusComponent } from './shopping-cart-checkout-status/shopping-cart-checkout-status.component';
+import { OrderManagementService } from '../order-management/order.service';
 
 
 export interface CartItem {
@@ -84,6 +85,8 @@ export class ShoppingCartComponent {
   getImage(img: string){
     return img ? `${API_URL_UPLOADS}/product-images/${img}` : `${API_URL_UPLOADS}/product-images/default.png`
   }
+
+  orderManagementService = inject(OrderManagementService);
 
   getCheckoutByCard() {
     const code = this.route.snapshot.queryParamMap.get('code');

@@ -86,4 +86,8 @@ export class DiscountService {
   restoreDiscount(id: number): Observable<void> {
     return this.http.put<void>(`${API_URL_DISCOUNTS}/restore/${id}`, {});
   }
+
+  getLsPercents(): Observable<number[]> {
+    return this.http.get<number[]>(`${API_URL_DISCOUNTS}/active-percents`);
+  }
 }

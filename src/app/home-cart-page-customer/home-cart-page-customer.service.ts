@@ -141,7 +141,7 @@ export class HomeCartPageCustomerService extends BaseService {
               price: response.result.price,
               discountPercent: response.result.discountPercent,
               color: response.result.color,
-              image: response.result.image ? `${API_URL_UPLOADS}/product-images/${response.result.image}` : `${API_URL_UPLOADS}/product-image/default.png`,
+              image: response.result.image ? `${response.result.image}` : `${API_URL_UPLOADS}/product-image/default.png`,
               isProductDetailActive: response.result.isProductDetailActive,
               totalPrice:
                 response.result.price *

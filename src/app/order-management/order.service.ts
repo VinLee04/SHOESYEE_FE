@@ -68,26 +68,58 @@ export class OrderManagementService extends BaseService {
   }
 
   cancelOrder(orderId: number): Observable<any> {
-    return this.http.delete<ApiResponse>(`${API_URL_ORDERS}/${orderId}`).pipe(
-      map((response) => this.handleResponse(response)),
-      finalize(() => {
-        const reloadObs = this.reloadCurrentPage();
-        if (reloadObs) {
-          reloadObs.subscribe();
-        }
-      })
-    );
+    return this.http
+      .delete<ApiResponse>(`${API_URL_ORDERS}/${orderId}/cancel`)
+      .pipe(
+        map((response) => this.handleResponse(response)),
+        finalize(() => {
+          const reloadObs = this.reloadCurrentPage();
+          if (reloadObs) {
+            reloadObs.subscribe();
+          }
+        })
+      );
   }
 
   confirmOrder(orderId: number): Observable<any> {
-    return this.http.put<ApiResponse>(`${API_URL_ORDERS}/${orderId}`, {}).pipe(
-      map((response) => this.handleResponse(response)),
-      finalize(() => {
-        const reloadObs = this.reloadCurrentPage();
-        if (reloadObs) {
-          reloadObs.subscribe();
-        }
-      })
-    );
+    return this.http
+      .put<ApiResponse>(`${API_URL_ORDERS}/${orderId}/confirm`, {})
+      .pipe(
+        map((response) => this.handleResponse(response)),
+        finalize(() => {
+          const reloadObs = this.reloadCurrentPage();
+          if (reloadObs) {
+            reloadObs.subscribe();
+          }
+        })
+      );
+  }
+
+  changeOrderStatus(orderId: number, status: string | undefined): Observable<any> {
+    return this.http
+      .put<ApiResponse>(`${API_URL_ORDERS}/${orderId}/${status}`, {})
+      .pipe(
+        map((response) => this.handleResponse(response)),
+        finalize(() => {
+          const reloadObs = this.reloadCurrentPage();
+          if (reloadObs) {
+            reloadObs.subscribe();
+          }
+        })
+      );
+  }
+
+  updateQuantityAfterOrder(id: number): Observable<any> {
+    return this.http
+      .post<ApiResponse>(`${API_URL_ORDERS}/DeductTheProductQuantityAfterOrdering/${id}`, {})
+      .pipe(
+        map((response) => this.handleResponse(response)),
+        finalize(() => {
+          const reloadObs = this.reloadCurrentPage();
+          if (reloadObs) {
+            reloadObs.subscribe();
+          }
+        })
+      );
   }
 }

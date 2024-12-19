@@ -69,17 +69,6 @@ export class HomeProductPageCustomerService extends BaseService {
     );
   }
 
-  getDiscounts(): Observable<any[]> {
-    return this.http.get<any>(`${API_URL_UPLOADS}`);
-  }
-
-  getBrands(): Observable<any[]> {
-    return this.http.get<any>(`${API_URL_UPLOADS}`);
-  }
-
-  getCategories(): Observable<any[]> {
-    return this.http.get<any>(`${API_URL_UPLOADS}`);
-  }
 
   filterValues: FilterState = {};
 }

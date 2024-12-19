@@ -52,7 +52,6 @@ export interface GetProductReviewForOneProduct {
   providedIn: 'root',
 })
 export class HomeProductDetailPageCustomerReviewDetailService {
-
   constructor(private http: HttpClient) {}
 
   // Create a new review
@@ -82,5 +81,4 @@ export class HomeProductDetailPageCustomerReviewDetailService {
       `${API_URL_REVIEWS}/productReview/${productId}`
     );
   }
-
 }
